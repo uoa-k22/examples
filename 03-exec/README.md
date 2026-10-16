@@ -17,5 +17,6 @@ only if it fails, so the line after it is always error handling.
 | `03_fork_exec_wait` | fork + exec + wait, the core of a shell: `./03_fork_exec_wait ls -l` |
 | `04_exec_fail_bug` | a child that keeps running after a failed exec; `fixed` shows the fix |
 | `05_env` | `execle` with a custom environment |
+| `06_exec_no_exit` | a child that keeps running the parent's code after a failed exec: comment out its `_exit(127)` |
 
 Build with `make` and run each program from this directory.
