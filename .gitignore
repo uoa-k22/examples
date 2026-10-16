@@ -1,0 +1,8 @@
+# Inside each topic directory keep only sources, Makefiles and READMEs;
+# everything else there is a build product or a file a demo created.
+/[0-9][0-9]-*/*
+!/[0-9][0-9]-*/*.c
+!/[0-9][0-9]-*/*.h
+!/[0-9][0-9]-*/Makefile
+!/[0-9][0-9]-*/README.md
+*.o
