@@ -18,7 +18,8 @@
 
 int main(void)
 {
-    printf("Parent: HOME = %s\n", getenv("HOME"));
+    const char *home = getenv("HOME");     /* NULL if the variable is not set */
+    printf("Parent: HOME = %s\n", home ? home : "(not set)");
     printf("Child's environment:\n");
     fflush(stdout);
 

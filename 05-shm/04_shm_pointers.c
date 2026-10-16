@@ -26,8 +26,9 @@
  *
  * Rule:  inside shared memory, link data with indexes or offsets from the
  *        start of the object, never with pointers. (A parent and a child that
- *        inherit one mapping through fork() do see it at the same address,
- *        but separate programs, or mappings made after fork(), do not.)
+ *        inherit one mapping through fork() do see it at the same address.
+ *        Separate programs, or mappings made after fork(), may or may not;
+ *        nothing guarantees it.)
  */
 #include <fcntl.h>
 #include <stdio.h>

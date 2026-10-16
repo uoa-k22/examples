@@ -16,8 +16,9 @@ waking a waiter. Semaphores are used in two ways:
 | `05_bounded_buffer` | producer/consumer with `empty`, `full` and `mutex` |
 | `06_sysv_sem` | the System V API: `semget` / `semctl` / `semop` with `SEM_UNDO` |
 
-Common mistakes. Each program works as written; the header comment says
-which line to change to see the bug.
+Common mistakes. Each program works correctly as written; its header
+comment says what to change to see the bug: a line to uncomment (`07`), two
+lines to swap (`08`), or an argument to pass (`09`).
 
 | Program | Shows |
 |---|---|
