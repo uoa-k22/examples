@@ -1,0 +1,78 @@
+/*
+ * 06_sysv_sem.c - System V semaphores: semget, semctl, semop.
+ *
+ * Run:   ./06_sysv_sem
+ *
+ * Look:  the same mutual exclusion as 03_named_sem, with the older API that
+ *        many existing programs still use. The differences:
+ *        - semget() creates a whole *set* of semaphores; here it has one.
+ *        - The new semaphore has no defined value until semctl(SETVAL)
+ *          sets it.
+ *        - semop() does both wait and post: sem_op = -1 is P (wait),
+ *          sem_op = +1 is V (post).
+ *        - SEM_UNDO: if a process dies while holding the semaphore, the
+ *          kernel reverses its operations, so the others are not stuck.
+ *        - The set lives until semctl(IPC_RMID); see  ipcs -s
+ */
+#include <stdio.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include "errexit.h"
+
+#define NCHILD 3
+#define ROUNDS 2
+
+/* The caller must define this union for semctl(); see man semctl. */
+union semun {
+    int              val;
+    struct semid_ds *buf;
+    unsigned short  *array;
+};
+
+static void change(int semid, int delta)
+{
+    struct sembuf op = { .sem_num = 0, .sem_op = delta, .sem_flg = SEM_UNDO };
+
+    if (semop(semid, &op, 1) < 0)
+        die("semop");
+}
+
+int main(void)
+{
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    int semid = semget(IPC_PRIVATE, 1, IPC_CREAT | 0600);
+    if (semid < 0)
+        die("semget");
+    union semun arg = { .val = 1 };
+    if (semctl(semid, 0, SETVAL, arg) < 0)
+        die("semctl SETVAL");
+    printf("Parent: created semaphore set %d with value 1\n", semid);
+
+    for (int i = 0; i < NCHILD; i++) {
+        pid_t pid = fork();
+        if (pid < 0)
+            die("fork");
+        if (pid == 0) {
+            for (int r = 0; r < ROUNDS; r++) {
+                change(semid, -1);                          /* P */
+                printf("child %d (pid %d): enter\n", i, (int) getpid());
+                usleep(200000);
+                printf("child %d (pid %d): leave\n", i, (int) getpid());
+                change(semid, +1);                          /* V */
+                usleep(100000);
+            }
+            _exit(0);
+        }
+    }
+    while (wait(NULL) > 0)
+        ;
+
+    if (semctl(semid, 0, IPC_RMID) < 0)
+        die("semctl IPC_RMID");
+    printf("Parent: removed semaphore set %d\n", semid);
+    return 0;
+}
