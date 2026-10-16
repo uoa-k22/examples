@@ -21,8 +21,10 @@
  *        why on Linux even a mapping bigger than RAM usually succeeds
  *        (overcommit). The trouble comes only if all of it is touched.
  */
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/mman.h>
 #include <sys/resource.h>
 #include <unistd.h>
@@ -68,9 +70,13 @@ int main(int argc, char *argv[])
     char *p = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (p == MAP_FAILED)
         die("mmap");
-    /* Ask for ordinary 4 KiB pages. Some systems would otherwise use 2 MiB
-       "huge pages" here, and each fault would bring in 512 pages at once. */
-    madvise(p, len, MADV_NOHUGEPAGE);
+    /* Ask for ordinary pages. Some systems would otherwise use 2 MiB "huge
+       pages" here, and each fault would bring in 512 small pages at once.
+       This can only fail on a kernel built without huge page support, which
+       uses ordinary pages anyway, so a failure does not change the counts. */
+    if (madvise(p, len, MADV_NOHUGEPAGE) < 0)
+        printf("note: madvise(MADV_NOHUGEPAGE): %s; this kernel has no huge\n"
+               "      pages, so it uses ordinary pages anyway\n\n", strerror(errno));
     report("after mmap()");
 
     touch(p, 0, len / 4);
