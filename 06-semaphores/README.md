@@ -16,6 +16,15 @@ waking a waiter. Semaphores are used in two ways:
 | `05_bounded_buffer` | producer/consumer with `empty`, `full` and `mutex` |
 | `06_sysv_sem` | the System V API: `semget` / `semctl` / `semop` with `SEM_UNDO` |
 
+Common mistakes. Each program works as written; the header comment says
+which line to change to see the bug.
+
+| Program | Shows |
+|---|---|
+| `07_sem_not_shared` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything |
+| `08_deadlock` | two semaphores taken in opposite orders; ends after 5 s via `alarm()` |
+| `09_owner_died` | a process killed while holding a POSIX semaphore leaves it locked forever; `sysv` shows `SEM_UNDO` recovering |
+
 Build with `make` and run each program from this directory. Run `01_race`
 several times. The number of lost updates changes from run to run; that is
 the race.
