@@ -8,9 +8,8 @@
  *        child's pid to the parent and 0 to the child. Which of the two lines
  *        comes first is up to the scheduler.
  *
- * Try:   comment out the fflush() and run  ./01_simple_fork | cat
- *        When stdout is a pipe, printf() buffers its output. The buffer is
- *        copied by fork(), so "Before fork" comes out twice.
+ * Note:  the fflush() before fork() is needed; 06_stdio_buffer.c shows
+ *        what goes wrong without it.
  */
 #include <stdio.h>
 #include <sys/types.h>
