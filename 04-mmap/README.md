@@ -15,5 +15,7 @@ private to the process or shared with others.
 | `02_file_read` | mapping a file read-only: `./02_file_read 02_file_read.c` |
 | `03_file_write` | writing a file through `MAP_SHARED`; `ftruncate` first, `msync` after |
 | `04_shared_anon_fork` | shared vs. private anonymous memory across `fork()` (`private`) |
+| `05_demand_paging` | pages are allocated on first touch: count the page faults and resident memory |
+| `06_mprotect` | page permissions: a write to a read-only page is killed with SIGSEGV |
 
 Build with `make` and run each program from this directory.
