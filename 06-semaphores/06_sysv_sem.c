@@ -12,8 +12,11 @@
  *          sem_op = +1 is V (post).
  *        - SEM_UNDO: if a process dies while holding the semaphore, the
  *          kernel reverses its operations, so the others are not stuck.
+ *        - A waiting semop() can fail with EINTR after Ctrl-Z / fg, so
+ *          change() retries it. Try pressing Ctrl-Z and typing fg.
  *        - The set lives until semctl(IPC_RMID); see  ipcs -s
  */
+#include <errno.h>
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -36,8 +39,11 @@ static void change(int semid, int delta)
 {
     struct sembuf op = { .sem_num = 0, .sem_op = delta, .sem_flg = SEM_UNDO };
 
-    if (semop(semid, &op, 1) < 0)
-        die("semop");
+    /* On Linux, a semop() that is waiting fails with EINTR if the process
+       is stopped (Ctrl-Z) and continued (fg). That is not an error: retry. */
+    while (semop(semid, &op, 1) < 0)
+        if (errno != EINTR)
+            die("semop");
 }
 
 int main(void)

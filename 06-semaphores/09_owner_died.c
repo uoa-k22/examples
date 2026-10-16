@@ -101,8 +101,9 @@ static int semid;
 static void sysv_lock(void)
 {
     struct sembuf op = { .sem_num = 0, .sem_op = -1, .sem_flg = SEM_UNDO };
-    if (semop(semid, &op, 1) < 0)
-        die("semop");
+    while (semop(semid, &op, 1) < 0)    /* retry after EINTR, see 06_sysv_sem.c */
+        if (errno != EINTR)
+            die("semop");
 }
 
 static void sysv_demo(void)
