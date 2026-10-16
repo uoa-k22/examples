@@ -19,6 +19,7 @@ int main(void)
     char *args[] = { "ls", "-l", NULL };     /* args[0] is the program's name */
 
     printf("pid %d: calling execv(\"ls\", ...)\n", (int) getpid());
+    fflush(stdout);               /* so this line comes out before perror's */
     execv("ls", args);
     perror("execv(\"ls\")");     /* exec returns only if it failed */
 

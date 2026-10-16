@@ -10,8 +10,10 @@
  *        finds no mapping for it and raises a page fault. The kernel then
  *        allocates a zeroed physical page and the instruction is retried.
  *        Each page touched costs one "minor" fault (minor: no disk access
- *        needed), and resident memory grows by one page (4 KiB) each time.
- *        Compare: N MiB / 4 KiB = number of faults. Touching the same
+ *        needed), and resident memory grows by one page each time. The
+ *        page size is printed first; it is 4 KiB on most PCs, but 16 KiB or
+ *        64 KiB on some ARM systems. Compare: the number of pages printed
+ *        = the number of faults when everything is touched. Touching the same
  *        pages again costs no faults: they are mapped now.
  *        munmap() gives all the pages back at once.
  *

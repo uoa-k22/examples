@@ -8,8 +8,8 @@ Linux/POSIX.
 
 | Directory | Topic |
 |---|---|
-| [`01-fork`](01-fork) | creating processes with `fork()` |
-| [`02-wait`](02-wait) | `wait()` / `waitpid()`, exit status, zombies and orphans |
+| [`01-fork`](01-fork) | creating processes with `fork()`; orphans |
+| [`02-wait`](02-wait) | `wait()` / `waitpid()`, exit status, zombies |
 | [`03-exec`](03-exec) | running a new program with the `exec` family; fork + exec + wait |
 | [`04-mmap`](04-mmap) | memory mappings: anonymous and file-backed, private and shared |
 | [`05-shm`](05-shm) | POSIX (`shm_open`) and System V (`shmget`) shared memory |
