@@ -17,5 +17,6 @@ private to the process or shared with others.
 | `04_shared_anon_fork` | shared vs. private anonymous memory across `fork()` (`private`) |
 | `05_demand_paging` | pages are allocated on first touch: count the page faults and resident memory |
 | `06_mprotect` | page permissions: a write to a read-only page is killed with SIGSEGV |
+| `07_private_not_saved` | a store through a `MAP_PRIVATE` file mapping never reaches the file; fails as written, `fixed` uses `MAP_SHARED` |
 
 Build with `make` and run each program from this directory.
