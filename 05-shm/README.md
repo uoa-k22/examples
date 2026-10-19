@@ -15,8 +15,8 @@ nothing coordinates the processes; that is the job of semaphores
 | `06_read_before_write_bug` | the reader sees an empty buffer because nothing says the data is ready; `fixed` adds a semaphore |
 | `07_leaked_segment_bug` | a System V segment that is never removed with `IPC_RMID` outlives the program (`ipcs -m`); `fixed` removes it |
 
-`05` and `06` fail as written; run them with `fixed` to see the correct
-version.
+`05` to `07` fail as written (their names end in `_bug`); run them with
+`fixed` to see the correct version.
 
 `make run` runs the writer, shows the object in `/dev/shm`, then runs the
 reader.
@@ -24,4 +24,5 @@ reader.
 Shared memory objects outlive the processes that create them. If a demo is
 interrupted, clean up with `rm /dev/shm/k22_shm_demo` (`01`/`02`) or
 `rm /dev/shm/k22_shm_list` (`04`) for POSIX, or `ipcs -m` /
-`ipcrm -m <shmid>` for System V.
+`ipcrm -m <shmid>` for System V. `07_leaked_segment_bug` leaves a System V
+segment behind on purpose; it prints the `ipcrm` command to remove it.
