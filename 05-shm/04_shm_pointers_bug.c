@@ -84,7 +84,7 @@ static void writer(const char *prog)
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        /* Run this same program as the reader (see 03-exec/08_self_exec). */
+        /* Run this same program as the reader (see 03-exec/07_self_exec). */
         execl("/proc/self/exe", prog, "reader", (char *) NULL);
         die("execl /proc/self/exe");
     }

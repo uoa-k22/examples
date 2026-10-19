@@ -1,8 +1,8 @@
 /*
- * 06_exec_no_exit_fixed.c - the fix for 06_exec_no_exit_bug.c.
+ * 05_exec_no_exit_fixed.c - the fix for 05_exec_no_exit_bug.c.
  *
- * Run:   ./06_exec_no_exit_fixed
- *        diff 06_exec_no_exit_bug.c 06_exec_no_exit_fixed.c
+ * Run:   ./05_exec_no_exit_fixed
+ *        diff 05_exec_no_exit_bug.c 05_exec_no_exit_fixed.c
  *
  * Look:  the child's branch ends with an exit right after exec. Now only
  *        the parent prints "parent" lines, all with the same pid, and it

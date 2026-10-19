@@ -1,8 +1,8 @@
 /*
- * 09_exec_errors_fixed.c - the fix for 09_exec_errors_bug.c.
+ * 08_exec_errors_fixed.c - the fix for 08_exec_errors_bug.c.
  *
- * Run:   ./09_exec_errors_fixed
- *        diff 09_exec_errors_bug.c 09_exec_errors_fixed.c
+ * Run:   ./08_exec_errors_fixed
+ *        diff 08_exec_errors_bug.c 08_exec_errors_fixed.c
  *
  * Look:  the same three execv() calls, each with its cause removed, and
  *        all three now work:

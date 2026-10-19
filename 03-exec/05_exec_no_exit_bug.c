@@ -1,9 +1,9 @@
 /*
- * 06_exec_no_exit_bug.c - a child that does not exit when exec fails.
+ * 05_exec_no_exit_bug.c - a child that does not exit when exec fails.
  *
- * Run:   ./06_exec_no_exit_bug
- *        The fix is in 06_exec_no_exit_fixed.c. To see what changed:
- *        diff 06_exec_no_exit_bug.c 06_exec_no_exit_fixed.c
+ * Run:   ./05_exec_no_exit_bug
+ *        The fix is in 05_exec_no_exit_fixed.c. To see what changed:
+ *        diff 05_exec_no_exit_bug.c 05_exec_no_exit_fixed.c
  *
  * Look:  the child tries to run a command that does not exist. exec fails,
  *        and the child prints the error, but then it does not exit. The

@@ -1,15 +1,22 @@
 /*
- * 08_self_exec_fixed.c - the fix for 08_self_exec_bug.c.
+ * 07_self_exec_bug.c - a program that runs itself again through argv[0].
  *
- * Run:   ./08_self_exec_fixed
- *        diff 08_self_exec_bug.c 08_self_exec_fixed.c
+ * Run:   ./07_self_exec_bug
+ *        The fix is in 07_self_exec_fixed.c. To see what changed:
+ *        diff 07_self_exec_bug.c 07_self_exec_fixed.c
  *
- * Look:  the child execs /proc/self/exe instead of argv[0]. On Linux that
- *        is a link to the executable of the running process, so it names
- *        the right file whatever the current directory, and however the
- *        program was started. The new copy runs and the child exits
- *        normally. 05-shm/04_shm_pointers_bug.c and _fixed.c re-run
- *        themselves the same way.
+ * Look:  the program changes its directory to / (as servers often do) and
+ *        then forks a child that execs a new copy of this same program,
+ *        using argv[0] as the path. argv[0] is "./07_self_exec_bug": a path
+ *        relative to the directory the program was started in. After
+ *        chdir("/") that directory is no longer the current one, so exec
+ *        fails with "No such file or directory".
+ *
+ *        argv[0] is whatever string the caller put there; it is only a
+ *        convention (see 02_execvp.c). Started through $PATH, it is a bare
+ *        name with no directory at all, and exec does not search $PATH for
+ *        it, so the same exec fails from any directory but the program's
+ *        own.
  */
 #include <stdio.h>
 #include <string.h>
@@ -25,7 +32,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    const char *path = "/proc/self/exe";    /* FIX: always this program */
+    const char *path = argv[0];     /* BUG: only a name, not a location */
     printf("pid %d: will exec \"%s\" after chdir(\"/\")\n",
            (int) getpid(), path);
     if (chdir("/") < 0)

@@ -1,10 +1,10 @@
 /*
- * 09_exec_errors_bug.c - three different reasons exec fails, and what each
+ * 08_exec_errors_bug.c - three different reasons exec fails, and what each
  * means.
  *
- * Run:   ./09_exec_errors_bug
- *        The fix is in 09_exec_errors_fixed.c. To see what changed:
- *        diff 09_exec_errors_bug.c 09_exec_errors_fixed.c
+ * Run:   ./08_exec_errors_bug
+ *        The fix is in 08_exec_errors_fixed.c. To see what changed:
+ *        diff 08_exec_errors_bug.c 08_exec_errors_fixed.c
  *
  * Look:  the program tries execv() on three files in a child process. Each
  *        fails for a different reason, and errno tells them apart:

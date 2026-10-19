@@ -1,7 +1,7 @@
 /*
- * 07_fd_inherit.c - open file descriptors survive exec, unless O_CLOEXEC.
+ * 06_fd_inherit.c - open file descriptors survive exec, unless O_CLOEXEC.
  *
- * Run:   ./07_fd_inherit && cat kept.txt
+ * Run:   ./06_fd_inherit && cat kept.txt
  *
  * Look:  the parent opens two files before running other programs:
  *          kept.txt            opened normally
