@@ -22,7 +22,6 @@
  *        01-fork/05_fork_loop_bug.c.
  */
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"

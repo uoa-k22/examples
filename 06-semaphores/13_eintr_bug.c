@@ -18,13 +18,11 @@
  *        is never restarted), and it does not help in code that cannot know
  *        how the handler was installed. See "About EINTR" in the README.
  */
-#include <errno.h>
 #include <semaphore.h>
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"
