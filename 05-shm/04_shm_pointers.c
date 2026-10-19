@@ -78,7 +78,7 @@ static void writer(const char *prog)
     printf("writer: object mapped at %p, head pointer = %p\n",
            (void *) l, (void *) l->head);
     printf("writer: list:");
-    for (struct node *n = l->head; n != NULL; n = n->next)
+    for (const struct node *n = l->head; n != NULL; n = n->next)
         printf(" %d", n->value);
     printf("\n");
     fflush(stdout);
@@ -114,7 +114,7 @@ static void reader(void)
     int fd = shm_open(SHM_NAME, O_RDONLY, 0);
     if (fd < 0)
         die("shm_open");
-    struct list *l = mmap(NULL, sizeof(*l), PROT_READ, MAP_SHARED, fd, 0);
+    const struct list *l = mmap(NULL, sizeof(*l), PROT_READ, MAP_SHARED, fd, 0);
     if (l == MAP_FAILED)
         die("mmap");
     close(fd);
@@ -126,7 +126,7 @@ static void reader(void)
     fflush(stdout);
 
     if (use_pointers) {
-        for (struct node *n = l->head; n != NULL; n = n->next) {
+        for (const struct node *n = l->head; n != NULL; n = n->next) {
             printf(" %d", n->value);
             fflush(stdout);
         }
