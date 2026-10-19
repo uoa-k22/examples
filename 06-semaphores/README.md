@@ -16,23 +16,16 @@ waking a waiter. Semaphores are used in two ways:
 | `05_bounded_buffer` | producer/consumer with `empty`, `full` and `mutex` |
 | `06_sysv_sem` | the System V API: `semget` / `semctl` / `semop` with `SEM_UNDO` |
 
-Common mistakes. These work correctly as written; the header comment says
-what to change to see the bug: a line to uncomment (`07`), two lines to swap
-(`08`), or an argument to pass (`09`).
+Common mistakes. A program whose name ends in `_bug` fails when you run
+it; a hang ends by itself via `alarm()`. Each has a `_fixed` partner with
+the mistake corrected; `diff` the two files to see the fix. `09_owner_died`
+compares two APIs instead: run it with and without the argument `sysv`.
 
 | Program | Shows |
 | --- | --- |
-| `07_sem_not_shared` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything |
-| `08_deadlock` | two semaphores taken in opposite orders; ends after 5 s via `alarm()` |
+| `07_sem_not_shared_bug` / `_fixed` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything; the fix puts it in shared memory |
+| `08_deadlock_bug` / `_fixed` | two semaphores taken in opposite orders deadlock (ended after 5 s by `alarm()`); the fix takes them in the same order |
 | `09_owner_died` | a process killed while holding a POSIX semaphore leaves it locked forever; `sysv` shows `SEM_UNDO` recovering |
-
-More mistakes, this time as programs that fail when you run them (their
-names end in `_bug`); a hang ends by itself via `alarm()`. Each has a
-`_fixed` partner with the mistake corrected; `diff` the two files to see
-the fix.
-
-| Program | Shows |
-| --- | --- |
 | `10_wrong_init_value_bug` / `_fixed` | a lock initialised to 0 instead of 1: everyone waits forever |
 | `11_lock_leak_bug` / `_fixed` | an early return that skips `sem_post()`: a later process hangs |
 | `12_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks |

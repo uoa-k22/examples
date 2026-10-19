@@ -9,7 +9,7 @@
  *        (RLIMIT_NPROC) to 1, which is less than what is already running, so
  *        the next fork() fails with EAGAIN ("Resource temporarily
  *        unavailable"). Real programs hit this when they leak children, when
- *        a fork bomb is running (see 05_fork_loop.c), or on a busy server.
+ *        a fork bomb is running (see 05_fork_loop_bug.c), or on a busy server.
  *        The limit applies only to this program. (It does not apply to root;
  *        as root the fork succeeds and the demo shows nothing.)
  *

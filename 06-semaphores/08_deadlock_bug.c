@@ -1,28 +1,21 @@
 /*
- * 08_deadlock.c - two processes that each wait for the other forever.
+ * 08_deadlock_bug.c - two processes that each wait for the other forever.
  *
- * Run:   ./08_deadlock
+ * Run:   ./08_deadlock_bug
+ *        The fix is in 08_deadlock_fixed.c. To see what changed:
+ *        diff 08_deadlock_bug.c 08_deadlock_fixed.c
  *
- * Look:  parent and child each need both semaphores, A and B. As written,
- *        both take A first and then B. Whoever gets A first also gets B,
- *        and the other waits its turn. Both finish.
- *
- * Try:   swap the two marked lines (comment out the first, uncomment the
- *        second), run make and run again. Now the child takes B first. The
- *        parent holds A and waits for B; the child holds B and waits for A.
- *        Neither can continue, and neither will give up what it holds: a
- *        deadlock. Each process calls alarm(5), which kills it after 5
- *        seconds ("Alarm clock"), so the demo ends by itself; without it,
- *        both would hang until killed.
+ * Look:  parent and child each need both semaphores, A and B, but they take
+ *        them in opposite orders. The parent holds A and waits for B; the
+ *        child holds B and waits for A. Neither can continue, and neither
+ *        will give up what it holds: a deadlock. Each process calls
+ *        alarm(5), which kills it after 5 seconds ("Alarm clock"), so the
+ *        demo ends by itself; without it, both would hang until killed.
  *
  *        The usleep() between taking the two semaphores makes the bad
  *        timing happen every time. Without it the deadlock would happen
- *        only now and then, which is what makes it so hard to find in
- *        real programs.
- *
- * Rule:  if processes must hold several locks at once, they must all take
- *        them in the same global order. Then a cycle of waiting processes
- *        cannot form.
+ *        only now and then, which is what makes it so hard to find in real
+ *        programs.
  */
 #include <semaphore.h>
 #include <stdio.h>
@@ -76,8 +69,8 @@ int main(void)
     alarm(5);       /* both processes: give up after 5 seconds */
 
     if (pid == 0) {
-        use_both("    child ", &s->a, "A", &s->b, "B");    /* <-- comment out */
-        // use_both("    child ", &s->b, "B", &s->a, "A"); /* <-- uncomment */
+        /* BUG: the child takes B first, the parent takes A first */
+        use_both("    child ", &s->b, "B", &s->a, "A");
         return 0;
     }
 

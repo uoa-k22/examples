@@ -1,21 +1,13 @@
 /*
- * 07_sem_not_shared.c - a semaphore that is not in shared memory.
+ * 07_sem_not_shared_fixed.c - the fix for 07_sem_not_shared_bug.c.
  *
- * Run:   ./07_sem_not_shared
+ * Run:   ./07_sem_not_shared_fixed
+ *        diff 07_sem_not_shared_bug.c 07_sem_not_shared_fixed.c
  *
- * Look:  as written, this is 02_unnamed_sem.c. The counter and the
- *        semaphore are both in shared memory, and no update is lost.
- *
- * Try:   uncomment the line marked below, run make and run again. The
- *        counter is still shared, but the semaphore is now an ordinary
- *        global variable. fork() gives each child its own copy of it, each
- *        starting at 1. Each child locks and unlocks only its own copy, so
- *        neither ever waits for the other, and updates are lost just as in
- *        01_race.c.
- *
- *        Nothing reports an error. sem_init() with pshared = 1 cannot check
- *        where the semaphore lives, and every sem_wait() and sem_post()
- *        succeeds. The only symptom is a wrong result, now and then.
+ * Look:  the semaphore moves into the shared memory, next to the counter.
+ *        Now both children use the same semaphore, only one at a time can
+ *        update the counter, and no update is lost. This is the program
+ *        02_unnamed_sem.c.
  *
  * Rule:  a semaphore shared by processes must itself be in shared memory
  *        (mmap MAP_SHARED, shm_open, shmget), or be a named semaphore.
@@ -32,11 +24,9 @@
 #define NPROC 2
 
 struct shared {
-    sem_t lock;
+    sem_t lock;         /* FIX: the semaphore is in shared memory too */
     long  counter;
 };
-
-static sem_t private_lock;      /* a global: each process gets its own copy */
 
 int main(int argc, char *argv[])
 {
@@ -48,14 +38,10 @@ int main(int argc, char *argv[])
         die("mmap");
     s->counter = 0;
 
-    int lock_in_shared_memory = 1;
-    // lock_in_shared_memory = 0;  /* <-- uncomment this line to see the bug */
-
-    sem_t *lock = lock_in_shared_memory ? &s->lock : &private_lock;
+    sem_t *lock = &s->lock;
     if (sem_init(lock, 1, 1) < 0)
         die("sem_init");
-    printf("semaphore at %p, %s\n", (void *) lock,
-           lock_in_shared_memory ? "in shared memory" : "in a global variable");
+    printf("semaphore at %p, in shared memory\n", (void *) lock);
     fflush(stdout);
 
     for (int p = 0; p < NPROC; p++) {
