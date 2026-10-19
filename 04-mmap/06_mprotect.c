@@ -15,7 +15,6 @@
  *        address 0 (which is why *NULL crashes), and there is a guard page
  *        below the stack. Compare  cat /proc/self/maps  (r/w/x columns).
  */
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>

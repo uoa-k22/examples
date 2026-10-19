@@ -21,7 +21,7 @@ int main(void)
 {
     int local = 200;
 
-    printf("Before fork: global = %d (at %p), local = %d (at %p)\n",
+    printf("before fork: global = %d (at %p), local = %d (at %p)\n",
            global, (void *) &global, local, (void *) &local);
     fflush(stdout);
 
@@ -32,14 +32,14 @@ int main(void)
     if (pid == 0) {
         global++;
         local++;
-        printf("Child:       global = %d (at %p), local = %d (at %p)\n",
+        printf("child:       global = %d (at %p), local = %d (at %p)\n",
                global, (void *) &global, local, (void *) &local);
         return 0;
     }
 
     if (wait(NULL) < 0)
         die("wait");
-    printf("Parent:      global = %d (at %p), local = %d (at %p)\n",
+    printf("parent:      global = %d (at %p), local = %d (at %p)\n",
            global, (void *) &global, local, (void *) &local);
     return 0;
 }

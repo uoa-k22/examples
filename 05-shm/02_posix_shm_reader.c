@@ -26,13 +26,13 @@ int main(void)
         die("mmap");
     close(fd);
 
-    printf("Reader %d: process %d left the message \"%s\"\n",
+    printf("reader %d: process %d left the message \"%s\"\n",
            (int) getpid(), (int) m->writer, m->text);
 
     if (munmap(m, sizeof(*m)) < 0)
         die("munmap");
     if (shm_unlink(SHM_NAME) < 0)
         die("shm_unlink");
-    printf("Reader %d: removed %s\n", (int) getpid(), SHM_NAME);
+    printf("reader %d: removed %s\n", (int) getpid(), SHM_NAME);
     return 0;
 }

@@ -19,8 +19,8 @@
 int main(void)
 {
     const char *home = getenv("HOME");     /* NULL if the variable is not set */
-    printf("Parent: HOME = %s\n", home ? home : "(not set)");
-    printf("Child's environment:\n");
+    printf("parent: HOME = %s\n", home ? home : "(not set)");
+    printf("child's environment:\n");
     fflush(stdout);
 
     pid_t pid = fork();

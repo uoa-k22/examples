@@ -17,7 +17,6 @@
  */
 #include <fcntl.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include "errexit.h"
@@ -41,7 +40,7 @@ int main(int argc, char *argv[])
 
     m->writer = getpid();
     snprintf(m->text, sizeof(m->text), "%s", text);
-    printf("Writer %d: stored \"%s\" in %s\n",
+    printf("writer %d: stored \"%s\" in %s\n",
            (int) m->writer, m->text, SHM_NAME);
 
     if (munmap(m, sizeof(*m)) < 0)

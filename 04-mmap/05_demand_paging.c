@@ -4,18 +4,21 @@
  * Run:   ./05_demand_paging          map 512 MiB
  *        ./05_demand_paging 2048     map 2 GiB
  *
- * Look:  mmap() itself only reserves a range of virtual addresses, so right
- *        after it the process's resident memory (the RAM it really uses)
- *        has hardly grown. The first time each page is touched, the CPU
- *        finds no mapping for it and raises a page fault. The kernel then
- *        allocates a zeroed physical page and the instruction is retried.
- *        Each page touched costs one "minor" fault (minor: no disk access
- *        needed), and resident memory grows by one page each time. The
- *        page size is printed first; it is 4 KiB on most PCs, but 16 KiB or
- *        64 KiB on some ARM systems. Compare: the number of pages printed
- *        = the number of faults when everything is touched. Touching the same
- *        pages again costs no faults: they are mapped now.
- *        munmap() gives all the pages back at once.
+ * Look:  mmap() only reserves a range of virtual addresses. Memory is given
+ *        out one page at a time, the first time the page is touched: the
+ *        CPU finds no mapping, raises a page fault, the kernel allocates a
+ *        zeroed page, and the instruction is retried. Such a fault is
+ *        "minor": it needs no disk access. Follow the output line by line:
+ *        1. after mmap(): resident memory (the RAM really in use) has
+ *           hardly grown.
+ *        2. after touching 1/4 of the pages: one more fault, and one more
+ *           page of resident memory, for each page touched.
+ *        3. touching the same 1/4 again: no new faults; they are mapped now.
+ *        4. after touching all the pages: since mmap(), the faults have
+ *           grown by the number of pages printed on the first line.
+ *        5. after munmap(): all the pages are given back at once.
+ *        The page size is 4 KiB on most PCs, but 16 KiB or 64 KiB on some
+ *        ARM systems.
  *
  *        This is why a program can map far more memory than it uses, and
  *        why on Linux even a mapping bigger than RAM usually succeeds

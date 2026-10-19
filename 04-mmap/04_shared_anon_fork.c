@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     printf("Using %s\n", private ? "MAP_PRIVATE" : "MAP_SHARED");
     for (int i = 0; i < N; i++)
         a[i] = i + 1;
-    print("Before", a);
+    print("before", a);
     fflush(stdout);
 
     pid_t pid = fork();
@@ -53,13 +53,13 @@ int main(int argc, char *argv[])
     if (pid == 0) {
         for (int i = 0; i < N; i++)
             a[i] *= 10;
-        print("Child", a);
+        print("child", a);
         return 0;
     }
 
     if (waitpid(pid, NULL, 0) < 0)
         die("waitpid");
-    print("Parent", a);
+    print("parent", a);
 
     if (munmap(a, N * sizeof(int)) < 0)
         die("munmap");

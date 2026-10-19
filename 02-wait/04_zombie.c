@@ -33,19 +33,19 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        printf("Child %d: exiting with status 2\n", (int) getpid());
+        printf("child %d: exiting with status 2\n", (int) getpid());
         exit(2);
     }
 
     sleep(2);
-    printf("\nParent: the child has exited, "
+    printf("\nparent: the child has exited, "
            "but I have not waited for it yet:\n");
     show(pid);
 
     int status;
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
-    printf("\nParent: waitpid() collected exit status %d; "
+    printf("\nparent: waitpid() collected exit status %d; "
            "the zombie is gone:\n",
            WEXITSTATUS(status));
     show(pid);

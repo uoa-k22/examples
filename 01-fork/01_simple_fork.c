@@ -3,7 +3,7 @@
  *
  * Run:   ./01_simple_fork
  *
- * Look:  "Before fork" is printed once, but the line after fork() is printed
+ * Look:  "before fork" is printed once, but the line after fork() is printed
  *        twice: once by the parent and once by the child. fork() returns the
  *        child's pid to the parent and 0 to the child. Which of the two lines
  *        comes first is up to the scheduler.
@@ -19,7 +19,7 @@
 
 int main(void)
 {
-    printf("Before fork: pid = %d\n", (int) getpid());
+    printf("before fork: pid = %d\n", (int) getpid());
     fflush(stdout);
 
     pid_t pid = fork();
@@ -27,10 +27,10 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        printf("Child:  fork() returned %d, my pid = %d, my parent = %d\n",
+        printf("child:  fork() returned %d, my pid = %d, my parent = %d\n",
                (int) pid, (int) getpid(), (int) getppid());
     } else {
-        printf("Parent: fork() returned %d, my pid = %d, my parent = %d\n",
+        printf("parent: fork() returned %d, my pid = %d, my parent = %d\n",
                (int) pid, (int) getpid(), (int) getppid());
         /* Wait for the child to finish (see 02-wait). */
         if (wait(NULL) < 0)

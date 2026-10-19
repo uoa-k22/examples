@@ -23,15 +23,15 @@
 static void child(const char *how)
 {
     if (strcmp(how, "segv") == 0) {
-        printf("Child %d: writing through a NULL pointer\n", (int) getpid());
+        printf("child %d: writing through a NULL pointer\n", (int) getpid());
         fflush(stdout);
         *(volatile int *) NULL = 1;
     } else if (strcmp(how, "abort") == 0) {
-        printf("Child %d: calling abort()\n", (int) getpid());
+        printf("child %d: calling abort()\n", (int) getpid());
         fflush(stdout);
         abort();
-    } else {
-        printf("Child %d: waiting; kill me with  kill %d\n",
+    } else {    /* "wait": main() accepts nothing else */
+        printf("child %d: waiting; kill me with  kill %d\n",
                (int) getpid(), (int) getpid());
         fflush(stdout);
         for (;;)
@@ -41,7 +41,9 @@ static void child(const char *how)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
+    if (argc != 2 || (strcmp(argv[1], "segv") != 0 &&
+                      strcmp(argv[1], "abort") != 0 &&
+                      strcmp(argv[1], "wait") != 0)) {
         fprintf(stderr, "Usage: %s segv|abort|wait\n", argv[0]);
         return 1;
     }
@@ -56,7 +58,7 @@ int main(int argc, char *argv[])
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
 
-    printf("Parent: raw status = 0x%04x\n", (unsigned) status);
+    printf("parent: raw status = 0x%04x\n", (unsigned) status);
     printf("  WIFEXITED   = %d\n", WIFEXITED(status));
     printf("  WIFSIGNALED = %d\n", WIFSIGNALED(status));
     if (WIFSIGNALED(status)) {

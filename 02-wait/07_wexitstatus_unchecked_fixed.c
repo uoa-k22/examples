@@ -25,7 +25,7 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        printf("Child %d: working, then killed by a signal\n", (int) getpid());
+        printf("child %d: working, then killed by a signal\n", (int) getpid());
         fflush(stdout);
         raise(SIGKILL);         /* as if it had crashed; no exit code */
     }
@@ -33,14 +33,14 @@ int main(void)
     int status;
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
-    printf("Parent: raw status = 0x%04x\n", (unsigned) status);
+    printf("parent: raw status = 0x%04x\n", (unsigned) status);
 
     /* FIX: ask how the child ended before reading the exit code. */
     if (WIFEXITED(status))
-        printf("Parent: the child exited with code %d\n",
+        printf("parent: the child exited with code %d\n",
                WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
-        printf("Parent: the child was killed by signal %d (%s), so it failed\n",
+        printf("parent: the child was killed by signal %d (%s), so it failed\n",
                WTERMSIG(status), strsignal(WTERMSIG(status)));
     return 0;
 }
