@@ -1,7 +1,7 @@
 /*
- * 06_wnohang.c - checking on a child without blocking.
+ * 07_wnohang.c - checking on a child without blocking.
  *
- * Run:   ./06_wnohang
+ * Run:   ./07_wnohang
  *
  * Look:  wait() and waitpid() normally block until a child finishes. With
  *        the WNOHANG option, waitpid() returns at once:

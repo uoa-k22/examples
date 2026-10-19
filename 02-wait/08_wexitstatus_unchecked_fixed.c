@@ -1,9 +1,9 @@
 /*
- * 07_wexitstatus_unchecked_fixed.c - the fix for
- * 07_wexitstatus_unchecked_bug.c.
+ * 08_wexitstatus_unchecked_fixed.c - the fix for
+ * 08_wexitstatus_unchecked_bug.c.
  *
- * Run:   ./07_wexitstatus_unchecked_fixed
- *        diff 07_wexitstatus_unchecked_bug.c 07_wexitstatus_unchecked_fixed.c
+ * Run:   ./08_wexitstatus_unchecked_fixed
+ *        diff 08_wexitstatus_unchecked_bug.c 08_wexitstatus_unchecked_fixed.c
  *
  * Look:  the same child, killed by a signal. The parent first asks how the
  *        child ended. WIFEXITED is false, so WEXITSTATUS is not read at all;

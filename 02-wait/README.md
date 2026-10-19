@@ -11,8 +11,8 @@ terminated and how. Until the parent does so, the finished child stays a
 | `03_killed_by_signal` | `WIFSIGNALED` / `WTERMSIG` for children killed by `SIGSEGV`, `SIGABRT` and `SIGTERM` |
 | `04_zombie` | the `Z` state in `ps` before the parent waits |
 | `05_multiple_children` | `wait()` returns children in the order they finish; with the argument `ordered`, `waitpid()` collects them in the order the parent chooses |
-| `06_wnohang` | `waitpid(..., WNOHANG)`: check on a child without blocking |
-| `07_wexitstatus_unchecked_bug` / `_fixed` | a crashed child reported as success because `WIFEXITED` was not checked; the fix checks it first |
+| `07_wnohang` | `waitpid(..., WNOHANG)`: check on a child without blocking |
+| `08_wexitstatus_unchecked_bug` / `_fixed` | a crashed child reported as success because `WIFEXITED` was not checked; the fix checks it first |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.

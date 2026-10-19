@@ -1,7 +1,7 @@
 /*
- * 06_mprotect.c - pages have permissions, and the hardware enforces them.
+ * 07_mprotect.c - pages have permissions, and the hardware enforces them.
  *
- * Run:   ./06_mprotect
+ * Run:   ./07_mprotect
  *
  * Look:  the child maps one page with read and write permission and writes
  *        into it. Then mprotect() makes the page read-only. Reading still

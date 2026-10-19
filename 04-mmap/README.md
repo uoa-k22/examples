@@ -15,10 +15,10 @@ private to the process or shared with others.
 | `02_file_read` | mapping a file read-only: `./02_file_read 02_file_read.c` |
 | `03_file_write` | writing a file through `MAP_SHARED`; `ftruncate()` first, `msync()` after |
 | `04_shared_anon_fork` | anonymous `MAP_SHARED` memory is shared with a child after `fork()`; with the argument `private`, each process gets its own copy |
-| `05_demand_paging` | pages are allocated on first touch: count the page faults and resident memory |
-| `06_mprotect` | page permissions: a write to a read-only page is killed with `SIGSEGV` |
-| `07_private_not_saved_bug` / `_fixed` | a store through a `MAP_PRIVATE` file mapping never reaches the file; the fix uses `MAP_SHARED` |
-| `08_use_after_unmap_bug` / `_fixed` | reading a page after `munmap()` is killed with `SIGSEGV`; the fix reads first |
+| `06_demand_paging` | pages are allocated on first touch: count the page faults and resident memory |
+| `07_mprotect` | page permissions: a write to a read-only page is killed with `SIGSEGV` |
+| `08_private_not_saved_bug` / `_fixed` | a store through a `MAP_PRIVATE` file mapping never reaches the file; the fix uses `MAP_SHARED` |
+| `09_use_after_unmap_bug` / `_fixed` | reading a page after `munmap()` is killed with `SIGSEGV`; the fix reads first |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.
