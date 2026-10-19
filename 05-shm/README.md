@@ -21,6 +21,11 @@ Each `_bug` program has a `_fixed` partner with the mistake corrected;
 reader.
 
 Shared memory objects outlive the processes that create them. If a demo is
-interrupted, clean up with `rm /dev/shm/k22_shm_demo` (`01`, `02`),
-`rm /dev/shm/k22_shm_list` (`03`) or `rm /dev/shm/k22_shm_noftruncate`
-(`04`).
+interrupted, remove what it left behind:
+
+| Program | Clean up with |
+| --- | --- |
+| `01_posix_shm_writer`, `02_posix_shm_reader` | `rm /dev/shm/k22_shm_demo` |
+| `03_shm_pointers_bug` / `_fixed` | `rm /dev/shm/k22_shm_list` |
+| `04_no_ftruncate_bug` / `_fixed` | `rm /dev/shm/k22_shm_noftruncate` |
+| `05_read_before_write_bug` / `_fixed` | `rm /dev/shm/k22_shm_readwrite` |
