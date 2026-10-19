@@ -85,8 +85,10 @@ static void writer(const char *prog)
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        execl(prog, prog, "reader", (char *) NULL);
-        die("execl");
+        /* /proc/self/exe is this program, wherever it was started from; argv[0]
+           may be a bare name or a relative path (see 03-exec/08_self_exec.c). */
+        execl("/proc/self/exe", prog, "reader", (char *) NULL);
+        die("execl /proc/self/exe");
     }
 
     int status;
