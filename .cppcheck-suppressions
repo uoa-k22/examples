@@ -11,7 +11,3 @@ nullPointer:02-wait/03_killed_by_signal.c
 # these programs use only .val.
 unusedStructMember:06-semaphores/06_sysv_sem.c
 unusedStructMember:06-semaphores/09_owner_died.c
-
-# lock_in_shared_memory is a constant until you uncomment the marked line
-# that shows the bug.
-knownConditionTrueFalse:06-semaphores/07_sem_not_shared.c

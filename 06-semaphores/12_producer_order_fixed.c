@@ -9,7 +9,7 @@
  *        on "empty" WITHOUT holding the mutex, so the consumer can still get
  *        in, take an item and post "empty". All six items get through.
  *
- *        The same rule as in 08_deadlock.c: when you must hold several
+ *        The same rule as in 08_deadlock_fixed.c: when you must hold several
  *        semaphores, the order in which you take them matters. Never sleep
  *        on a condition while holding the lock that others need to change
  *        it.

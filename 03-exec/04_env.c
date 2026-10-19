@@ -1,7 +1,7 @@
 /*
- * 05_env.c - giving a new program its environment.
+ * 04_env.c - giving a new program its environment.
  *
- * Run:   ./05_env
+ * Run:   ./04_env
  *
  * Look:  most exec functions pass the caller's environment on unchanged.
  *        execle() and execve() take an explicit environment instead. The

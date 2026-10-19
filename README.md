@@ -44,8 +44,6 @@ their own directory.
 - A program whose name ends in `_bug` is meant to fail, to show a common
   mistake. Next to it is a `_fixed` program with the same number: the same
   code with the mistake corrected. Run both, and see exactly what changed
-  with `diff NN_name_bug.c NN_name_fixed.c`. (`05_fork_loop`,
-  `06_exec_no_exit` and a few others are single programs that show their
-  bug only when you pass an argument or edit a marked line.)
+  with `diff NN_name_bug.c NN_name_fixed.c`.
 - Output from processes that run at the same time can come in a different
   order on every run. That is expected, and often it is the point.
