@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build every program, warnings as errors
         run: make EXTRA_CFLAGS=-Werror
+      - name: Check that every program does what its comment says
+        run: make test EXTRA_CFLAGS=-Werror
       - name: Clean leaves no stray files
         run: |
           make clean
