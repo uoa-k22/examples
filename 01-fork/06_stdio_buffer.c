@@ -37,7 +37,8 @@
 
 int main(void)
 {
-    printf("pid %d: this line is printed once, before fork()\n", (int) getpid());
+    printf("pid %d: this line is printed once, before fork()\n",
+           (int) getpid());
 
     fflush(stdout);     /* <-- comment out this line to see the bug */
 

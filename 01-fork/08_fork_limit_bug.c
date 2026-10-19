@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     struct rlimit rl;
     if (getrlimit(RLIMIT_NPROC, &rl) < 0)
         die("getrlimit");
-    rl.rlim_cur = 1;                    /* soft limit: only this program is affected */
+    rl.rlim_cur = 1;        /* soft limit: only this program is affected */
     if (setrlimit(RLIMIT_NPROC, &rl) < 0)
         die("setrlimit");
     printf("process limit lowered to 1; calling fork()\n");
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     /* BUG: for pid == -1 this is not a parent; there is no child. */
     printf("fork() returned %d\n", (int) pid);
     int status = 0;
-    waitpid(pid, &status, 0);           /* -1 means "any child": ECHILD, unnoticed */
+    waitpid(pid, &status, 0);   /* -1 means "any child": ECHILD, unnoticed */
     printf("child %d finished with status %d: success!\n",
            (int) pid, WEXITSTATUS(status));
     return 0;

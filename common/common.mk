@@ -4,7 +4,8 @@
 # Pass extra flags with EXTRA_CFLAGS, e.g.  make EXTRA_CFLAGS=-Werror
 
 CC      = gcc
-CFLAGS  = -std=c11 -D_DEFAULT_SOURCE -Wall -Wextra -g -I../common $(EXTRA_CFLAGS)
+CFLAGS  = -std=c11 -D_DEFAULT_SOURCE -Wall -Wextra -g -I../common \
+          $(EXTRA_CFLAGS)
 LDLIBS  = -pthread -lrt
 
 PROGS   = $(basename $(wildcard *.c))

@@ -28,7 +28,8 @@
 #define SLOTS     4
 #define PRODUCERS 2
 #define CONSUMERS 2
-#define ITEMS     8     /* per producer; PRODUCERS * ITEMS must divide by CONSUMERS */
+/* Items per producer. PRODUCERS * ITEMS must be divisible by CONSUMERS. */
+#define ITEMS     8
 
 struct shared {
     sem_t empty, full, mutex;
@@ -73,7 +74,8 @@ static void consumer(int id)
         s->out = (s->out + 1) % SLOTS;
         s->count--;
         s->sum += item;
-        printf("    consumer %d: took %3d   [%d in buffer]\n", id, item, s->count);
+        printf("    consumer %d: took %3d   [%d in buffer]\n",
+               id, item, s->count);
         V(&s->mutex);
         V(&s->empty);
 

@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
                argv[1], (int) pid, WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
         printf("[%s (pid %d) was killed by signal %d: %s]\n",
-               argv[1], (int) pid, WTERMSIG(status), strsignal(WTERMSIG(status)));
+               argv[1], (int) pid, WTERMSIG(status),
+               strsignal(WTERMSIG(status)));
     return 0;
 }

@@ -51,7 +51,8 @@ static void child(int fixed)
     if (p == MAP_FAILED)
         die("mmap");
     close(fd);
-    printf("child: mmap() of %ld bytes succeeded; now storing into it...\n", page);
+    printf("child: mmap() of %ld bytes succeeded; now storing into it...\n",
+           page);
     fflush(stdout);
 
     strcpy(p, "hello");

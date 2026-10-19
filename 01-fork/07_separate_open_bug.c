@@ -1,5 +1,6 @@
 /*
- * 07_separate_open_bug.c - two processes that open the same file overwrite each other.
+ * 07_separate_open_bug.c - two processes that open the same file overwrite
+ * each other.
  *
  * Run:   ./07_separate_open_bug          the bug
  *        ./07_separate_open_bug fixed    the fix
@@ -60,7 +61,7 @@ int main(int argc, char *argv[])
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        write_lines("child", fixed, 100);       /* writes in between the parent's */
+        write_lines("child", fixed, 100);   /* in between the parent's */
         return 0;
     }
     write_lines("parent", fixed, 0);

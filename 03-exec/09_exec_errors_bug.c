@@ -1,5 +1,6 @@
 /*
- * 09_exec_errors_bug.c - three different reasons exec fails, and what each means.
+ * 09_exec_errors_bug.c - three different reasons exec fails, and what each
+ * means.
  *
  * Run:   ./09_exec_errors_bug          the bug: three commands that cannot run
  *        ./09_exec_errors_bug fixed    the same three, each one corrected
@@ -54,15 +55,13 @@ static void make_file(const char *name, const char *contents, mode_t mode)
     if (write(fd, contents, strlen(contents)) < 0)
         die("write");
     close(fd);
-    if (chmod(name, mode) < 0)          /* open() applies the umask; chmod does not */
+    if (chmod(name, mode) < 0)  /* open() applies the umask; chmod does not */
         die("chmod");
 }
 
 /* fork + exec + wait; use_execvp selects execvp() instead of execv(). */
 static void try_exec(const char *what, const char *path, int use_execvp)
 {
-    char *argv[] = { (char *) path, NULL };
-
     printf("%s: %s(\"%s\")\n", what, use_execvp ? "execvp" : "execv", path);
     fflush(stdout);
 
@@ -70,6 +69,7 @@ static void try_exec(const char *what, const char *path, int use_execvp)
     if (pid < 0)
         die("fork");
     if (pid == 0) {
+        char *argv[] = { (char *) path, NULL };
         if (use_execvp)
             execvp(path, argv);
         else
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 {
     int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
 
-    /* The script has no #! line unless fixed; NOPERM is not executable unless fixed. */
+    /* Unless fixed: the script has no #! line, and NOPERM is not executable. */
     make_file(SCRIPT, fixed ? "#!/bin/sh\nexit 0\n" : "exit 0\n", 0755);
     make_file(NOPERM, "#!/bin/sh\nexit 0\n", fixed ? 0755 : 0644);
 

@@ -1,0 +1,17 @@
+# cppcheck findings that are deliberate. Used by  make lint.
+
+# main(int argc, char *argv[]) is the form the C standard defines; making
+# argv const, as cppcheck suggests, would change that.
+constParameter
+
+# The child writes through NULL on purpose, to be killed by SIGSEGV.
+nullPointer:02-wait/03_killed_by_signal.c
+
+# man semctl asks the caller to define the whole union semun, although
+# these programs use only .val.
+unusedStructMember:06-semaphores/06_sysv_sem.c
+unusedStructMember:06-semaphores/09_owner_died.c
+
+# lock_in_shared_memory is a constant until you uncomment the marked line
+# that shows the bug.
+knownConditionTrueFalse:06-semaphores/07_sem_not_shared.c

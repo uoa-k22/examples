@@ -49,10 +49,12 @@ static void run(char *const argv[])
 int main(void)
 {
     int kept = open("kept.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    int closed = open("closed_on_exec.txt", O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0644);
+    int closed = open("closed_on_exec.txt",
+                      O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0644);
     if (kept < 0 || closed < 0)
         die("open");
-    printf("parent: fd %d is kept.txt, fd %d is closed_on_exec.txt (O_CLOEXEC)\n",
+    printf("parent: fd %d is kept.txt, "
+           "fd %d is closed_on_exec.txt (O_CLOEXEC)\n",
            kept, closed);
 
     printf("\n1. The descriptors that ls finds open after exec:\n");
@@ -63,7 +65,9 @@ int main(void)
     char *sh[] = { "sh", "-c", cmd, NULL };
 
     printf("\n2. sh writes to the inherited fd %d:\n", kept);
-    snprintf(cmd, sizeof(cmd), "echo 'written by sh through fd %d' >&%d && echo done", kept, kept);
+    snprintf(cmd, sizeof(cmd),
+             "echo 'written by sh through fd %d' >&%d && echo done",
+             kept, kept);
     run(sh);
 
     printf("\n3. sh tries to write to fd %d, which had O_CLOEXEC:\n", closed);

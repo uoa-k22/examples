@@ -76,8 +76,8 @@ int main(void)
     alarm(5);       /* both processes: give up after 5 seconds */
 
     if (pid == 0) {
-        use_both("    child ", &s->a, "A", &s->b, "B");
-        // use_both("    child ", &s->b, "B", &s->a, "A");   /* <-- use this line instead to see the deadlock */
+        use_both("    child ", &s->a, "A", &s->b, "B");    /* <-- comment out */
+        // use_both("    child ", &s->b, "B", &s->a, "A"); /* <-- uncomment */
         return 0;
     }
 

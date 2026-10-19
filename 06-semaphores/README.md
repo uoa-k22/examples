@@ -8,7 +8,7 @@ waking a waiter. Semaphores are used in two ways:
 - **signalling**: start at 0; one process waits until another posts
 
 | Program | Shows |
-|---|---|
+| --- | --- |
 | `01_race` | lost updates when two processes increment a shared counter |
 | `02_unnamed_sem` | the same counter protected by an unnamed semaphore in shared memory |
 | `03_named_sem_parent` | a named semaphore (`sem_open`) shared across `exec`; starts `03_named_sem_child` |
@@ -21,7 +21,7 @@ what to change to see the bug: a line to uncomment (`07`), two lines to swap
 (`08`), or an argument to pass (`09`).
 
 | Program | Shows |
-|---|---|
+| --- | --- |
 | `07_sem_not_shared` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything |
 | `08_deadlock` | two semaphores taken in opposite orders; ends after 5 s via `alarm()` |
 | `09_owner_died` | a process killed while holding a POSIX semaphore leaves it locked forever; `sysv` shows `SEM_UNDO` recovering |
@@ -31,7 +31,7 @@ More mistakes, this time as programs that fail when run with no arguments
 argument `fixed` runs the correct version.
 
 | Program | Shows |
-|---|---|
+| --- | --- |
 | `10_wrong_init_value_bug` | a lock initialised to 0 instead of 1: everyone waits forever |
 | `11_lock_leak_bug` | an early return that skips `sem_post()`: a later process hangs |
 | `12_producer_order_bug` | the producer takes `mutex` before `empty`: the full buffer deadlocks |

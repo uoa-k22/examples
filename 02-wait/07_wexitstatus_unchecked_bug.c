@@ -46,7 +46,8 @@ int main(int argc, char *argv[])
         if (WEXITSTATUS(status) == 0)
             printf("Parent: exit code 0, the child succeeded\n");
         else
-            printf("Parent: exit code %d, the child failed\n", WEXITSTATUS(status));
+            printf("Parent: exit code %d, the child failed\n",
+                   WEXITSTATUS(status));
     } else if (WIFEXITED(status)) {
         printf("Parent: the child exited with code %d\n", WEXITSTATUS(status));
     } else if (WIFSIGNALED(status)) {

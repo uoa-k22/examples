@@ -28,7 +28,8 @@ static void child(void)
 {
     long page = sysconf(_SC_PAGESIZE);
 
-    char *p = mmap(NULL, page, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    char *p = mmap(NULL, page, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (p == MAP_FAILED)
         die("mmap");
 

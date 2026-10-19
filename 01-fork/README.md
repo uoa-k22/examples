@@ -6,7 +6,7 @@ The only difference is the return value: the child's pid in the parent and
 `0` in the child.
 
 | Program | Shows |
-|---|---|
+| --- | --- |
 | `01_simple_fork` | the two return values of `fork()`; `getpid()` / `getppid()` |
 | `02_address_space` | the child's changes to variables are not seen by the parent |
 | `03_shared_fd` | an open file descriptor is shared, including its offset (`cat shared_fd.txt` afterwards) |
