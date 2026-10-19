@@ -8,7 +8,7 @@
  *        child's pid to the parent and 0 to the child. Which of the two lines
  *        comes first is up to the scheduler.
  *
- * Note:  the fflush() before fork() is needed; 06_stdio_buffer_bug.c shows
+ *        The fflush() before fork() is needed; 06_stdio_buffer_bug.c shows
  *        what goes wrong without it.
  */
 #include <stdio.h>

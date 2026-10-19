@@ -10,7 +10,7 @@
  *
  *        A semaphore is only a counter, not an owner. SEM_UNDO is the way to
  *        recover from a dead lock holder with a semaphore; a "robust"
- *        pthread mutex (pthread_mutexattr_setrobust), whose next locker is
+ *        pthread mutex (pthread_mutexattr_setrobust()), whose next locker is
  *        told EOWNERDEAD, is the other.
  */
 #include <errno.h>

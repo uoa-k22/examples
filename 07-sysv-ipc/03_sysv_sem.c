@@ -1,9 +1,9 @@
 /*
- * 03_sysv_sem.c - System V semaphores: semget, semctl, semop.
+ * 03_sysv_sem.c - System V semaphores: semget(), semctl(), semop().
  *
  * Run:   ./03_sysv_sem
  *
- * Look:  the same mutual exclusion as 06-semaphores/03_named_sem_parent,
+ * Look:  the same mutual exclusion as 06-semaphores/03_named_sem_parent.c,
  *        with the older API that many existing programs still use. The
  *        differences:
  *        - semget() creates a whole *set* of semaphores; here it has one.
@@ -27,7 +27,7 @@
 #define NCHILD 3
 #define ROUNDS 2
 
-/* The caller must define this union for semctl(); see man semctl. */
+/* man semctl asks the caller to define this union; only .val is used. */
 union semun {
     int              val;
     struct semid_ds *buf;

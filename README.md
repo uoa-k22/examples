@@ -12,7 +12,7 @@ Linux/POSIX.
 | [`02-wait`](02-wait) | `wait()` / `waitpid()`, exit status, zombies |
 | [`03-exec`](03-exec) | running a new program with the `exec` family; fork + exec + wait |
 | [`04-mmap`](04-mmap) | memory mappings: anonymous and file-backed, private and shared |
-| [`05-shm`](05-shm) | POSIX shared memory (`shm_open`) |
+| [`05-shm`](05-shm) | POSIX shared memory (`shm_open()`) |
 | [`06-semaphores`](06-semaphores) | race conditions, mutual exclusion and signalling with POSIX semaphores |
 | [`07-sysv-ipc`](07-sysv-ipc) | the older System V API for shared memory and semaphores |
 

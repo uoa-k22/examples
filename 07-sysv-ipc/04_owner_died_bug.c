@@ -13,7 +13,7 @@
  *        will ever post it again, and a process calling semop() without
  *        IPC_NOWAIT would block forever.
  *
- *        A POSIX semaphore (sem_wait) behaves the same, and has no
+ *        A POSIX semaphore (sem_wait()) behaves the same, and has no
  *        equivalent of the fix.
  */
 #include <errno.h>
