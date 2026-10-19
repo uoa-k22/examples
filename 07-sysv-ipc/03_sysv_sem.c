@@ -70,7 +70,7 @@ int main(void)
                 change(semid, +1);                          /* V */
                 usleep(100000);
             }
-            _exit(0);
+            return 0;
         }
     }
     while (wait(NULL) > 0)

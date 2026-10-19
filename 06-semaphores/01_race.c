@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         if (pid == 0) {
             for (long i = 0; i < count; i++)
                 (*counter)++;
-            _exit(0);
+            return 0;
         }
     }
     while (wait(NULL) > 0)

@@ -33,7 +33,7 @@ int main(void)
 
     if (pid == 0) {
         printf("child %d: exiting with status 2\n", (int) getpid());
-        exit(2);
+        return 2;
     }
 
     sleep(2);

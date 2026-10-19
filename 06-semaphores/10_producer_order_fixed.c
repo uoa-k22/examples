@@ -87,7 +87,7 @@ int main(void)
                 producer();
             else
                 consumer();
-            _exit(0);
+            return 0;
         }
     }
 
