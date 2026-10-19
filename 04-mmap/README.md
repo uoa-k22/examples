@@ -14,7 +14,8 @@ private to the process or shared with others.
 | `01_anon_alloc` | anonymous private memory; page-sized allocation; matching `munmap()` |
 | `02_file_read` | mapping a file read-only: `./02_file_read 02_file_read.c` |
 | `03_file_write` | writing a file through `MAP_SHARED`; `ftruncate()` first, `msync()` after |
-| `04_shared_anon_fork` | anonymous `MAP_SHARED` memory is shared with a child after `fork()`; with the argument `private`, each process gets its own copy |
+| `04_shared_anon_fork` | anonymous `MAP_SHARED` memory is shared with a child after `fork()` |
+| `05_private_anon_fork` | with `MAP_PRIVATE`, each process gets its own copy; `diff` it with `04_shared_anon_fork.c` |
 | `06_demand_paging` | pages are allocated on first touch: count the page faults and resident memory |
 | `07_mprotect` | page permissions: a write to a read-only page is killed with `SIGSEGV` |
 | `08_private_not_saved_bug` / `_fixed` | a store through a `MAP_PRIVATE` file mapping never reaches the file; the fix uses `MAP_SHARED` |
