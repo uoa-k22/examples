@@ -1,8 +1,8 @@
 /*
- * 06_read_before_write.c - shared memory does not make a reader wait.
+ * 06_read_before_write_bug.c - shared memory does not make a reader wait.
  *
- * Run:   ./06_read_before_write          the bug
- *        ./06_read_before_write fixed    the fix
+ * Run:   ./06_read_before_write_bug          the bug
+ *        ./06_read_before_write_bug fixed    the fix
  *
  * Look:  the parent (the writer) needs one second to prepare its message
  *        and then stores it in shared memory. The child (the reader) starts
