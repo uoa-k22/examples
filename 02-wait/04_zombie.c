@@ -5,8 +5,9 @@
  *
  * Look:  the child exits at once, but the parent does not call wait() for
  *        two seconds. During that time ps shows the child in state "Z"
- *        (zombie, marked <defunct>). The kernel keeps its pid and exit
- *        status so the parent can still collect them. After waitpid() the
+ *        (zombie; some versions of ps also mark it <defunct>). The kernel
+ *        keeps its pid and exit status so the parent can still collect
+ *        them. After waitpid() the
  *        zombie is gone and ps finds nothing.
  */
 #include <stdio.h>

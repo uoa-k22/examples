@@ -29,8 +29,7 @@ static void killed_by_signal(void)
 static void zombie(void)
 {
     run("./04_zombie");
-    expect(" Z +04_zombie <defunct>$");
-    expect_count(1, "<defunct>");       /* gone after waitpid() */
+    expect_count(1, " Z +04_zombie");   /* and gone after waitpid() */
     expect("collected exit status 2;");
 }
 

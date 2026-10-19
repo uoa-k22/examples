@@ -40,8 +40,10 @@ static void sysv_shm(void)
 {
     run("./01_sysv_shm");
     expect("read \"greetings from child [0-9]+\"");
+    TEST_ASSERT_(match_lines("removed segment [0-9]+$", NULL, 0) == 1,
+                 "the program prints the segment it removed");
     int id = atoi(values("removed segment ([0-9]+)$"));
-    TEST_CHECK_(id > 0 && !shm_exists(id), "segment %d is removed", id);
+    TEST_CHECK_(!shm_exists(id), "segment %d is removed", id);
 }
 
 static void leaked_segment_bug(void)
@@ -49,8 +51,10 @@ static void leaked_segment_bug(void)
     char cmd[64];
 
     run("./02_leaked_segment_bug");
+    TEST_ASSERT_(match_lines("and segment [0-9]+ stays\\.$", NULL, 0) == 1,
+                 "the program prints the segment it leaves");
     int id = atoi(values("and segment ([0-9]+) stays\\.$"));
-    TEST_CHECK_(id > 0 && shm_exists(id), "segment %d stays", id);
+    TEST_CHECK_(shm_exists(id), "segment %d stays", id);
     SHOW_OUTPUT();
     /* Remove it with the command the program prints. */
     snprintf(cmd, sizeof(cmd), "%s", values("^Remove it with: +(.*)$"));
@@ -62,8 +66,10 @@ static void leaked_segment_fixed(void)
 {
     run("./02_leaked_segment_fixed");
     expect("called IPC_RMID");
+    TEST_ASSERT_(match_lines("created segment [0-9]+$", NULL, 0) == 1,
+                 "the program prints the segment it created");
     int id = atoi(values("created segment ([0-9]+)$"));
-    TEST_CHECK_(id > 0 && !shm_exists(id), "segment %d is removed", id);
+    TEST_CHECK_(!shm_exists(id), "segment %d is removed", id);
 }
 
 static void sysv_sem(void)
@@ -71,6 +77,8 @@ static void sysv_sem(void)
     run("./03_sysv_sem");
     expect_values(": (enter|leave)$", "enter leave enter leave enter leave "
                   "enter leave enter leave enter leave");
+    TEST_ASSERT_(match_lines("removed semaphore set [0-9]+$", NULL, 0) == 1,
+                 "the program prints the set it removed");
     int id = atoi(values("removed semaphore set ([0-9]+)$"));
     TEST_CHECK_(!sem_exists(id), "semaphore set %d is removed", id);
 }
