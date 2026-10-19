@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
       - name: Build every program, warnings as errors
@@ -21,12 +21,12 @@ jobs:
 
   lint:
     # Pinned so cppcheck (from apt) does not change version under us.
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22      # markdownlint-cli2 needs Node 22 or newer
+          node-version: 26      # markdownlint-cli2 needs Node 22 or newer
       - name: Install cppcheck and markdownlint-cli2
         run: |
           sudo apt-get update
