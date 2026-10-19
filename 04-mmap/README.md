@@ -18,5 +18,6 @@ private to the process or shared with others.
 | `05_demand_paging` | pages are allocated on first touch: count the page faults and resident memory |
 | `06_mprotect` | page permissions: a write to a read-only page is killed with SIGSEGV |
 | `07_private_not_saved` | a store through a `MAP_PRIVATE` file mapping never reaches the file; fails as written, `fixed` uses `MAP_SHARED` |
+| `08_use_after_unmap` | reading a page after `munmap()` is killed with SIGSEGV; fails as written, `fixed` reads first |
 
 Build with `make` and run each program from this directory.
