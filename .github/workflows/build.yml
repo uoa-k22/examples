@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build every program, warnings as errors
         run: make EXTRA_CFLAGS=-Werror
       - name: Check that every program does what its comment says
@@ -23,8 +23,8 @@ jobs:
     # Pinned so cppcheck (from apt) does not change version under us.
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 26
       - name: Install cppcheck and markdownlint-cli2
