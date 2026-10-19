@@ -1,8 +1,8 @@
 /*
- * 07_sem_not_shared_fixed.c - the fix for 07_sem_not_shared_bug.c.
+ * 06_sem_not_shared_fixed.c - the fix for 06_sem_not_shared_bug.c.
  *
- * Run:   ./07_sem_not_shared_fixed
- *        diff 07_sem_not_shared_bug.c 07_sem_not_shared_fixed.c
+ * Run:   ./06_sem_not_shared_fixed
+ *        diff 06_sem_not_shared_bug.c 06_sem_not_shared_fixed.c
  *
  * Look:  the semaphore moves into the shared memory, next to the counter.
  *        Now both children use the same semaphore, only one at a time can

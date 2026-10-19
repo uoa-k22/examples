@@ -1,16 +1,29 @@
 /*
- * 04_shm_pointers_fixed.c - the fix for 04_shm_pointers_bug.c.
+ * 03_shm_pointers_bug.c - pointers stored in shared memory.
  *
- * Run:   ./04_shm_pointers_fixed
- *        diff 04_shm_pointers_bug.c 04_shm_pointers_fixed.c
+ * Run:   ./03_shm_pointers_bug
+ *        The fix is in 03_shm_pointers_fixed.c. To see what changed:
+ *        diff 03_shm_pointers_bug.c 03_shm_pointers_fixed.c
  *
- * Look:  the nodes are linked by their index in the nodes[] array instead of
- *        by address. An index means the same thing wherever the object is
- *        mapped, so the reader prints the whole list, although it maps the
- *        object at a different address from the writer.
+ * Look:  the writer builds a linked list inside a POSIX shared memory object,
+ *        linking each node to the next with a pointer. Then it starts a
+ *        reader: this same program, run again with fork() and exec(). The
+ *        reader maps the same object, but at a different address, and
+ *        follows the stored pointers. They point to where the object was
+ *        mapped in the WRITER, which means nothing in the reader's address
+ *        space. The reader usually crashes with SIGSEGV. If that address
+ *        happens to be mapped in the reader, it reads garbage, which is
+ *        worse.
  *
- * Rule:  inside shared memory, link data with indexes or offsets from the
- *        start of the object, never with pointers.
+ * Try:   run it with address space layout randomization turned off:
+ *            setarch -R ./03_shm_pointers_bug
+ *        Both processes now lay out memory the same way, the object lands
+ *        at the same address, and the pointers "work". The bug is still
+ *        there; it is just hidden until the layout changes.
+ *
+ *        (A parent and a child that inherit one mapping through fork() do
+ *        see it at the same address. Separate programs, or mappings made
+ *        after fork(), may or may not; nothing guarantees it.)
  */
 #include <fcntl.h>
 #include <stdio.h>
@@ -23,25 +36,25 @@
 #define SHM_NAME "/k22_shm_list"
 #define NODES    4
 
-/* FIX: the links are indexes into nodes[], valid in every process. */
+/* BUG: the links are addresses, valid only in the process that set them. */
 struct node {
-    int value;
-    int next;                   /* -1 ends the list */
+    int          value;
+    struct node *next;          /* NULL ends the list */
 };
 
 struct list {
-    int         head;
-    struct node nodes[NODES];
+    struct node *head;
+    struct node  nodes[NODES];
 };
 
 static void print_list(const char *who, const struct list *l)
 {
-    printf("%s: object mapped at %p, head = node %d\n",
-           who, (void *) l, l->head);
+    printf("%s: object mapped at %p, head = %p\n",
+           who, (void *) l, (void *) l->head);
     printf("%s: list:", who);
     fflush(stdout);
-    for (int i = l->head; i != -1; i = l->nodes[i].next)
-        printf(" %d", l->nodes[i].value);
+    for (const struct node *n = l->head; n != NULL; n = n->next)
+        printf(" %d", n->value);
     printf("\n");
 }
 
@@ -60,9 +73,9 @@ static void writer(const char *prog)
 
     for (int i = 0; i < NODES; i++) {
         l->nodes[i].value = (i + 1) * 10;
-        l->nodes[i].next = i + 1 < NODES ? i + 1 : -1;
+        l->nodes[i].next = i + 1 < NODES ? &l->nodes[i + 1] : NULL;
     }
-    l->head = 0;
+    l->head = &l->nodes[0];
     print_list("writer", l);
     fflush(stdout);
 

@@ -21,12 +21,12 @@ the mistake corrected; `diff` the two files to see the fix.
 
 | Program | Shows |
 | --- | --- |
-| `07_sem_not_shared_bug` / `_fixed` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything; the fix puts it in shared memory |
-| `08_deadlock_bug` / `_fixed` | two semaphores taken in opposite orders deadlock (ended after 5 s by `alarm()`); the fix takes them in the same order |
-| `10_wrong_init_value_bug` / `_fixed` | a lock initialised to 0 instead of 1: everyone waits forever |
-| `11_lock_leak_bug` / `_fixed` | an early return that skips `sem_post()`: a later process hangs |
-| `12_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
-| `13_eintr_bug` / `_fixed` | a signal handler makes `sem_wait()` fail with `EINTR`; the fix is the retry loop |
+| `06_sem_not_shared_bug` / `_fixed` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything; the fix puts it in shared memory |
+| `07_deadlock_bug` / `_fixed` | two semaphores taken in opposite orders deadlock (ended after 5 s by `alarm()`); the fix takes them in the same order |
+| `08_wrong_init_value_bug` / `_fixed` | a lock initialised to 0 instead of 1: everyone waits forever |
+| `09_lock_leak_bug` / `_fixed` | an early return that skips `sem_post()`: a later process hangs |
+| `10_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
+| `11_eintr_bug` / `_fixed` | a signal handler makes `sem_wait()` fail with `EINTR`; the fix is the retry loop |
 
 ## About EINTR
 
@@ -42,7 +42,7 @@ while (sem_wait(sem) < 0)
 ```
 
 Once a program installs a signal handler, use this loop for every blocking
-call; `13_eintr_bug` shows what happens without it. The other programs here
+call; `11_eintr_bug` shows what happens without it. The other programs here
 install no handlers, so they keep the simpler one-line check. System V
 `semop()` fails with `EINTR` even without a handler; see `07-sysv-ipc`.
 

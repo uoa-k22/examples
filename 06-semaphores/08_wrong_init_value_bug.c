@@ -1,13 +1,24 @@
 /*
- * 10_wrong_init_value_fixed.c - the fix for 10_wrong_init_value_bug.c.
+ * 08_wrong_init_value_bug.c - a lock that starts at 0 can never be taken.
  *
- * Run:   ./10_wrong_init_value_fixed
- *        diff 10_wrong_init_value_bug.c 10_wrong_init_value_fixed.c
+ * Run:   ./08_wrong_init_value_bug
+ *        The fix is in 08_wrong_init_value_fixed.c. To see what changed:
+ *        diff 08_wrong_init_value_bug.c 08_wrong_init_value_fixed.c
  *
- * Look:  the only change is the initial value: 1 instead of 0. The first
- *        child to arrive takes the lock, the other waits for it, both get
- *        into the critical section one after the other, and the counter
- *        ends at 2. Nobody is killed by the alarm.
+ * Look:  a semaphore used as a lock must start at 1: one process may enter.
+ *        This program starts it at 0, so the very first sem_wait()
+ *        blocks, and since nobody is inside to call sem_post(), it blocks
+ *        forever. Nothing reports an error; the program just hangs. Each
+ *        child calls alarm(3) so the demo ends by itself, and the parent
+ *        reports that SIGALRM killed it while it was still waiting.
+ *
+ *        The same hang happens if sem_init() is left out altogether. The
+ *        value of a sem_t that was never initialised is undefined (often 0,
+ *        in fresh memory from mmap()).
+ *
+ *        Remember: start at 1 for mutual exclusion, at 0 for signalling
+ *        (see 04_pingpong.c). Starting a lock at 0 turns it into a signal
+ *        nobody sends.
  */
 #include <semaphore.h>
 #include <stdio.h>
@@ -30,8 +41,8 @@ int main(void)
                             MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (s == MAP_FAILED)
         die("mmap");
-    /* FIX: a lock starts at 1: one process may enter. */
-    if (sem_init(&s->lock, 1, 1) < 0)
+    /* BUG: a lock must start at 1, not 0. */
+    if (sem_init(&s->lock, 1, 0) < 0)
         die("sem_init");
     setvbuf(stdout, NULL, _IONBF, 0);
 
