@@ -1,9 +1,9 @@
 /*
- * 07_wexitstatus_unchecked_bug.c - WEXITSTATUS without checking WIFEXITED.
+ * 08_wexitstatus_unchecked_bug.c - WEXITSTATUS without checking WIFEXITED.
  *
- * Run:   ./07_wexitstatus_unchecked_bug
- *        The fix is in 07_wexitstatus_unchecked_fixed.c. To see what changed:
- *        diff 07_wexitstatus_unchecked_bug.c 07_wexitstatus_unchecked_fixed.c
+ * Run:   ./08_wexitstatus_unchecked_bug
+ *        The fix is in 08_wexitstatus_unchecked_fixed.c. To see what changed:
+ *        diff 08_wexitstatus_unchecked_bug.c 08_wexitstatus_unchecked_fixed.c
  *
  * Look:  the child is killed by a signal before it can exit. The parent
  *        reads WEXITSTATUS(status) and treats 0 as success. But a child that

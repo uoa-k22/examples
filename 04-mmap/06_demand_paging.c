@@ -1,8 +1,8 @@
 /*
- * 05_demand_paging.c - memory is given out one page at a time, on first use.
+ * 06_demand_paging.c - memory is given out one page at a time, on first use.
  *
- * Run:   ./05_demand_paging          map 512 MiB
- *        ./05_demand_paging 2048     map 2 GiB
+ * Run:   ./06_demand_paging          map 512 MiB
+ *        ./06_demand_paging 2048     map 2 GiB
  *
  * Look:  mmap() only reserves a range of virtual addresses. Memory is given
  *        out one page at a time, the first time the page is touched: the

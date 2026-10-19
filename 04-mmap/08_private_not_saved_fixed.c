@@ -1,9 +1,9 @@
 /*
- * 07_private_not_saved_fixed.c - the fix for 07_private_not_saved_bug.c.
+ * 08_private_not_saved_fixed.c - the fix for 08_private_not_saved_bug.c.
  *
- * Run:   ./07_private_not_saved_fixed
+ * Run:   ./08_private_not_saved_fixed
  *        cat private_demo.txt
- *        diff 07_private_not_saved_bug.c 07_private_not_saved_fixed.c
+ *        diff 08_private_not_saved_bug.c 08_private_not_saved_fixed.c
  *
  * Look:  the only change is MAP_SHARED instead of MAP_PRIVATE. Now the
  *        store changes the page cache that the file itself uses, so pread()

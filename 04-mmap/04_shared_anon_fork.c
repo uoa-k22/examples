@@ -1,20 +1,17 @@
 /*
- * 04_shared_anon_fork.c - memory shared between parent and child.
+ * 04_shared_anon_fork.c - anonymous memory shared between parent and child.
  *
- * Run:   ./04_shared_anon_fork            MAP_SHARED
- *        ./04_shared_anon_fork private    MAP_PRIVATE
+ * Run:   ./04_shared_anon_fork
+ *        Compare with 05_private_anon_fork.c:
+ *        diff 04_shared_anon_fork.c 05_private_anon_fork.c
  *
- * Look:  the mapping is created before fork(), so the child inherits it.
- *        The child multiplies every element by 10.
- *        - MAP_SHARED: parent and child use the same physical pages, so the
- *          parent sees the child's changes. This is the simplest way to
- *          share memory between related processes.
- *        - MAP_PRIVATE: the child's writes go to private copies of the pages
- *          (copy-on-write), like ordinary memory after fork(), so the parent
- *          still sees the original values.
+ * Look:  the mapping is created with MAP_SHARED before fork(), so the child
+ *        inherits it. The child multiplies every element by 10. Parent and
+ *        child use the same physical pages, so the parent sees the child's
+ *        changes. This is the simplest way to share memory between related
+ *        processes.
  */
 #include <stdio.h>
-#include <string.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -30,16 +27,13 @@ static void print(const char *who, const int *a)
     printf("\n");
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int private = argc > 1 && strcmp(argv[1], "private") == 0;
-    int flags = (private ? MAP_PRIVATE : MAP_SHARED) | MAP_ANONYMOUS;
-
-    int *a = mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, flags, -1, 0);
+    int *a = mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE,
+                  MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (a == MAP_FAILED)
         die("mmap");
 
-    printf("Using %s\n", private ? "MAP_PRIVATE" : "MAP_SHARED");
     for (int i = 0; i < N; i++)
         a[i] = i + 1;
     print("before", a);

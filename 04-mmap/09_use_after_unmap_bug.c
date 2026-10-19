@@ -1,9 +1,9 @@
 /*
- * 08_use_after_unmap_bug.c - using memory after munmap().
+ * 09_use_after_unmap_bug.c - using memory after munmap().
  *
- * Run:   ./08_use_after_unmap_bug
- *        The fix is in 08_use_after_unmap_fixed.c. To see what changed:
- *        diff 08_use_after_unmap_bug.c 08_use_after_unmap_fixed.c
+ * Run:   ./09_use_after_unmap_bug
+ *        The fix is in 09_use_after_unmap_fixed.c. To see what changed:
+ *        diff 09_use_after_unmap_bug.c 09_use_after_unmap_fixed.c
  *
  * Look:  the child maps a page, stores a string in it, calls munmap() and
  *        then reads the string again through the same pointer. munmap()
