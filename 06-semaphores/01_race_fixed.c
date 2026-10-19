@@ -1,14 +1,16 @@
 /*
- * 02_unnamed_sem.c - the race from 01_race.c, fixed with a semaphore.
+ * 01_race_fixed.c - the fix for 01_race_bug.c: a semaphore around the counter.
  *
- * Run:   ./02_unnamed_sem
- *        ./02_unnamed_sem 100
+ * Run:   ./01_race_fixed
+ *        ./01_race_fixed 100
+ *        diff 01_race_bug.c 01_race_fixed.c
  *
  * Look:  the semaphore starts at 1, so it works as a lock (a mutex).
  *        sem_wait() decrements it, blocking while it is 0, and sem_post()
  *        increments it. Only one process at a time can be between the two
  *        calls, so no update is lost and the total is always exact. The
- *        price is speed: compare  time ./01_race  with  time ./02_unnamed_sem
+ *        price is speed: compare  time ./01_race_bug  with
+ *        time ./01_race_fixed
  *
  *        An unnamed semaphore is just a sem_t in memory. To be shared by
  *        processes it must live in shared memory, and sem_init() must be
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
             for (long i = 0; i < count; i++) {
                 if (sem_wait(&s->lock) < 0)
                     die("sem_wait");
-                s->counter++;                   /* critical section */
+                s->counter++;           /* FIX: protected by the lock */
                 if (sem_post(&s->lock) < 0)
                     die("sem_post");
             }

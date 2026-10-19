@@ -9,7 +9,7 @@
  *        protect it is an ordinary global variable. fork() gives each child
  *        its own copy of it, each starting at 1. Each child locks and
  *        unlocks only its own copy, so neither ever waits for the other, and
- *        updates are lost just as in 01_race.c.
+ *        updates are lost just as in 01_race_bug.c.
  *
  *        Nothing reports an error. sem_init() with pshared = 1 cannot check
  *        where the semaphore lives, and every sem_wait() and sem_post()

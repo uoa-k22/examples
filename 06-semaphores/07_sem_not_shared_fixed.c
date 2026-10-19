@@ -7,7 +7,7 @@
  * Look:  the semaphore moves into the shared memory, next to the counter.
  *        Now both children use the same semaphore, only one at a time can
  *        update the counter, and no update is lost. This is the program
- *        02_unnamed_sem.c.
+ *        01_race_fixed.c.
  *
  * Rule:  a semaphore shared by processes must itself be in shared memory
  *        (mmap MAP_SHARED, shm_open, shmget), or be a named semaphore.
