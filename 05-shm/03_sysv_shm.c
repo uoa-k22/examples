@@ -11,8 +11,9 @@
  *        - shmat() / shmdt()    attach it to / detach it from memory
  *        - shmctl(IPC_RMID)     removes it
  *        Segments outlive their processes. A segment that is never
- *        removed stays until reboot; list them with  ipcs -m  and remove
- *        one with  ipcrm -m <shmid>.
+ *        removed stays until reboot (or, on most systemd-based systems,
+ *        until its owner's last logout); list them with  ipcs -m  and
+ *        remove one with  ipcrm -m <shmid>.
  */
 #include <stdio.h>
 #include <sys/ipc.h>
