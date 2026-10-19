@@ -11,8 +11,8 @@
  *        new text, but the write went to a private copy of the page
  *        (copy-on-write), not to the file. Even msync() cannot help: there
  *        is nothing to send. When the program reads the file back with
- *        pread(), the old text is still there, and so is it after the program
- *        exits. No error is reported anywhere.
+ *        pread(), the old text is still there, and it stays there after the
+ *        program exits. No error is reported anywhere.
  *
  *        With MAP_SHARED the store changes the page cache that the file
  *        itself uses, so the file is changed.
