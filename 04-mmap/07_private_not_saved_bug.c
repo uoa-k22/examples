@@ -1,8 +1,8 @@
 /*
- * 07_private_not_saved.c - writes through a MAP_PRIVATE file mapping are lost.
+ * 07_private_not_saved_bug.c - writes through a MAP_PRIVATE file mapping are lost.
  *
- * Run:   ./07_private_not_saved          the bug
- *        ./07_private_not_saved fixed    the fix
+ * Run:   ./07_private_not_saved_bug          the bug
+ *        ./07_private_not_saved_bug fixed    the fix
  *        cat private_demo.txt
  *
  * Look:  the program wants to change the first word of a file through a
