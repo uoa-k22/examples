@@ -12,3 +12,6 @@ nullPointer:02-wait/03_killed_by_signal.c
 unusedStructMember:07-sysv-ipc/03_sysv_sem.c
 unusedStructMember:07-sysv-ipc/04_owner_died_bug.c
 unusedStructMember:07-sysv-ipc/04_owner_died_fixed.c
+
+# Acutest is not ours; it keeps its own style.
+*:tests/acutest.h

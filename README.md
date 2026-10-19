@@ -51,8 +51,14 @@ their own directory.
 
 ```sh
 make EXTRA_CFLAGS=-Werror   # build, treating warnings as errors
+make test                   # check that each program does what it says
 make lint                   # 80 columns, cppcheck, markdownlint
 ```
 
-`make lint` needs `cppcheck` and `markdownlint-cli2`. CI runs both checks on
-every pull request.
+`make test` runs each program and checks its output against what the
+comment at its top says. The checks are in [`tests`](tests), one file per
+topic, written with [Acutest](https://github.com/mity/acutest). Run one
+topic's checks with, for example, `cd 01-fork && ../tests/01-fork`.
+
+`make lint` needs `cppcheck` and `markdownlint-cli2`. CI runs the build, the
+tests and the lint on every pull request.
