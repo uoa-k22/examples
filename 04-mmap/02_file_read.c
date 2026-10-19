@@ -30,8 +30,10 @@ int main(int argc, char *argv[])
     struct stat st;
     if (fstat(fd, &st) < 0)
         die("fstat");
-    if (st.st_size == 0)
+    if (st.st_size == 0) {
+        fprintf(stderr, "--- %s: empty file, nothing to map\n", argv[1]);
         return 0;
+    }
 
     char *data = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (data == MAP_FAILED)
