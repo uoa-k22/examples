@@ -1,11 +1,12 @@
 /*
  * 10_wrong_init_value_bug.c - a lock that starts at 0 can never be taken.
  *
- * Run:   ./10_wrong_init_value_bug          the bug
- *        ./10_wrong_init_value_bug fixed    the fix
+ * Run:   ./10_wrong_init_value_bug
+ *        The fix is in 10_wrong_init_value_fixed.c. To see what changed:
+ *        diff 10_wrong_init_value_bug.c 10_wrong_init_value_fixed.c
  *
  * Look:  a semaphore used as a lock must start at 1: one process may enter.
- *        The buggy program starts it at 0, so the very first sem_wait()
+ *        This program starts it at 0, so the very first sem_wait()
  *        blocks, and since nobody is inside to call sem_post(), it blocks
  *        forever. Nothing reports an error; the program just hangs. Each
  *        child calls alarm(3) so the demo ends by itself, and the parent
@@ -36,16 +37,14 @@ struct shared {
     long  counter;
 };
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
-
     struct shared *s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
                             MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (s == MAP_FAILED)
         die("mmap");
     /* BUG: a lock must start at 1, not 0. */
-    if (sem_init(&s->lock, 1, fixed ? 1 : 0) < 0)
+    if (sem_init(&s->lock, 1, 0) < 0)
         die("sem_init");
     setvbuf(stdout, NULL, _IONBF, 0);
 

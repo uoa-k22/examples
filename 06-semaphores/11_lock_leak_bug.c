@@ -1,8 +1,9 @@
 /*
  * 11_lock_leak_bug.c - a code path that forgets to unlock.
  *
- * Run:   ./11_lock_leak_bug          the bug
- *        ./11_lock_leak_bug fixed    the fix
+ * Run:   ./11_lock_leak_bug
+ *        The fix is in 11_lock_leak_fixed.c. To see what changed:
+ *        diff 11_lock_leak_bug.c 11_lock_leak_fixed.c
  *
  * Look:  update() locks, checks its argument, and returns early if the
  *        argument is bad. The early return skips sem_post(), so the lock is
@@ -14,8 +15,8 @@
  *        The failure is far from its cause: the process that leaked the lock
  *        is long gone, and the one that hangs did nothing wrong. Every path
  *        out of a critical section, including every error return, must
- *        release the lock. A single exit point (here, a goto) makes that
- *        easy to check.
+ *        release the lock. 11_lock_leak_fixed.c leaves through a single
+ *        exit point, which makes that easy to check.
  *
  *        (With a System V semaphore and SEM_UNDO the kernel would release the
  *        lock when the child exited: see 09_owner_died.c.)
@@ -36,29 +37,23 @@ struct shared {
 };
 
 static struct shared *s;
-static int fixed;
 
 /* Add value to the total. Negative values are not allowed. */
 static int update(int value)
 {
-    int result = 0;
-
     if (sem_wait(&s->lock) < 0)
         die("sem_wait");
 
     if (value < 0) {
         printf("  update(%d): bad value\n", value);
-        result = -1;
-        if (!fixed)
-            return result;      /* BUG: returns while still holding the lock */
-        goto out;
+        return -1;              /* BUG: returns while still holding the lock */
     }
     s->total += value;
     printf("  update(%d): total is now %ld\n", value, s->total);
-out:
+
     if (sem_post(&s->lock) < 0)
         die("sem_post");
-    return result;
+    return 0;
 }
 
 static void run_child(int value)
@@ -84,9 +79,8 @@ static void run_child(int value)
         printf("parent: child %d finished\n", (int) pid);
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
     setvbuf(stdout, NULL, _IONBF, 0);
 
     s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,

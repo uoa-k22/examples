@@ -2,21 +2,19 @@
  * 07_private_not_saved_bug.c - writes through a MAP_PRIVATE file mapping are
  * lost.
  *
- * Run:   ./07_private_not_saved_bug          the bug
- *        ./07_private_not_saved_bug fixed    the fix
+ * Run:   ./07_private_not_saved_bug
  *        cat private_demo.txt
+ *        The fix is in 07_private_not_saved_fixed.c. To see what changed:
+ *        diff 07_private_not_saved_bug.c 07_private_not_saved_fixed.c
  *
  * Look:  the program wants to change the first word of a file through a
- *        mapping, as 03_file_write.c does. The buggy version maps the file
- *        with MAP_PRIVATE. The store works, and reading the mapping shows the
+ *        mapping, as 03_file_write.c does, but it maps the file with
+ *        MAP_PRIVATE. The store works, and reading the mapping shows the
  *        new text, but the write went to a private copy of the page
  *        (copy-on-write), not to the file. Even msync() cannot help: there
  *        is nothing to send. When the program reads the file back with
  *        pread(), the old text is still there, and it stays there after the
  *        program exits. No error is reported anywhere.
- *
- *        With MAP_SHARED the store changes the page cache that the file
- *        itself uses, so the file is changed.
  *
  *        MAP_PRIVATE on a file is useful for reading, or when you want a
  *        scratch copy that never reaches the disk. It is the wrong flag
@@ -42,10 +40,8 @@ static void show_file(int fd, size_t len)
     printf("  file contains:    \"%s\"\n", buf);
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
-
     const char *original = "old text";
     size_t len = strlen(original);
 
@@ -56,13 +52,11 @@ int main(int argc, char *argv[])
         die("write");
 
     /* BUG: MAP_PRIVATE keeps the changes in this process only. */
-    char *p = mmap(NULL, len, PROT_READ | PROT_WRITE,
-                   fixed ? MAP_SHARED : MAP_PRIVATE, fd, 0);
+    char *p = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
     if (p == MAP_FAILED)
         die("mmap");
 
-    printf("Mapped %s with %s\n",
-           FILENAME, fixed ? "MAP_SHARED" : "MAP_PRIVATE");
+    printf("Mapped %s with %s\n", FILENAME, "MAP_PRIVATE");
     memcpy(p, "new", 3);
     if (msync(p, len, MS_SYNC) < 0)
         die("msync");

@@ -1,10 +1,11 @@
 /*
  * 07_wexitstatus_unchecked_bug.c - WEXITSTATUS without checking WIFEXITED.
  *
- * Run:   ./07_wexitstatus_unchecked_bug          the bug
- *        ./07_wexitstatus_unchecked_bug fixed    the fix
+ * Run:   ./07_wexitstatus_unchecked_bug
+ *        The fix is in 07_wexitstatus_unchecked_fixed.c. To see what changed:
+ *        diff 07_wexitstatus_unchecked_bug.c 07_wexitstatus_unchecked_fixed.c
  *
- * Look:  the child is killed by a signal before it can exit. The buggy parent
+ * Look:  the child is killed by a signal before it can exit. The parent
  *        reads WEXITSTATUS(status) and treats 0 as success. But a child that
  *        died from a signal never had an exit code. The status holds the
  *        signal number in its low bits and 0 in the bits WEXITSTATUS reads,
@@ -16,16 +17,13 @@
  */
 #include <signal.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
-
     pid_t pid = fork();
     if (pid < 0)
         die("fork");
@@ -41,18 +39,11 @@ int main(int argc, char *argv[])
         die("waitpid");
     printf("Parent: raw status = 0x%04x\n", (unsigned) status);
 
-    if (!fixed) {
-        /* BUG: WEXITSTATUS is only valid if WIFEXITED(status) is true. */
-        if (WEXITSTATUS(status) == 0)
-            printf("Parent: exit code 0, the child succeeded\n");
-        else
-            printf("Parent: exit code %d, the child failed\n",
-                   WEXITSTATUS(status));
-    } else if (WIFEXITED(status)) {
-        printf("Parent: the child exited with code %d\n", WEXITSTATUS(status));
-    } else if (WIFSIGNALED(status)) {
-        printf("Parent: the child was killed by signal %d (%s), so it failed\n",
-               WTERMSIG(status), strsignal(WTERMSIG(status)));
-    }
+    /* BUG: WEXITSTATUS is only valid if WIFEXITED(status) is true. */
+    if (WEXITSTATUS(status) == 0)
+        printf("Parent: exit code 0, the child succeeded\n");
+    else
+        printf("Parent: exit code %d, the child failed\n",
+               WEXITSTATUS(status));
     return 0;
 }

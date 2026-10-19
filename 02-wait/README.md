@@ -12,6 +12,6 @@ terminated and how. Until the parent does so, the finished child stays a
 | `04_zombie` | the `Z` state in `ps` before the parent waits |
 | `05_multiple_children` | `wait()` returns in finishing order; `waitpid()` in the order you choose (`ordered`) |
 | `06_wnohang` | `waitpid(..., WNOHANG)`: check on a child without blocking |
-| `07_wexitstatus_unchecked_bug` | a crashed child reported as success because `WIFEXITED` was not checked; fails as written, `fixed` shows the fix |
+| `07_wexitstatus_unchecked_bug` / `_fixed` | a crashed child reported as success because `WIFEXITED` was not checked; the fix checks it first |
 
 Build with `make` and run each program from this directory.
