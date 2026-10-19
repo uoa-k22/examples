@@ -9,7 +9,7 @@ waking a waiter. Semaphores are used in two ways:
 
 | Program | Shows |
 | --- | --- |
-| `01_race` | lost updates when two processes increment a shared counter |
+| `01_race` | lost updates when two processes increment a shared counter; run it several times, and the number lost changes every time |
 | `02_unnamed_sem` | the same counter protected by an unnamed semaphore in shared memory |
 | `03_named_sem_parent` | a named semaphore (`sem_open`) shared across `exec`; starts `03_named_sem_child` |
 | `04_pingpong` | two semaphores enforce strict alternation |
@@ -31,10 +31,6 @@ compares two APIs instead: run it with and without the argument `sysv`.
 | `12_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
 | `13_eintr_bug` / `_fixed` | a signal handler makes `sem_wait()` fail with `EINTR`; the fix is the retry loop |
 
-Build with `make` and run each program from this directory. Run `01_race`
-several times. The number of lost updates changes from run to run; that is
-the race.
-
 ## About EINTR
 
 A call that blocks, such as `sem_wait()`, `semop()` or `wait()`, can fail
@@ -48,14 +44,12 @@ while (sem_wait(sem) < 0)
         die("sem_wait");
 ```
 
-Apart from `13_eintr_bug`, these programs install no signal handlers, so
-`sem_wait()` and `wait()` never fail this way here, and the examples keep
-the simpler one-line check.
-The exception is System V `semop()`. On Linux it also fails with `EINTR`
-when the process is stopped (Ctrl-Z) and then continued (`fg`), even
-without a handler, so `06_sysv_sem` and `09_owner_died` retry it. Once you
-add signal handlers (or `alarm()` with a handler) to a program, use the loop
-above for every blocking call. `13_eintr_bug` shows the failure.
+Once a program installs a signal handler, use this loop for every blocking
+call; `13_eintr_bug` shows what happens without it. The other programs here
+install no handlers, so they keep the simpler one-line check, with one
+exception: on Linux, System V `semop()` also fails with `EINTR` when the
+process is stopped (Ctrl-Z) and continued (`fg`), even without a handler, so
+`06_sysv_sem` and `09_owner_died` retry it.
 
 If a named-semaphore run is interrupted, remove the leftover with
 `rm /dev/shm/sem.k22_named_sem`.

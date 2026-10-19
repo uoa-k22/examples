@@ -18,5 +18,3 @@ The only difference is the return value: the child's pid in the parent and
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.
-
-Build with `make` and run each program from this directory.
