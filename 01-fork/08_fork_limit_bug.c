@@ -14,14 +14,17 @@
  *
  *        The buggy program only tests  pid == 0  for the child and treats
  *        everything else as "I am the parent". But fork() returned -1, so
- *        there is no child. The parent waits for "child -1", the wait fails
- *        unnoticed, and the program reports that the child finished with
- *        status 0: a failure that looks like success.
+ *        there is no child, and -1 used as a pid means something else
+ *        entirely: waitpid(-1, ...) waits for ANY child. This program has
+ *        none, so the wait fails with ECHILD, unnoticed, and the program
+ *        reports that "child -1" finished with status 0: a failure that
+ *        looks like success. A program that did have other children would
+ *        quietly reap one of them instead. (kill(-1, sig) is worse still: it
+ *        signals every process you are allowed to signal.)
  *
  *        The fix is the check every other program here has:
  *        if (pid < 0) die("fork");
  */
-#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/resource.h>
@@ -55,7 +58,7 @@ int main(int argc, char *argv[])
     /* BUG: for pid == -1 this is not a parent; there is no child. */
     printf("fork() returned %d\n", (int) pid);
     int status = 0;
-    waitpid(pid, &status, 0);           /* fails with ECHILD, unnoticed */
+    waitpid(pid, &status, 0);           /* -1 means "any child": ECHILD, unnoticed */
     printf("child %d finished with status %d: success!\n",
            (int) pid, WEXITSTATUS(status));
     return 0;
