@@ -6,8 +6,8 @@
  * Look:  most exec functions pass the caller's environment on unchanged.
  *        execle() and execve() take an explicit environment instead. The
  *        child here runs the env command with an environment made of just
- *        two variables, so HOME, PATH and the rest are gone. This is what
- *        `env -i COURSE=K22 TOPIC=exec env` does from the shell.
+ *        two variables, so HOME, PATH and the rest are gone. From the shell,
+ *        env -i COURSE=K22 TOPIC=exec env  does the same.
  */
 #include <stdio.h>
 #include <stdlib.h>

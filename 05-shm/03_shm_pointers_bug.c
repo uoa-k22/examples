@@ -15,7 +15,7 @@
  *        happens to be mapped in the reader, it reads garbage, which is
  *        worse.
  *
- * Try:   run it with address space layout randomization turned off:
+ * Try:   run it with address space layout randomisation turned off:
  *            setarch -R ./03_shm_pointers_bug
  *        Both processes now lay out memory the same way, the object lands
  *        at the same address, and the pointers "work". The bug is still
@@ -83,7 +83,8 @@ static void writer(const char *prog)
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        /* Run this same program as the reader (see 03-exec/07_self_exec). */
+        /* Run this same program as the reader
+           (see 03-exec/07_self_exec_fixed.c). */
         execl("/proc/self/exe", prog, "reader", (char *) NULL);
         die("execl /proc/self/exe");
     }

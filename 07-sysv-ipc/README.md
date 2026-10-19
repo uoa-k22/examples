@@ -12,9 +12,9 @@ existing programs still use it. The main differences:
 
 | Program | Shows |
 | --- | --- |
-| `01_sysv_shm` | shared memory: `shmget` / `shmat` / `shmdt` / `shmctl(IPC_RMID)` |
+| `01_sysv_shm` | shared memory: `shmget()` / `shmat()` / `shmdt()` / `shmctl(IPC_RMID)` |
 | `02_leaked_segment_bug` / `_fixed` | a segment that is never removed with `IPC_RMID` outlives the program (`ipcs -m`); the fix removes it |
-| `03_sysv_sem` | semaphores: `semget` / `semctl` / `semop` with `SEM_UNDO` |
+| `03_sysv_sem` | semaphores: `semget()` / `semctl()` / `semop()` with `SEM_UNDO` |
 | `04_owner_died_bug` / `_fixed` | a process killed while holding a semaphore leaves it locked forever; the fix is the flag `SEM_UNDO` |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
@@ -33,4 +33,4 @@ sets. Remove one with `ipcrm -m <shmid>` or `ipcrm -s <semid>`.
 On Linux, a waiting `semop()` fails with `errno == EINTR` when the process
 is stopped (Ctrl-Z) and continued (`fg`), even without a signal handler.
 So `03_sysv_sem` and `04_owner_died_*` retry it. See "About EINTR" in
-[`06-semaphores`](../06-semaphores/README.md) for the loop.
+`06-semaphores` for the loop.

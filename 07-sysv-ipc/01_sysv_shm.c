@@ -1,5 +1,6 @@
 /*
- * 01_sysv_shm.c - System V shared memory: shmget, shmat, shmdt, shmctl.
+ * 01_sysv_shm.c - System V shared memory: shmget(), shmat(), shmdt(),
+ * shmctl().
  *
  * Run:   ./01_sysv_shm
  *

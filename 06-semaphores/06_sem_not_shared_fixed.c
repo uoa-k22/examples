@@ -10,7 +10,8 @@
  *        02_unnamed_sem.c.
  *
  * Rule:  a semaphore shared by processes must itself be in shared memory
- *        (mmap MAP_SHARED, shm_open, shmget), or be a named semaphore.
+ *        (mmap() with MAP_SHARED, shm_open(), shmget()), or be a named
+ *        semaphore.
  */
 #include <semaphore.h>
 #include <stdio.h>
