@@ -1,8 +1,8 @@
 /*
- * 11_lock_leak.c - a code path that forgets to unlock.
+ * 11_lock_leak_bug.c - a code path that forgets to unlock.
  *
- * Run:   ./11_lock_leak          the bug
- *        ./11_lock_leak fixed    the fix
+ * Run:   ./11_lock_leak_bug          the bug
+ *        ./11_lock_leak_bug fixed    the fix
  *
  * Look:  update() locks, checks its argument, and returns early if the
  *        argument is bad. The early return skips sem_post(), so the lock is

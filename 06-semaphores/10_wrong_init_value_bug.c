@@ -1,8 +1,8 @@
 /*
- * 10_wrong_init_value.c - a lock that starts at 0 can never be taken.
+ * 10_wrong_init_value_bug.c - a lock that starts at 0 can never be taken.
  *
- * Run:   ./10_wrong_init_value          the bug
- *        ./10_wrong_init_value fixed    the fix
+ * Run:   ./10_wrong_init_value_bug          the bug
+ *        ./10_wrong_init_value_bug fixed    the fix
  *
  * Look:  a semaphore used as a lock must start at 1: one process may enter.
  *        The buggy program starts it at 0, so the very first sem_wait()
