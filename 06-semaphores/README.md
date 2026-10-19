@@ -25,10 +25,10 @@ lines to swap (`08`), or an argument to pass (`09`).
 | `07_sem_not_shared` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything |
 | `08_deadlock` | two semaphores taken in opposite orders; ends after 5 s via `alarm()` |
 | `09_owner_died` | a process killed while holding a POSIX semaphore leaves it locked forever; `sysv` shows `SEM_UNDO` recovering |
-| `10_wrong_init_value` | a lock initialised to 0 instead of 1: everyone waits forever |
-| `11_lock_leak` | an early return that skips `sem_post()`: a later process hangs |
-| `12_producer_order` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
-| `13_eintr` | a signal handler makes `sem_wait()` fail with `EINTR`; the retry loop fixes it |
+| `10_wrong_init_value_bug` | a lock initialised to 0 instead of 1: everyone waits forever |
+| `11_lock_leak_bug` | an early return that skips `sem_post()`: a later process hangs |
+| `12_producer_order_bug` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
+| `13_eintr_bug` | a signal handler makes `sem_wait()` fail with `EINTR`; the retry loop fixes it |
 
 `10` to `13` are the other way round: they fail as written (a hang ends by
 itself via `alarm()`), and the argument `fixed` runs the correct version.
@@ -56,7 +56,7 @@ The exception is System V `semop()`. On Linux it also fails with `EINTR`
 when the process is stopped (Ctrl-Z) and then continued (`fg`), even
 without a handler, so `06_sysv_sem` and `09_owner_died` retry it. Once you
 add signal handlers (or `alarm()` with a handler) to a program, use the loop
-above for every blocking call. `13_eintr` shows the failure.
+above for every blocking call. `13_eintr_bug` shows the failure.
 
 If a named-semaphore run is interrupted, remove the leftover with
 `rm /dev/shm/sem.k22_named_sem`.
