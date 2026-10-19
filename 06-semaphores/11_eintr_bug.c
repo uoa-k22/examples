@@ -55,7 +55,7 @@ int main(void)
         printf("child: finished, posting the semaphore\n");
         if (sem_post(done) < 0)
             die("sem_post");
-        _exit(0);
+        return 0;
     }
 
     struct sigaction sa;

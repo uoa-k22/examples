@@ -10,8 +10,8 @@
  *
  *        A child that calls exec, or ends with _exit(), never writes its
  *        copy of the buffer; one that calls exit() or returns from main
- *        does. So flush before fork(), and end a child with _exit() when it
- *        should not touch the parent's buffers.
+ *        does. So flush before fork(); then a child can end the usual way,
+ *        by returning from main, as the children in these examples do.
  */
 #include <stdio.h>
 #include <sys/wait.h>

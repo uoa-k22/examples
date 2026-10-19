@@ -33,7 +33,7 @@ int main(void)
 
     if (pid == 0) {
         sleep(2);
-        exit(7);
+        return 7;
     }
 
     int status;

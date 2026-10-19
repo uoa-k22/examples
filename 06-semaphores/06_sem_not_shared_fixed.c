@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
                 if (sem_post(lock) < 0)
                     die("sem_post");
             }
-            _exit(0);
+            return 0;
         }
     }
     while (wait(NULL) > 0)

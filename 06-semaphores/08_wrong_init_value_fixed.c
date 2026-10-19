@@ -48,7 +48,7 @@ int main(void)
             printf("child %d: in the critical section\n", p);
             if (sem_post(&s->lock) < 0)
                 die("sem_post");
-            _exit(0);
+            return 0;
         }
     }
 

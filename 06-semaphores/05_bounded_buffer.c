@@ -104,7 +104,7 @@ int main(void)
                 producer(i);
             else
                 consumer(i - PRODUCERS);
-            _exit(0);
+            return 0;
         }
     }
     while (wait(NULL) > 0)

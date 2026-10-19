@@ -54,29 +54,6 @@ static int update(int value)
     return 0;
 }
 
-static void run_child(int value)
-{
-    pid_t pid = fork();
-    if (pid < 0)
-        die("fork");
-    if (pid == 0) {
-        alarm(3);               /* give up after 3 seconds */
-        printf("child %d: calling update(%d)\n", (int) getpid(), value);
-        update(value);
-        _exit(0);
-    }
-
-    int status;
-    if (waitpid(pid, &status, 0) < 0)
-        die("waitpid");
-    if (WIFSIGNALED(status))
-        printf("parent: child %d was killed by %s: "
-               "it was stuck waiting for the lock\n",
-               (int) pid, strsignal(WTERMSIG(status)));
-    else
-        printf("parent: child %d finished\n", (int) pid);
-}
-
 int main(void)
 {
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -88,8 +65,31 @@ int main(void)
     if (sem_init(&s->lock, 1, 1) < 0)
         die("sem_init");
 
-    run_child(-1);      /* bad value: takes the error path */
-    run_child(7);       /* good value: needs the lock */
+    /* The first child's bad value takes the error path; the second child's
+       good value needs the lock. One child at a time. */
+    const int values[] = { -1, 7 };
+    for (int i = 0; i < 2; i++) {
+        pid_t pid = fork();
+        if (pid < 0)
+            die("fork");
+        if (pid == 0) {
+            alarm(3);           /* give up after 3 seconds */
+            printf("child %d: calling update(%d)\n",
+                   (int) getpid(), values[i]);
+            update(values[i]);
+            return 0;
+        }
+
+        int status;
+        if (waitpid(pid, &status, 0) < 0)
+            die("waitpid");
+        if (WIFSIGNALED(status))
+            printf("parent: child %d was killed by %s: "
+                   "it was stuck waiting for the lock\n",
+                   (int) pid, strsignal(WTERMSIG(status)));
+        else
+            printf("parent: child %d finished\n", (int) pid);
+    }
 
     sem_destroy(&s->lock);
     return 0;
