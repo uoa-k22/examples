@@ -16,5 +16,6 @@ nothing coordinates the processes; that is the job of semaphores
 reader.
 
 Shared memory objects outlive the processes that create them. If a demo is
-interrupted, clean up with `rm /dev/shm/k22_shm_demo` (POSIX) or
-`ipcs -m` / `ipcrm -m <shmid>` (System V).
+interrupted, clean up with `rm /dev/shm/k22_shm_demo` (`01`/`02`) or
+`rm /dev/shm/k22_shm_list` (`04`) for POSIX, or `ipcs -m` /
+`ipcrm -m <shmid>` for System V.
