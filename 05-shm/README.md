@@ -13,6 +13,7 @@ nothing coordinates the processes; that is the job of semaphores
 | `04_shm_pointers` | pointers stored in shared memory are wrong in another process; use indexes: uncomment its `use_pointers = 1` |
 | `05_no_ftruncate_bug` | mapping an object whose size is 0: the first store gives SIGBUS; `fixed` calls `ftruncate` |
 | `06_read_before_write_bug` | the reader sees an empty buffer because nothing says the data is ready; `fixed` adds a semaphore |
+| `07_leaked_segment_bug` | a System V segment that is never removed with `IPC_RMID` outlives the program (`ipcs -m`); `fixed` removes it |
 
 `05` and `06` fail as written; run them with `fixed` to see the correct
 version.
