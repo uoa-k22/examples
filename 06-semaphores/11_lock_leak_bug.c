@@ -19,7 +19,7 @@
  *        exit point, which makes that easy to check.
  *
  *        (With a System V semaphore and SEM_UNDO the kernel would release the
- *        lock when the child exited: see 09_owner_died_fixed.c.)
+ *        lock when the child exited: see 07-sysv-ipc/04_owner_died_fixed.c.)
  */
 #include <semaphore.h>
 #include <stdio.h>
