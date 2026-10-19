@@ -1,8 +1,8 @@
 /*
- * 05_no_ftruncate.c - mapping a shared memory object that has no size.
+ * 05_no_ftruncate_bug.c - mapping a shared memory object that has no size.
  *
- * Run:   ./05_no_ftruncate          the bug
- *        ./05_no_ftruncate fixed    the fix
+ * Run:   ./05_no_ftruncate_bug          the bug
+ *        ./05_no_ftruncate_bug fixed    the fix
  *
  * Look:  shm_open() creates an object of size 0. The buggy program skips
  *        ftruncate() and maps one page anyway. mmap() succeeds: it only

@@ -40,5 +40,10 @@ their own directory.
   and exits, so the check takes one line. Calls that only clean up or print
   a value (`close()`, `munmap()`, `shmdt()`, `sem_close()`, `sem_destroy()`,
   `lseek()`, `sem_getvalue()`) are left unchecked to keep the code short.
+- A program whose name ends in `_bug` is meant to fail when you run it with
+  no arguments, to show a common mistake. Run it with the argument `fixed`
+  to see the correct version, and read the code to see the difference.
+  (`05_fork_loop`, `06_exec_no_exit` and a few others work as written and
+  show the bug only when you pass an argument or edit a marked line.)
 - Output from processes that run at the same time can come in a different
   order on every run. That is expected, and often it is the point.
