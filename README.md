@@ -62,3 +62,8 @@ topic's checks with, for example, `cd 01-fork && ../tests/01-fork`.
 
 `make lint` needs `cppcheck` and `markdownlint-cli2`. CI runs the build, the
 tests and the lint on every pull request.
+
+## License
+
+[MIT](LICENSE). `tests/acutest.h` is [Acutest](https://github.com/mity/acutest),
+which has its own MIT license at the top of the file.
