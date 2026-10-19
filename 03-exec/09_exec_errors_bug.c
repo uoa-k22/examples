@@ -2,8 +2,9 @@
  * 09_exec_errors_bug.c - three different reasons exec fails, and what each
  * means.
  *
- * Run:   ./09_exec_errors_bug          the bug: three commands that cannot run
- *        ./09_exec_errors_bug fixed    the same three, each one corrected
+ * Run:   ./09_exec_errors_bug
+ *        The fix is in 09_exec_errors_fixed.c. To see what changed:
+ *        diff 09_exec_errors_bug.c 09_exec_errors_fixed.c
  *
  * Look:  the program tries execv() on three files in a child process. Each
  *        fails for a different reason, and errno tells them apart:
@@ -16,7 +17,7 @@
  *                    kernel does not recognise it as a program: it is not a
  *                    binary and a script needs a first line like  #!/bin/sh
  *
- *        After the three failures the default run also calls execvp() on the
+ *        After the three failures the program also calls execvp() on the
  *        same script. It works: when execvp() gets ENOEXEC it runs the file
  *        with /bin/sh itself. That is a convenience of the C library, not of
  *        the kernel, so do not count on it. execv() and execve() do not do it.
@@ -88,19 +89,16 @@ static void try_exec(const char *what, const char *path, int use_execvp)
         printf("  child exited with status %d\n", WEXITSTATUS(status));
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
+    /* BUG: the script has no #! line, and NOPERM is not executable. */
+    make_file(SCRIPT, "exit 0\n", 0755);
+    make_file(NOPERM, "#!/bin/sh\nexit 0\n", 0644);
 
-    /* Unless fixed: the script has no #! line, and NOPERM is not executable. */
-    make_file(SCRIPT, fixed ? "#!/bin/sh\nexit 0\n" : "exit 0\n", 0755);
-    make_file(NOPERM, "#!/bin/sh\nexit 0\n", fixed ? 0755 : 0644);
-
-    try_exec("1. wrong path", fixed ? "/bin/true" : "/bin/tru", 0);
+    try_exec("1. wrong path", "/bin/tru", 0);           /* BUG: typo */
     try_exec("2. not executable", "./" NOPERM, 0);
     try_exec("3. script without #!", "./" SCRIPT, 0);
-    if (!fixed)
-        try_exec("4. same script, but execvp()", "./" SCRIPT, 1);
+    try_exec("4. same script, but execvp()", "./" SCRIPT, 1);
 
     unlink(SCRIPT);
     unlink(NOPERM);

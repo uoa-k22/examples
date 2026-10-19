@@ -2,8 +2,9 @@
  * 07_separate_open_bug.c - two processes that open the same file overwrite
  * each other.
  *
- * Run:   ./07_separate_open_bug          the bug
- *        ./07_separate_open_bug fixed    the fix
+ * Run:   ./07_separate_open_bug
+ *        The fix is in 07_separate_open_fixed.c. To see what changed:
+ *        diff 07_separate_open_bug.c 07_separate_open_fixed.c
  *
  * Look:  the parent and the child each write three lines to log.txt, taking
  *        turns, so six lines are expected. Each process calls open() itself,
@@ -16,12 +17,13 @@
  *        fork(), so both processes share one offset and the lines follow
  *        each other. Two fixes:
  *        - open the file before fork() and share the descriptor, or
- *        - open it with O_APPEND, as the fixed version does: every write
- *          then goes to the current end of the file, whatever the offset.
+ *        - open it with O_APPEND, as 07_separate_open_fixed.c does: every
+ *          write then goes to the current end of the file, whatever the
+ *          offset.
  */
 #include <fcntl.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -30,10 +32,9 @@
 #define FILENAME "log.txt"
 #define LINES    3
 
-static void write_lines(const char *who, int fixed, int first_delay_ms)
+static void write_lines(const char *who, int first_delay_ms)
 {
-    int flags = O_WRONLY | (fixed ? O_APPEND : 0);   /* BUG: no O_APPEND */
-    int fd = open(FILENAME, flags);
+    int fd = open(FILENAME, O_WRONLY);      /* BUG: no O_APPEND */
     if (fd < 0)
         die("open " FILENAME);
 
@@ -48,10 +49,8 @@ static void write_lines(const char *who, int fixed, int first_delay_ms)
     close(fd);
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
-
     int fd = open(FILENAME, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd < 0)
         die("open " FILENAME);
@@ -61,10 +60,10 @@ int main(int argc, char *argv[])
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        write_lines("child", fixed, 100);   /* in between the parent's */
+        write_lines("child", 100);          /* in between the parent's */
         return 0;
     }
-    write_lines("parent", fixed, 0);
+    write_lines("parent", 0);
     if (waitpid(pid, NULL, 0) < 0)
         die("waitpid");
 

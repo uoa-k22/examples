@@ -1,19 +1,16 @@
 /*
  * 13_eintr_bug.c - sem_wait() fails with EINTR once a signal handler exists.
  *
- * Run:   ./13_eintr_bug          the bug
- *        ./13_eintr_bug fixed    the fix
+ * Run:   ./13_eintr_bug
+ *        The fix is in 13_eintr_fixed.c. To see what changed:
+ *        diff 13_eintr_bug.c 13_eintr_fixed.c
  *
  * Look:  the parent installs a SIGALRM handler that counts seconds, and then
  *        waits on a semaphore that the child posts after 3 seconds. The
  *        handler makes the parent's blocked sem_wait() return -1 with
  *        errno == EINTR ("Interrupted system call") after the first second.
- *        The buggy parent treats that as a real error and exits, although
+ *        The parent treats that as a real error and exits, although
  *        nothing is wrong: the semaphore has simply not been posted yet.
- *
- *        EINTR means "a signal arrived, nothing failed". The fix is to call
- *        sem_wait() again. Then the parent keeps counting seconds and, when
- *        the child posts, gets the semaphore.
  *
  *        This handler is installed without SA_RESTART. With SA_RESTART the
  *        kernel would restart sem_wait() by itself. Do not rely on that: it
@@ -41,9 +38,8 @@ static void on_alarm(int sig)
     alarm(1);                   /* tick again in a second */
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
     setvbuf(stdout, NULL, _IONBF, 0);
 
     sem_t *done = mmap(NULL, sizeof(*done), PROT_READ | PROT_WRITE,
@@ -73,22 +69,14 @@ int main(int argc, char *argv[])
     alarm(1);
 
     printf("parent: waiting for the child (a tick every second)\n");
-    int ticks = 0;
-    while (sem_wait(done) < 0) {
-        if (errno == EINTR && fixed) {
-            printf("parent: interrupted by the timer (%d s), waiting again\n",
-                   (int) seconds);
-            ticks++;
-            continue;
-        }
-        /* A real error, or (the BUG) EINTR in the buggy version, which
-           gives up on the first tick although nothing is wrong. */
+    /* BUG: EINTR is not an error, but this gives up on the first tick. */
+    if (sem_wait(done) < 0) {
         perror("parent: sem_wait");
         kill(pid, SIGKILL);     /* don't leave the child running */
         waitpid(pid, NULL, 0);
         return 1;
     }
-    printf("parent: the child is done after %d interruptions\n", ticks);
+    printf("parent: the child is done\n");
     alarm(0);
 
     if (waitpid(pid, NULL, 0) < 0)

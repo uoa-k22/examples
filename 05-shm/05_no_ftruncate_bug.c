@@ -1,10 +1,11 @@
 /*
  * 05_no_ftruncate_bug.c - mapping a shared memory object that has no size.
  *
- * Run:   ./05_no_ftruncate_bug          the bug
- *        ./05_no_ftruncate_bug fixed    the fix
+ * Run:   ./05_no_ftruncate_bug
+ *        The fix is in 05_no_ftruncate_fixed.c. To see what changed:
+ *        diff 05_no_ftruncate_bug.c 05_no_ftruncate_fixed.c
  *
- * Look:  shm_open() creates an object of size 0. The buggy program skips
+ * Look:  shm_open() creates an object of size 0. The program skips
  *        ftruncate() and maps one page anyway. mmap() succeeds: it only
  *        reserves addresses. But there is no memory behind them, and the
  *        first store raises SIGBUS ("Bus error"), which kills the child.
@@ -12,13 +13,9 @@
  *        access is not allowed (a write to a read-only page, as in
  *        04-mmap/06_mprotect.c). SIGBUS means the address is mapped and the
  *        access is allowed, but the object behind the page is too short.
- *
- *        The fix is the call you saw in 01_posix_shm_writer.c: give the
- *        object its size with ftruncate() before touching it. The parent
- *        removes the object either way.
+ *        The parent removes the object afterwards.
  */
 #include <fcntl.h>
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -30,7 +27,7 @@
 
 #define NAME "/k22_shm_noftruncate"
 
-static void child(int fixed)
+static void child(void)
 {
     long page = sysconf(_SC_PAGESIZE);
 
@@ -39,8 +36,7 @@ static void child(int fixed)
     int fd = shm_open(NAME, O_CREAT | O_RDWR | O_TRUNC, 0600);
     if (fd < 0)
         die("shm_open");
-    if (fixed && ftruncate(fd, page) < 0)
-        die("ftruncate");
+    /* BUG: no ftruncate(), so the object stays at size 0 */
 
     struct stat st;
     if (fstat(fd, &st) < 0)
@@ -59,15 +55,13 @@ static void child(int fixed)
     printf("child: stored \"%s\"\n", p);
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    int fixed = argc > 1 && strcmp(argv[1], "fixed") == 0;
-
     pid_t pid = fork();
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        child(fixed);
+        child();
         return 0;
     }
 

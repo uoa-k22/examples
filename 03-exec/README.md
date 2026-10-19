@@ -15,11 +15,11 @@ only if it fails, so the line after it is always error handling.
 | `01_execv_path` | `execv` needs a path; code after a successful exec never runs |
 | `02_execvp` | `$PATH` lookup; `argv[0]` is only a convention; `./02_execvp date -u` |
 | `03_fork_exec_wait` | fork + exec + wait, the core of a shell: `./03_fork_exec_wait ls -l` |
-| `04_exec_fail_bug` | a child that keeps running after a failed exec; `fixed` shows the fix |
+| `04_exec_fail_bug` / `_fixed` | a child that keeps running after a failed exec; the fix adds `_exit(127)` |
 | `05_env` | `execle` with a custom environment |
 | `06_exec_no_exit` | a child that keeps running the parent's code after a failed exec: comment out its `_exit(127)` |
 | `07_fd_inherit` | open file descriptors are inherited across exec; `O_CLOEXEC` closes them |
 | `08_self_exec` | a program that execs itself: `/proc/self/exe` works, `argv[0]` fails after `chdir` or when started through `$PATH` (`chdir`, `argv0`) |
-| `09_exec_errors_bug` | `ENOENT`, `EACCES` and `ENOEXEC` are three different failures; fails as written, `fixed` corrects each |
+| `09_exec_errors_bug` / `_fixed` | `ENOENT`, `EACCES` and `ENOEXEC` are three different failures; the fix corrects each |
 
 Build with `make` and run each program from this directory.
