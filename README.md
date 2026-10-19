@@ -35,8 +35,10 @@ their own directory.
 
 - The comment at the top of each file explains what to run, what to look
   for in the output, and things to try.
-- Every system call is checked. `die("name")` from
-  [`common/errexit.h`](common/errexit.h) prints the error and exits, so the
-  check takes one line.
+- Every system call that matters to the idea being shown is checked.
+  `die("name")` from [`common/errexit.h`](common/errexit.h) prints the error
+  and exits, so the check takes one line. Calls that only clean up or print
+  a value (`close()`, `munmap()`, `shmdt()`, `sem_close()`, `sem_destroy()`,
+  `lseek()`, `sem_getvalue()`) are left unchecked to keep the code short.
 - Output from processes that run at the same time can come in a different
   order on every run. That is expected, and often it is the point.

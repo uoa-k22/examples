@@ -3,8 +3,8 @@
  *
  * Run:   ./06_sysv_sem
  *
- * Look:  the same mutual exclusion as 03_named_sem, with the older API that
- *        many existing programs still use. The differences:
+ * Look:  the same mutual exclusion as 03_named_sem_parent, with the older
+ *        API that many existing programs still use. The differences:
  *        - semget() creates a whole *set* of semaphores; here it has one.
  *        - The new semaphore has no defined value until semctl(SETVAL)
  *          sets it.
