@@ -1,14 +1,22 @@
 /*
- * 06_read_before_write_fixed.c - the fix for 06_read_before_write_bug.c.
+ * 05_read_before_write_bug.c - shared memory does not make a reader wait.
  *
- * Run:   ./06_read_before_write_fixed
- *        diff 06_read_before_write_bug.c 06_read_before_write_fixed.c
+ * Run:   ./05_read_before_write_bug
+ *        The fix is in 05_read_before_write_fixed.c. To see what changed:
+ *        diff 05_read_before_write_bug.c 05_read_before_write_fixed.c
  *
- * Look:  the reader waits on the "ready" semaphore before it reads. The
- *        semaphore starts at 0 (see 06-semaphores/04_pingpong.c), and the
- *        writer posts it only after the whole message is stored, so the
- *        reader always sees the complete message, however long the writer
- *        takes.
+ * Look:  the parent (the writer) needs one second to prepare its message
+ *        and then stores it in shared memory. The child (the reader) starts
+ *        at once and reads the message straight away. It finds the buffer
+ *        still empty: the memory is shared, but nothing tells the reader
+ *        that the data is ready. With less delay it would sometimes see half
+ *        a message, which is worse.
+ *
+ *        The shared object already holds a semaphore, "ready", and the
+ *        writer posts it, but the reader never waits on it.
+ *
+ *        The object is unlinked right after mapping. The parent and child
+ *        inherit the mapping through fork(), so they no longer need its name.
  */
 #include <fcntl.h>
 #include <semaphore.h>
@@ -48,8 +56,7 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        if (sem_wait(&s->ready) < 0)    /* FIX: wait until it is ready */
-            die("sem_wait");
+        /* BUG: reads at once, without waiting for "ready" */
         printf("reader: the message is \"%s\"\n", s->text);
         return 0;
     }

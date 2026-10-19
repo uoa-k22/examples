@@ -9,6 +9,6 @@ nullPointer:02-wait/03_killed_by_signal.c
 
 # man semctl asks the caller to define the whole union semun, although
 # these programs use only .val.
-unusedStructMember:06-semaphores/06_sysv_sem.c
-unusedStructMember:06-semaphores/09_owner_died_bug.c
-unusedStructMember:06-semaphores/09_owner_died_fixed.c
+unusedStructMember:07-sysv-ipc/03_sysv_sem.c
+unusedStructMember:07-sysv-ipc/04_owner_died_bug.c
+unusedStructMember:07-sysv-ipc/04_owner_died_fixed.c

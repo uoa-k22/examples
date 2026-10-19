@@ -1,10 +1,10 @@
 /*
- * 07_leaked_segment_bug.c - a System V segment that nobody removes.
+ * 02_leaked_segment_bug.c - a System V segment that nobody removes.
  *
- * Run:   ./07_leaked_segment_bug     leaves a segment behind
+ * Run:   ./02_leaked_segment_bug     leaves a segment behind
  *        ipcs -m                     list the segments on the machine
- *        The fix is in 07_leaked_segment_fixed.c. To see what changed:
- *        diff 07_leaked_segment_bug.c 07_leaked_segment_fixed.c
+ *        The fix is in 02_leaked_segment_fixed.c. To see what changed:
+ *        diff 02_leaked_segment_bug.c 02_leaked_segment_fixed.c
  *
  * Look:  the parent creates a segment, a child writes into it, the parent
  *        reads it. Then every process has detached and the program ends.

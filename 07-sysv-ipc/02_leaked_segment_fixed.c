@@ -1,8 +1,8 @@
 /*
- * 07_leaked_segment_fixed.c - the fix for 07_leaked_segment_bug.c.
+ * 02_leaked_segment_fixed.c - the fix for 02_leaked_segment_bug.c.
  *
- * Run:   ./07_leaked_segment_fixed
- *        diff 07_leaked_segment_bug.c 07_leaked_segment_fixed.c
+ * Run:   ./02_leaked_segment_fixed
+ *        diff 02_leaked_segment_bug.c 02_leaked_segment_fixed.c
  *
  * Look:  the program ends with shmctl(IPC_RMID), and the second  ipcs -m
  *        listing no longer shows the segment. Nothing is left behind.

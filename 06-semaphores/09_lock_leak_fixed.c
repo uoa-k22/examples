@@ -1,8 +1,8 @@
 /*
- * 11_lock_leak_fixed.c - the fix for 11_lock_leak_bug.c.
+ * 09_lock_leak_fixed.c - the fix for 09_lock_leak_bug.c.
  *
- * Run:   ./11_lock_leak_fixed
- *        diff 11_lock_leak_bug.c 11_lock_leak_fixed.c
+ * Run:   ./09_lock_leak_fixed
+ *        diff 09_lock_leak_bug.c 09_lock_leak_fixed.c
  *
  * Look:  update() has a single way out: the error path jumps to the label
  *        "out", where the lock is released, instead of returning directly.

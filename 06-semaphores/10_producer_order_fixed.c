@@ -1,23 +1,18 @@
 /*
- * 12_producer_order_bug.c - waiting in the wrong order deadlocks a bounded
- * buffer.
+ * 10_producer_order_fixed.c - the fix for 10_producer_order_bug.c.
  *
- * Run:   ./12_producer_order_bug
- *        The fix is in 12_producer_order_fixed.c. To see what changed:
- *        diff 12_producer_order_bug.c 12_producer_order_fixed.c
+ * Run:   ./10_producer_order_fixed
+ *        diff 10_producer_order_bug.c 10_producer_order_fixed.c
  *
- * Look:  this is a small version of 05_bounded_buffer.c: one producer, one
- *        consumer, and a buffer of SLOTS places. The producer is fast and the
- *        consumer is slow, so the buffer fills up.
+ * Look:  the producer waits on "empty" first and on the mutex second, the
+ *        order 05_bounded_buffer.c uses. When the buffer is full it sleeps
+ *        on "empty" WITHOUT holding the mutex, so the consumer can still get
+ *        in, take an item and post "empty". All six items get through.
  *
- *        The producer takes the mutex FIRST and waits for a free place
- *        SECOND. When the buffer is full it is blocked on "empty" while still
- *        holding the mutex. The consumer, which is the only one who could free
- *        a place, needs the mutex to take an item, so it waits for the
- *        producer, and the producer waits for the consumer: deadlock. No
- *        error is reported; both just stop printing. alarm(3) ends the demo.
- *
- *        (The consumer's waits are in the correct order.)
+ *        The same rule as in 07_deadlock_fixed.c: when you must hold several
+ *        semaphores, the order in which you take them matters. Never sleep
+ *        on a condition while holding the lock that others need to change
+ *        it.
  */
 #include <semaphore.h>
 #include <stdio.h>
@@ -44,8 +39,8 @@ static void producer(void)
 {
     for (int i = 1; i <= ITEMS; i++) {
         printf("producer: wants to put %d\n", i);
-        P(&s->mutex);           /* BUG: sleeps on "empty" holding the mutex */
-        P(&s->empty);
+        P(&s->empty);           /* FIX: first a free place... */
+        P(&s->mutex);           /* ...then exclusive access */
         s->buf[s->in] = i;
         s->in = (s->in + 1) % SLOTS;
         printf("producer: put %d\n", i);

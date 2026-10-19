@@ -1,9 +1,9 @@
 /*
- * 09_owner_died_bug.c - a process dies while it holds a semaphore.
+ * 04_owner_died_bug.c - a process dies while it holds a semaphore.
  *
- * Run:   ./09_owner_died_bug
- *        The fix is in 09_owner_died_fixed.c. To see what changed:
- *        diff 09_owner_died_bug.c 09_owner_died_fixed.c
+ * Run:   ./04_owner_died_bug
+ *        The fix is in 04_owner_died_fixed.c. To see what changed:
+ *        diff 04_owner_died_bug.c 04_owner_died_fixed.c
  *
  * Look:  the child locks a System V semaphore (value 1 -> 0) and is then
  *        killed before it can unlock it, as if it had crashed or someone had
@@ -14,7 +14,7 @@
  *        IPC_NOWAIT would block forever.
  *
  *        A POSIX semaphore (sem_wait) behaves the same, and has no
- *        equivalent of the fix, so  09_owner_died_fixed.c  uses System V.
+ *        equivalent of the fix.
  */
 #include <errno.h>
 #include <signal.h>
@@ -46,7 +46,7 @@ int main(void)
     if (pid == 0) {
         /* BUG: no SEM_UNDO, so the kernel cannot give the lock back */
         struct sembuf op = { .sem_num = 0, .sem_op = -1, .sem_flg = 0 };
-        /* Retry after EINTR, see 06_sysv_sem.c. */
+        /* Retry after EINTR, see 03_sysv_sem.c. */
         while (semop(semid, &op, 1) < 0)
             if (errno != EINTR)
                 die("semop");

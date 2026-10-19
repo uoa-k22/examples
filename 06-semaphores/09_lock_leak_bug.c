@@ -1,9 +1,9 @@
 /*
- * 11_lock_leak_bug.c - a code path that forgets to unlock.
+ * 09_lock_leak_bug.c - a code path that forgets to unlock.
  *
- * Run:   ./11_lock_leak_bug
- *        The fix is in 11_lock_leak_fixed.c. To see what changed:
- *        diff 11_lock_leak_bug.c 11_lock_leak_fixed.c
+ * Run:   ./09_lock_leak_bug
+ *        The fix is in 09_lock_leak_fixed.c. To see what changed:
+ *        diff 09_lock_leak_bug.c 09_lock_leak_fixed.c
  *
  * Look:  update() locks, checks its argument, and returns early if the
  *        argument is bad. The early return skips sem_post(), so the lock is
@@ -15,11 +15,11 @@
  *        The failure is far from its cause: the process that leaked the lock
  *        is long gone, and the one that hangs did nothing wrong. Every path
  *        out of a critical section, including every error return, must
- *        release the lock. 11_lock_leak_fixed.c leaves through a single
+ *        release the lock. 09_lock_leak_fixed.c leaves through a single
  *        exit point, which makes that easy to check.
  *
  *        (With a System V semaphore and SEM_UNDO the kernel would release the
- *        lock when the child exited: see 09_owner_died_fixed.c.)
+ *        lock when the child exited: see 07-sysv-ipc/04_owner_died_fixed.c.)
  */
 #include <semaphore.h>
 #include <stdio.h>

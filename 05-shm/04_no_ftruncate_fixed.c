@@ -1,19 +1,13 @@
 /*
- * 05_no_ftruncate_bug.c - mapping a shared memory object that has no size.
+ * 04_no_ftruncate_fixed.c - the fix for 04_no_ftruncate_bug.c.
  *
- * Run:   ./05_no_ftruncate_bug
- *        The fix is in 05_no_ftruncate_fixed.c. To see what changed:
- *        diff 05_no_ftruncate_bug.c 05_no_ftruncate_fixed.c
+ * Run:   ./04_no_ftruncate_fixed
+ *        diff 04_no_ftruncate_bug.c 04_no_ftruncate_fixed.c
  *
- * Look:  shm_open() creates an object of size 0. The program skips
- *        ftruncate() and maps one page anyway. mmap() succeeds: it only
- *        reserves addresses. But there is no memory behind them, and the
- *        first store raises SIGBUS ("Bus error"), which kills the child.
- *        Compare SIGSEGV: the address is not mapped at all (*NULL), or the
- *        access is not allowed (a write to a read-only page, as in
- *        04-mmap/06_mprotect.c). SIGBUS means the address is mapped and the
- *        access is allowed, but the object behind the page is too short.
- *        The parent removes the object afterwards.
+ * Look:  the fix is the call you saw in 01_posix_shm_writer.c: give the
+ *        object its size with ftruncate() before touching it. The child now
+ *        reports a size of one page, the store works, and the child exits
+ *        normally. The parent removes the object afterwards.
  */
 #include <fcntl.h>
 #include <stdio.h>
@@ -35,7 +29,8 @@ static void child(void)
     int fd = shm_open(NAME, O_CREAT | O_RDWR | O_TRUNC, 0600);
     if (fd < 0)
         die("shm_open");
-    /* BUG: no ftruncate(), so the object stays at size 0 */
+    if (ftruncate(fd, page) < 0)       /* FIX: give the object a size */
+        die("ftruncate");
 
     struct stat st;
     if (fstat(fd, &st) < 0)

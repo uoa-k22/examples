@@ -1,12 +1,13 @@
 /*
- * 03_sysv_shm.c - System V shared memory: shmget, shmat, shmdt, shmctl.
+ * 01_sysv_shm.c - System V shared memory: shmget, shmat, shmdt, shmctl.
  *
- * Run:   ./03_sysv_shm
+ * Run:   ./01_sysv_shm
  *
- * Look:  this is the older API for the same idea. A segment is identified
- *        by a number (the shmid), not a name. IPC_PRIVATE always creates a
- *        new segment, so it suits a parent sharing with its own children.
- *        Unrelated processes would use a key from ftok() instead.
+ * Look:  this is the older API for the shared memory of 05-shm. A segment
+ *        is identified by a number (the shmid), not a name. IPC_PRIVATE
+ *        always creates a new segment, so it suits a parent sharing with its
+ *        own children. Unrelated processes would use a key from ftok()
+ *        instead.
  *        - shmget()             creates the segment
  *        - shmat() / shmdt()    attach it to / detach it from memory
  *        - shmctl(IPC_RMID)     removes it

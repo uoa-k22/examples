@@ -1,8 +1,8 @@
 /*
- * 13_eintr_fixed.c - the fix for 13_eintr_bug.c.
+ * 11_eintr_fixed.c - the fix for 11_eintr_bug.c.
  *
- * Run:   ./13_eintr_fixed
- *        diff 13_eintr_bug.c 13_eintr_fixed.c
+ * Run:   ./11_eintr_fixed
+ *        diff 11_eintr_bug.c 11_eintr_fixed.c
  *
  * Look:  EINTR means "a signal arrived, nothing failed". The parent calls
  *        sem_wait() again whenever it fails with EINTR, and gives up only on

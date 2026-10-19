@@ -1,21 +1,16 @@
 /*
- * 08_deadlock_bug.c - two processes that each wait for the other forever.
+ * 07_deadlock_fixed.c - the fix for 07_deadlock_bug.c.
  *
- * Run:   ./08_deadlock_bug
- *        The fix is in 08_deadlock_fixed.c. To see what changed:
- *        diff 08_deadlock_bug.c 08_deadlock_fixed.c
+ * Run:   ./07_deadlock_fixed
+ *        diff 07_deadlock_bug.c 07_deadlock_fixed.c
  *
- * Look:  parent and child each need both semaphores, A and B, but they take
- *        them in opposite orders. The parent holds A and waits for B; the
- *        child holds B and waits for A. Neither can continue, and neither
- *        will give up what it holds: a deadlock. Each process calls
- *        alarm(5), which kills it after 5 seconds ("Alarm clock"), so the
- *        demo ends by itself; without it, both would hang until killed.
+ * Look:  both processes take A first and then B. Whoever gets A first also
+ *        gets B, and the other waits its turn. Both finish, well before the
+ *        alarm.
  *
- *        The usleep() between taking the two semaphores makes the bad
- *        timing happen every time. Without it the deadlock would happen
- *        only now and then, which is what makes it so hard to find in real
- *        programs.
+ * Rule:  if processes must hold several locks at once, they must all take
+ *        them in the same global order. Then a cycle of waiting processes
+ *        cannot form.
  */
 #include <semaphore.h>
 #include <stdio.h>
@@ -68,8 +63,8 @@ int main(void)
     alarm(5);       /* both processes: give up after 5 seconds */
 
     if (pid == 0) {
-        /* BUG: the child takes B first, the parent takes A first */
-        use_both("    child ", &s->b, "B", &s->a, "A");
+        /* FIX: the child takes A first, like the parent */
+        use_both("    child ", &s->a, "A", &s->b, "B");
         return 0;
     }
 
