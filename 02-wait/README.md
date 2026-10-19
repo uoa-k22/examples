@@ -8,7 +8,7 @@ terminated and how. Until the parent does so, the finished child stays a
 | --- | --- |
 | `01_wait_no_children` | `wait()` returns -1 with `errno == ECHILD` when there is nothing to wait for |
 | `02_exit_status` | `WIFEXITED` / `WEXITSTATUS`; try `./02_exit_status 256` |
-| `03_killed_by_signal` | `WIFSIGNALED` / `WTERMSIG` for `segv`, `abort`, or a child you `kill` |
+| `03_killed_by_signal` | `WIFSIGNALED` / `WTERMSIG` for children killed by `SIGSEGV`, `SIGABRT` and `SIGTERM` |
 | `04_zombie` | the `Z` state in `ps` before the parent waits |
 | `05_multiple_children` | `wait()` returns children in the order they finish; with the argument `ordered`, `waitpid()` collects them in the order the parent chooses |
 | `06_wnohang` | `waitpid(..., WNOHANG)`: check on a child without blocking |
