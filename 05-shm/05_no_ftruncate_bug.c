@@ -8,8 +8,10 @@
  *        ftruncate() and maps one page anyway. mmap() succeeds: it only
  *        reserves addresses. But there is no memory behind them, and the
  *        first store raises SIGBUS ("Bus error"), which kills the child.
- *        Compare SIGSEGV in 04-mmap/06_mprotect.c: SEGV means "no mapping
- *        here", BUS means "mapped, but nothing backs this page".
+ *        Compare SIGSEGV: the address is not mapped at all (*NULL), or the
+ *        access is not allowed (a write to a read-only page, as in
+ *        04-mmap/06_mprotect.c). SIGBUS means the address is mapped and the
+ *        access is allowed, but the object behind the page is too short.
  *
  *        The fix is the call you saw in 01_posix_shm_writer.c: give the
  *        object its size with ftruncate() before touching it. The parent
@@ -32,7 +34,9 @@ static void child(int fixed)
 {
     long page = sysconf(_SC_PAGESIZE);
 
-    int fd = shm_open(NAME, O_CREAT | O_RDWR, 0600);
+    /* O_TRUNC: start from size 0 even if an interrupted run left the
+       object behind; otherwise the bug would not show. */
+    int fd = shm_open(NAME, O_CREAT | O_RDWR | O_TRUNC, 0600);
     if (fd < 0)
         die("shm_open");
     if (fixed && ftruncate(fd, page) < 0)

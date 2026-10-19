@@ -9,9 +9,12 @@
  *        reads it. Then every process has detached and the program ends. In
  *        the buggy version that is all: shmctl(IPC_RMID) is never called.
  *        The segment is still there. It has no attached processes ("nattch"
- *        0), but it keeps its memory, and nothing will ever remove it: not
- *        the program ending, not logging out, only a reboot or  ipcrm.
- *        Run the buggy version five times and  ipcs -m  shows five segments.
+ *        0), but it keeps its memory. Ending the program does not remove it.
+ *        Only  ipcrm  or a reboot does, or, on most systemd-based systems
+ *        (logind's RemoveIPC=yes), your last logout. That last rescue does not
+ *        apply to root or to system users, so a server that leaks segments
+ *        keeps leaking until someone notices. Run the buggy version five
+ *        times and  ipcs -m  shows five segments.
  *
  *        POSIX shared memory leaks the same way if shm_unlink() is
  *        forgotten (see 05-shm/README.md), but a POSIX object at least
