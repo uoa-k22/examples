@@ -20,5 +20,6 @@ only if it fails, so the line after it is always error handling.
 | `06_exec_no_exit` | a child that keeps running the parent's code after a failed exec: comment out its `_exit(127)` |
 | `07_fd_inherit` | open file descriptors are inherited across exec; `O_CLOEXEC` closes them |
 | `08_self_exec` | a program that execs itself: `/proc/self/exe` works, `argv[0]` fails after `chdir` or when started through `$PATH` (`chdir`, `argv0`) |
+| `09_exec_errors` | `ENOENT`, `EACCES` and `ENOEXEC` are three different failures; fails as written, `fixed` corrects each |
 
 Build with `make` and run each program from this directory.
