@@ -54,8 +54,9 @@ while (sem_wait(sem) < 0)
         die("sem_wait");
 ```
 
-These programs install no signal handlers, so `sem_wait()` and `wait()`
-never fail this way here, and the examples keep the simpler one-line check.
+Apart from `13_eintr_bug`, these programs install no signal handlers, so
+`sem_wait()` and `wait()` never fail this way here, and the examples keep
+the simpler one-line check.
 The exception is System V `semop()`. On Linux it also fails with `EINTR`
 when the process is stopped (Ctrl-Z) and then continued (`fg`), even
 without a handler, so `06_sysv_sem` and `09_owner_died` retry it. Once you

@@ -81,7 +81,8 @@ int main(int argc, char *argv[])
             ticks++;
             continue;
         }
-        /* BUG: EINTR is not an error; this gives up on the first tick. */
+        /* A real error, or (the BUG) EINTR in the buggy version, which
+           gives up on the first tick although nothing is wrong. */
         perror("parent: sem_wait");
         kill(pid, SIGKILL);     /* don't leave the child running */
         waitpid(pid, NULL, 0);

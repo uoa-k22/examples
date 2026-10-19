@@ -26,8 +26,8 @@
  *          bug; hence the cd in the command above.)
  *
  *        In both cases the child's exec fails and it exits with 127, so the
- *        parent can report the failure. 04_shm_pointers.c in 05-shm re-runs
- *        itself in the same way.
+ *        parent can report the failure. 05-shm/04_shm_pointers.c re-runs
+ *        itself through /proc/self/exe for this reason.
  */
 #include <stdio.h>
 #include <string.h>
