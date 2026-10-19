@@ -22,10 +22,8 @@ Work through them in order; later topics use earlier ones.
 You need `gcc` and `make` on Linux.
 
 ```sh
-make                        # build everything
-make EXTRA_CFLAGS=-Werror   # build, treating warnings as errors
-make clean                  # remove binaries and files the demos create
-make lint                   # 80 columns, cppcheck, markdownlint
+make          # build everything
+make clean    # remove binaries and files the demos create
 ```
 
 Or build one topic with `make` inside its directory. Each `.c` file is its
@@ -47,3 +45,13 @@ their own directory.
   with `diff NN_name_bug.c NN_name_fixed.c`.
 - Output from processes that run at the same time can come in a different
   order on every run. That is expected, and often it is the point.
+
+## For maintainers
+
+```sh
+make EXTRA_CFLAGS=-Werror   # build, treating warnings as errors
+make lint                   # 80 columns, cppcheck, markdownlint
+```
+
+`make lint` needs `cppcheck` and `markdownlint-cli2`. CI runs both checks on
+every pull request.

@@ -1,8 +1,8 @@
 /*
  * errexit.h - one-line error handling for the examples.
  *
- * Every system call in these examples is checked. To keep the checks from
- * hiding the idea being shown, a failed call is handled with
+ * Every system call that matters to the idea being shown is checked. To
+ * keep the checks from hiding that idea, a failed call is handled with
  *
  *     if (fork() < 0)
  *         die("fork");

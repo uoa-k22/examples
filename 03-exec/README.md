@@ -23,5 +23,3 @@ only if it fails, so the line after it is always error handling.
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.
-
-Build with `make` and run each program from this directory.
