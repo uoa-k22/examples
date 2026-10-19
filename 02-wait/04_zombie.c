@@ -38,13 +38,15 @@ int main(void)
     }
 
     sleep(2);
-    printf("\nParent: the child has exited, but I have not waited for it yet:\n");
+    printf("\nParent: the child has exited, "
+           "but I have not waited for it yet:\n");
     show(pid);
 
     int status;
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
-    printf("\nParent: waitpid() collected exit status %d; the zombie is gone:\n",
+    printf("\nParent: waitpid() collected exit status %d; "
+           "the zombie is gone:\n",
            WEXITSTATUS(status));
     show(pid);
     return 0;

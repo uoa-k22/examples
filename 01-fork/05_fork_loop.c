@@ -33,10 +33,11 @@ int main(int argc, char *argv[])
             die("fork");
 
         if (pid == 0) {
-            printf("i = %d: child  %d (parent %d)\n", i, (int) getpid(), (int) getppid());
+            printf("i = %d: child  %d (parent %d)\n",
+                   i, (int) getpid(), (int) getppid());
             fflush(stdout);
             if (!bug)
-                return 0;   /* the child is done; it must not continue the loop */
+                return 0;   /* done; the child must not continue the loop */
         }
     }
 

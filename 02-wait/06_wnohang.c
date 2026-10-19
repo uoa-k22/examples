@@ -52,6 +52,7 @@ int main(void)
     }
 
     if (WIFEXITED(status))
-        printf("parent: child %d finished with status %d\n", (int) pid, WEXITSTATUS(status));
+        printf("parent: child %d finished with status %d\n",
+               (int) pid, WEXITSTATUS(status));
     return 0;
 }

@@ -1,5 +1,6 @@
 /*
- * 12_producer_order_bug.c - waiting in the wrong order deadlocks a bounded buffer.
+ * 12_producer_order_bug.c - waiting in the wrong order deadlocks a bounded
+ * buffer.
  *
  * Run:   ./12_producer_order_bug          the bug
  *        ./12_producer_order_bug fixed    the fix

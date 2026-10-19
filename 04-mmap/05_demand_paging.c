@@ -64,10 +64,12 @@ int main(int argc, char *argv[])
     size_t mib = argc > 1 ? strtoul(argv[1], NULL, 10) : 512;
     size_t len = mib * 1024 * 1024;
 
-    printf("page size %ld bytes; %zu MiB = %zu pages\n\n", page_size, mib, len / page_size);
+    printf("page size %ld bytes; %zu MiB = %zu pages\n\n",
+           page_size, mib, len / page_size);
     report("start");
 
-    char *p = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    char *p = mmap(NULL, len, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     if (p == MAP_FAILED)
         die("mmap");
     /* Ask for ordinary pages. Some systems would otherwise use 2 MiB "huge
@@ -76,7 +78,8 @@ int main(int argc, char *argv[])
        uses ordinary pages anyway, so a failure does not change the counts. */
     if (madvise(p, len, MADV_NOHUGEPAGE) < 0)
         printf("note: madvise(MADV_NOHUGEPAGE): %s; this kernel has no huge\n"
-               "      pages, so it uses ordinary pages anyway\n\n", strerror(errno));
+               "      pages, so it uses ordinary pages anyway\n\n",
+               strerror(errno));
     report("after mmap()");
 
     touch(p, 0, len / 4);

@@ -1,7 +1,8 @@
 /*
  * 03_named_sem_parent.c - a named semaphore shared by separate programs.
  *
- * Run:   ./03_named_sem_parent      (from this directory; it runs ./03_named_sem_child)
+ * Run:   ./03_named_sem_parent
+ *        (from this directory; it runs ./03_named_sem_child)
  *
  * Look:  the parent creates the semaphore with sem_open(O_CREAT | O_EXCL)
  *        and then fork()s and exec()s NCHILD children. exec replaces the

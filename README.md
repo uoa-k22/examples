@@ -7,7 +7,7 @@ Linux/POSIX.
 ## Topics
 
 | Directory | Topic |
-|---|---|
+| --- | --- |
 | [`01-fork`](01-fork) | creating processes with `fork()`; orphans |
 | [`02-wait`](02-wait) | `wait()` / `waitpid()`, exit status, zombies |
 | [`03-exec`](03-exec) | running a new program with the `exec` family; fork + exec + wait |
@@ -25,6 +25,7 @@ You need `gcc` and `make` on Linux.
 make                        # build everything
 make EXTRA_CFLAGS=-Werror   # build, treating warnings as errors
 make clean                  # remove binaries and files the demos create
+make lint                   # 80 columns, cppcheck, markdownlint
 ```
 
 Or build one topic with `make` inside its directory. Each `.c` file is its

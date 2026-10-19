@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
     pid_t pids[N];
 
     for (int i = 0; i < N; i++) {
-        fflush(stdout);     /* don't let the children inherit unprinted output */
+        fflush(stdout);     /* children must not inherit unprinted output */
         pids[i] = fork();
         if (pids[i] < 0)
             die("fork");
         if (pids[i] == 0) {
             sleep(N - i);
             printf("  child %d (pid %d) exiting\n", i, (int) getpid());
-            exit(i);    /* the exit code tells the parent which child this was */
+            exit(i);    /* the exit code tells the parent which child */
         }
         printf("Created child %d: pid %d\n", i, (int) pids[i]);
     }
@@ -50,7 +50,8 @@ int main(int argc, char *argv[])
     } else {
         pid_t pid;
         while ((pid = wait(&status)) > 0)
-            printf("wait() returned child %d (pid %d)\n", WEXITSTATUS(status), (int) pid);
+            printf("wait() returned child %d (pid %d)\n",
+                   WEXITSTATUS(status), (int) pid);
         if (errno != ECHILD)
             die("wait");
         printf("wait() returned -1 with ECHILD: no children left\n");

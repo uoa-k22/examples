@@ -61,7 +61,8 @@ static void writer(const char *prog)
         die("shm_open");
     if (ftruncate(fd, sizeof(struct list)) < 0)
         die("ftruncate");
-    struct list *l = mmap(NULL, sizeof(*l), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    struct list *l = mmap(NULL, sizeof(*l), PROT_READ | PROT_WRITE,
+                          MAP_SHARED, fd, 0);
     if (l == MAP_FAILED)
         die("mmap");
     close(fd);
@@ -74,7 +75,8 @@ static void writer(const char *prog)
     l->head = &l->nodes[0];
     l->head_index = 0;
 
-    printf("writer: object mapped at %p, head pointer = %p\n", (void *) l, (void *) l->head);
+    printf("writer: object mapped at %p, head pointer = %p\n",
+           (void *) l, (void *) l->head);
     printf("writer: list:");
     for (struct node *n = l->head; n != NULL; n = n->next)
         printf(" %d", n->value);
@@ -85,8 +87,9 @@ static void writer(const char *prog)
     if (pid < 0)
         die("fork");
     if (pid == 0) {
-        /* /proc/self/exe is this program, wherever it was started from; argv[0]
-           may be a bare name or a relative path (see 03-exec/08_self_exec.c). */
+        /* /proc/self/exe is this program, wherever it was started from;
+           argv[0] may be a bare name or a relative path
+           (see 03-exec/08_self_exec.c). */
         execl("/proc/self/exe", prog, "reader", (char *) NULL);
         die("execl /proc/self/exe");
     }
@@ -116,8 +119,10 @@ static void reader(void)
         die("mmap");
     close(fd);
 
-    printf("reader: object mapped at %p, head pointer = %p\n", (void *) l, (void *) l->head);
-    printf("reader: list, following %s:", use_pointers ? "pointers" : "indexes");
+    printf("reader: object mapped at %p, head pointer = %p\n",
+           (void *) l, (void *) l->head);
+    printf("reader: list, following %s:",
+           use_pointers ? "pointers" : "indexes");
     fflush(stdout);
 
     if (use_pointers) {

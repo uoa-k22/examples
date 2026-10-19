@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     char pid[16];
     snprintf(pid, sizeof(pid), "%d", (int) getpid());
 
-    execlp("ps", "my-own-name", "-o", "pid,comm=FILE,args=ARGV", "-p", pid, (char *) NULL);
+    execlp("ps", "my-own-name", "-o", "pid,comm=FILE,args=ARGV", "-p", pid,
+           (char *) NULL);
     die("execlp ps");
 }

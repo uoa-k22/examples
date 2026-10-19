@@ -53,7 +53,8 @@ int main(int argc, char *argv[])
             die("write");
         done += n;
     }
-    fprintf(stderr, "--- %s: %ld bytes, %ld lines\n", argv[1], (long) st.st_size, lines);
+    fprintf(stderr, "--- %s: %ld bytes, %ld lines\n",
+            argv[1], (long) st.st_size, lines);
 
     if (munmap(data, st.st_size) < 0)
         die("munmap");

@@ -47,7 +47,8 @@ static void child_locks_and_dies(void (*lock)(void))
         die("fork");
     if (pid == 0) {
         lock();
-        printf("child %d: got the lock, now killed with SIGKILL\n", (int) getpid());
+        printf("child %d: got the lock, now killed with SIGKILL\n",
+               (int) getpid());
         fflush(stdout);
         raise(SIGKILL);
     }
@@ -56,7 +57,8 @@ static void child_locks_and_dies(void (*lock)(void))
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
     if (WIFSIGNALED(status))
-        printf("parent: child %d is dead (signal %d)\n", (int) pid, WTERMSIG(status));
+        printf("parent: child %d is dead (signal %d)\n",
+               (int) pid, WTERMSIG(status));
 }
 
 /* --- POSIX semaphore ------------------------------------------------------ */
@@ -101,7 +103,8 @@ static int semid;
 static void sysv_lock(void)
 {
     struct sembuf op = { .sem_num = 0, .sem_op = -1, .sem_flg = SEM_UNDO };
-    while (semop(semid, &op, 1) < 0)    /* retry after EINTR, see 06_sysv_sem.c */
+    /* Retry after EINTR, see 06_sysv_sem.c. */
+    while (semop(semid, &op, 1) < 0)
         if (errno != EINTR)
             die("semop");
 }
@@ -118,9 +121,11 @@ static void sysv_demo(void)
     child_locks_and_dies(sysv_lock);
 
     printf("parent: semaphore value is %d\n", semctl(semid, 0, GETVAL));
-    struct sembuf op = { .sem_num = 0, .sem_op = -1, .sem_flg = IPC_NOWAIT | SEM_UNDO };
+    struct sembuf op = { .sem_num = 0, .sem_op = -1,
+                         .sem_flg = IPC_NOWAIT | SEM_UNDO };
     if (semop(semid, &op, 1) == 0)
-        printf("parent: got the lock: SEM_UNDO released the dead child's hold\n");
+        printf("parent: got the lock: "
+               "SEM_UNDO released the dead child's hold\n");
     else if (errno == EAGAIN)
         printf("parent: semop: still locked\n");
     else

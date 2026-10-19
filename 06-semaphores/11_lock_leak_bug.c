@@ -77,7 +77,8 @@ static void run_child(int value)
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
     if (WIFSIGNALED(status))
-        printf("parent: child %d was killed by %s: it was stuck waiting for the lock\n",
+        printf("parent: child %d was killed by %s: "
+               "it was stuck waiting for the lock\n",
                (int) pid, strsignal(WTERMSIG(status)));
     else
         printf("parent: child %d finished\n", (int) pid);

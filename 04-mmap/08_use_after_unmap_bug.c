@@ -46,7 +46,7 @@ static void child(int fixed)
             die("munmap");
         printf("child: page unmapped; reading it again...\n");
         fflush(stdout);
-        printf("child: \"%s\"\n", p);       /* BUG: p no longer points to memory */
+        printf("child: \"%s\"\n", p);   /* BUG: p points to nothing now */
         return;
     }
 

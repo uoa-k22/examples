@@ -1,5 +1,6 @@
 /*
- * 07_private_not_saved_bug.c - writes through a MAP_PRIVATE file mapping are lost.
+ * 07_private_not_saved_bug.c - writes through a MAP_PRIVATE file mapping are
+ * lost.
  *
  * Run:   ./07_private_not_saved_bug          the bug
  *        ./07_private_not_saved_bug fixed    the fix
@@ -33,7 +34,8 @@
 static void show_file(int fd, size_t len)
 {
     char buf[64];
-    ssize_t n = pread(fd, buf, len < sizeof(buf) - 1 ? len : sizeof(buf) - 1, 0);
+    size_t want = len < sizeof(buf) - 1 ? len : sizeof(buf) - 1;
+    ssize_t n = pread(fd, buf, want, 0);
     if (n < 0)
         die("pread");
     buf[n] = '\0';
@@ -59,7 +61,8 @@ int main(int argc, char *argv[])
     if (p == MAP_FAILED)
         die("mmap");
 
-    printf("Mapped %s with %s\n", FILENAME, fixed ? "MAP_SHARED" : "MAP_PRIVATE");
+    printf("Mapped %s with %s\n",
+           FILENAME, fixed ? "MAP_SHARED" : "MAP_PRIVATE");
     memcpy(p, "new", 3);
     if (msync(p, len, MS_SYNC) < 0)
         die("msync");

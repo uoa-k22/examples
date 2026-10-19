@@ -24,7 +24,8 @@ static void write_line(int fd, const char *who)
 
     if (write(fd, line, len) != len)
         die("write");
-    printf("%-6s: offset after writing = %ld\n", who, (long) lseek(fd, 0, SEEK_CUR));
+    printf("%-6s: offset after writing = %ld\n",
+           who, (long) lseek(fd, 0, SEEK_CUR));
 }
 
 int main(void)
@@ -47,7 +48,8 @@ int main(void)
 
     if (wait(NULL) < 0)
         die("wait");
-    printf("Parent: offset after the child exited = %ld\n", (long) lseek(fd, 0, SEEK_CUR));
+    printf("Parent: offset after the child exited = %ld\n",
+           (long) lseek(fd, 0, SEEK_CUR));
     write_line(fd, "Parent");
     close(fd);
     return 0;

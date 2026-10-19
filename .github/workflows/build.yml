@@ -16,3 +16,19 @@ jobs:
         run: |
           make clean
           test -z "$(git status --porcelain)"
+
+  lint:
+    # Pinned so cppcheck (from apt) does not change version under us.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22      # markdownlint-cli2 needs Node 22 or newer
+      - name: Install cppcheck and markdownlint-cli2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cppcheck
+          npm install -g markdownlint-cli2@0.23.3
+      - name: Line length, C linter, Markdown linter
+        run: make lint

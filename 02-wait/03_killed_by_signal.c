@@ -31,7 +31,8 @@ static void child(const char *how)
         fflush(stdout);
         abort();
     } else {
-        printf("Child %d: waiting; kill me with  kill %d\n", (int) getpid(), (int) getpid());
+        printf("Child %d: waiting; kill me with  kill %d\n",
+               (int) getpid(), (int) getpid());
         fflush(stdout);
         for (;;)
             pause();
