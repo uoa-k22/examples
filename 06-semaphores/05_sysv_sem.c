@@ -1,9 +1,9 @@
 /*
- * 06_sysv_sem.c - System V semaphores: semget, semctl, semop.
+ * 05_sysv_sem.c - System V semaphores: semget, semctl, semop.
  *
- * Run:   ./06_sysv_sem
+ * Run:   ./05_sysv_sem
  *
- * Look:  the same mutual exclusion as 03_named_sem_parent, with the older
+ * Look:  the same mutual exclusion as 02_named_sem_parent, with the older
  *        API that many existing programs still use. The differences:
  *        - semget() creates a whole *set* of semaphores; here it has one.
  *        - The new semaphore has no defined value until semctl(SETVAL)

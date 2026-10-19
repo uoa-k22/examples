@@ -5,7 +5,7 @@
  *        diff 06_read_before_write_bug.c 06_read_before_write_fixed.c
  *
  * Look:  the reader waits on the "ready" semaphore before it reads. The
- *        semaphore starts at 0 (see 06-semaphores/04_pingpong.c), and the
+ *        semaphore starts at 0 (see 06-semaphores/03_pingpong.c), and the
  *        writer posts it only after the whole message is stored, so the
  *        reader always sees the complete message, however long the writer
  *        takes.

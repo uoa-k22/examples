@@ -1,8 +1,8 @@
 /*
- * 09_owner_died_fixed.c - the fix for 09_owner_died_bug.c.
+ * 08_owner_died_fixed.c - the fix for 08_owner_died_bug.c.
  *
- * Run:   ./09_owner_died_fixed
- *        diff 09_owner_died_bug.c 09_owner_died_fixed.c
+ * Run:   ./08_owner_died_fixed
+ *        diff 08_owner_died_bug.c 08_owner_died_fixed.c
  *
  * Look:  the child locks the semaphore with the flag SEM_UNDO. The kernel
  *        keeps a record of the child's -1 and reverses it when the child
@@ -43,7 +43,7 @@ int main(void)
     if (pid == 0) {
         /* FIX: SEM_UNDO lets the kernel give the lock back */
         struct sembuf op = { .sem_num = 0, .sem_op = -1, .sem_flg = SEM_UNDO };
-        /* Retry after EINTR, see 06_sysv_sem.c. */
+        /* Retry after EINTR, see 05_sysv_sem.c. */
         while (semop(semid, &op, 1) < 0)
             if (errno != EINTR)
                 die("semop");

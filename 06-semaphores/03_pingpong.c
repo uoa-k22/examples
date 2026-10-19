@@ -1,7 +1,7 @@
 /*
- * 04_pingpong.c - using semaphores to signal, not to lock.
+ * 03_pingpong.c - using semaphores to signal, not to lock.
  *
- * Run:   ./04_pingpong
+ * Run:   ./03_pingpong
  *
  * Look:  two semaphores pass a turn back and forth. "ping" starts at 1 and
  *        "pong" at 0, so the parent goes first. Each side waits on its own

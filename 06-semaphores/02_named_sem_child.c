@@ -1,5 +1,5 @@
 /*
- * 03_named_sem_child.c - started by 03_named_sem_parent; not run directly.
+ * 02_named_sem_child.c - started by 02_named_sem_parent; not run directly.
  *
  * Opens the existing semaphore by name (no O_CREAT) and enters a critical
  * section ROUNDS times. Each time it prints when it enters and when it

@@ -1,25 +1,17 @@
 /*
- * 11_lock_leak_bug.c - a code path that forgets to unlock.
+ * 10_lock_leak_fixed.c - the fix for 10_lock_leak_bug.c.
  *
- * Run:   ./11_lock_leak_bug
- *        The fix is in 11_lock_leak_fixed.c. To see what changed:
- *        diff 11_lock_leak_bug.c 11_lock_leak_fixed.c
+ * Run:   ./10_lock_leak_fixed
+ *        diff 10_lock_leak_bug.c 10_lock_leak_fixed.c
  *
- * Look:  update() locks, checks its argument, and returns early if the
- *        argument is bad. The early return skips sem_post(), so the lock is
- *        never released. The first child passes a bad value and exits
- *        normally. The second child passes a good value, but the lock is
- *        gone and it waits forever. alarm(3) ends the demo, and the parent
- *        reports it.
+ * Look:  update() has a single way out: the error path jumps to the label
+ *        "out", where the lock is released, instead of returning directly.
+ *        The first child still reports its bad value, but it releases the
+ *        lock, and the second child gets it and finishes.
  *
- *        The failure is far from its cause: the process that leaked the lock
- *        is long gone, and the one that hangs did nothing wrong. Every path
- *        out of a critical section, including every error return, must
- *        release the lock. 11_lock_leak_fixed.c leaves through a single
- *        exit point, which makes that easy to check.
- *
- *        (With a System V semaphore and SEM_UNDO the kernel would release the
- *        lock when the child exited: see 09_owner_died_fixed.c.)
+ *        Whatever the style (a goto to the end, or a wrapper function that
+ *        locks, calls, and unlocks), the rule is the same: every path out of
+ *        a critical section must release the lock.
  */
 #include <semaphore.h>
 #include <stdio.h>
@@ -39,19 +31,22 @@ static struct shared *s;
 /* Add value to the total. Negative values are not allowed. */
 static int update(int value)
 {
+    int result = 0;
+
     if (sem_wait(&s->lock) < 0)
         die("sem_wait");
 
     if (value < 0) {
         printf("  update(%d): bad value\n", value);
-        return -1;              /* BUG: returns while still holding the lock */
+        result = -1;
+        goto out;               /* FIX: leave through the unlock below */
     }
     s->total += value;
     printf("  update(%d): total is now %ld\n", value, s->total);
-
+out:
     if (sem_post(&s->lock) < 0)
         die("sem_post");
-    return 0;
+    return result;
 }
 
 static void run_child(int value)

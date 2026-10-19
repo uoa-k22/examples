@@ -1,15 +1,15 @@
 /*
- * 12_producer_order_fixed.c - the fix for 12_producer_order_bug.c.
+ * 11_producer_order_fixed.c - the fix for 11_producer_order_bug.c.
  *
- * Run:   ./12_producer_order_fixed
- *        diff 12_producer_order_bug.c 12_producer_order_fixed.c
+ * Run:   ./11_producer_order_fixed
+ *        diff 11_producer_order_bug.c 11_producer_order_fixed.c
  *
  * Look:  the producer waits on "empty" first and on the mutex second, the
- *        order 05_bounded_buffer.c uses. When the buffer is full it sleeps
+ *        order 04_bounded_buffer.c uses. When the buffer is full it sleeps
  *        on "empty" WITHOUT holding the mutex, so the consumer can still get
  *        in, take an item and post "empty". All six items get through.
  *
- *        The same rule as in 08_deadlock_fixed.c: when you must hold several
+ *        The same rule as in 07_deadlock_fixed.c: when you must hold several
  *        semaphores, the order in which you take them matters. Never sleep
  *        on a condition while holding the lock that others need to change
  *        it.

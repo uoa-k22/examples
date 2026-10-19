@@ -1,12 +1,12 @@
 /*
- * 12_producer_order_bug.c - waiting in the wrong order deadlocks a bounded
+ * 11_producer_order_bug.c - waiting in the wrong order deadlocks a bounded
  * buffer.
  *
- * Run:   ./12_producer_order_bug
- *        The fix is in 12_producer_order_fixed.c. To see what changed:
- *        diff 12_producer_order_bug.c 12_producer_order_fixed.c
+ * Run:   ./11_producer_order_bug
+ *        The fix is in 11_producer_order_fixed.c. To see what changed:
+ *        diff 11_producer_order_bug.c 11_producer_order_fixed.c
  *
- * Look:  this is a small version of 05_bounded_buffer.c: one producer, one
+ * Look:  this is a small version of 04_bounded_buffer.c: one producer, one
  *        consumer, and a buffer of SLOTS places. The producer is fast and the
  *        consumer is slow, so the buffer fills up.
  *

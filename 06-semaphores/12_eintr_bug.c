@@ -1,9 +1,9 @@
 /*
- * 13_eintr_bug.c - sem_wait() fails with EINTR once a signal handler exists.
+ * 12_eintr_bug.c - sem_wait() fails with EINTR once a signal handler exists.
  *
- * Run:   ./13_eintr_bug
- *        The fix is in 13_eintr_fixed.c. To see what changed:
- *        diff 13_eintr_bug.c 13_eintr_fixed.c
+ * Run:   ./12_eintr_bug
+ *        The fix is in 12_eintr_fixed.c. To see what changed:
+ *        diff 12_eintr_bug.c 12_eintr_fixed.c
  *
  * Look:  the parent installs a SIGALRM handler that counts seconds, and then
  *        waits on a semaphore that the child posts after 3 seconds. The

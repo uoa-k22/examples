@@ -1,7 +1,7 @@
 /*
- * 05_bounded_buffer.c - the producer/consumer problem with semaphores.
+ * 04_bounded_buffer.c - the producer/consumer problem with semaphores.
  *
- * Run:   ./05_bounded_buffer
+ * Run:   ./04_bounded_buffer
  *
  * Look:  producers put items into a circular buffer of SLOTS places, and
  *        consumers take them out. Three semaphores coordinate them:
