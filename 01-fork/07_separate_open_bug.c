@@ -1,8 +1,8 @@
 /*
- * 07_separate_open.c - two processes that open the same file overwrite each other.
+ * 07_separate_open_bug.c - two processes that open the same file overwrite each other.
  *
- * Run:   ./07_separate_open          the bug
- *        ./07_separate_open fixed    the fix
+ * Run:   ./07_separate_open_bug          the bug
+ *        ./07_separate_open_bug fixed    the fix
  *
  * Look:  the parent and the child each write three lines to log.txt, taking
  *        turns, so six lines are expected. Each process calls open() itself,

@@ -13,8 +13,8 @@ The only difference is the return value: the child's pid in the parent and
 | `04_orphan` | a child whose parent has exited is adopted by init or a subreaper |
 | `05_fork_loop` | the right way to fork in a loop; `./05_fork_loop bug` shows how 2^N processes appear |
 | `06_stdio_buffer` | output printed before `fork()` appears twice when piped: comment out its `fflush()` and run `./06_stdio_buffer \| cat` |
-| `07_separate_open` | two processes that `open()` the same file separately overwrite each other; fails as written, `fixed` uses `O_APPEND` |
-| `08_fork_limit` | `fork()` fails with `EAGAIN` and an unchecked `-1` looks like success; fails as written, `fixed` checks it |
+| `07_separate_open_bug` | two processes that `open()` the same file separately overwrite each other; fails as written, `fixed` uses `O_APPEND` |
+| `08_fork_limit_bug` | `fork()` fails with `EAGAIN` and an unchecked `-1` looks like success; fails as written, `fixed` checks it |
 
 `07` and `08` fail as written; run them with `fixed` to see the correct
 version.

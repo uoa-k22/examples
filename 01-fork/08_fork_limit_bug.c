@@ -1,8 +1,8 @@
 /*
- * 08_fork_limit.c - fork() can fail, and -1 is not a pid.
+ * 08_fork_limit_bug.c - fork() can fail, and -1 is not a pid.
  *
- * Run:   ./08_fork_limit          the bug
- *        ./08_fork_limit fixed    the fix
+ * Run:   ./08_fork_limit_bug          the bug
+ *        ./08_fork_limit_bug fixed    the fix
  *
  * Look:  the program lowers its own limit on the number of processes
  *        (RLIMIT_NPROC) to 1, which is less than what is already running, so
