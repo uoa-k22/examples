@@ -10,11 +10,9 @@
  *        ends at 2. Nobody is killed by the alarm.
  */
 #include <semaphore.h>
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"

@@ -16,9 +16,7 @@
  *        remove one with  ipcrm -m <shmid>.
  */
 #include <stdio.h>
-#include <sys/ipc.h>
 #include <sys/shm.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"

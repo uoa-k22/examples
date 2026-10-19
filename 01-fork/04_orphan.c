@@ -10,7 +10,6 @@
  *        process that is with  ps -p <pid>
  */
 #include <stdio.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include "errexit.h"
 

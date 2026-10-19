@@ -11,11 +11,9 @@
  *        SIGSEGV (11), SIGABRT (6), SIGTERM (15) or SIGKILL (9).
  *        The shell does the same check to print "Segmentation fault".
  */
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"

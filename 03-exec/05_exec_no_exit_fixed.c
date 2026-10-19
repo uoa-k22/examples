@@ -14,7 +14,6 @@
  *        printed twice (see 01-fork/06_stdio_buffer_bug.c).
  */
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"

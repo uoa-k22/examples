@@ -14,7 +14,6 @@
  *        should not touch the parent's buffers.
  */
 #include <stdio.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"

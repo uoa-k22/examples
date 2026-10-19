@@ -18,9 +18,7 @@
  */
 #include <errno.h>
 #include <stdio.h>
-#include <sys/ipc.h>
 #include <sys/sem.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"
