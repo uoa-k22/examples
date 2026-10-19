@@ -48,6 +48,6 @@ int main(void)
 
     if (sem_unlink(SEM_NAME) < 0)
         die("sem_unlink");
-    printf("Parent: all children done, %s removed\n", SEM_NAME);
+    printf("parent: all children done, %s removed\n", SEM_NAME);
     return 0;
 }

@@ -56,7 +56,7 @@ int main(void)
     union semun arg = { .val = 1 };
     if (semctl(semid, 0, SETVAL, arg) < 0)
         die("semctl SETVAL");
-    printf("Parent: created semaphore set %d with value 1\n", semid);
+    printf("parent: created semaphore set %d with value 1\n", semid);
 
     for (int i = 0; i < NCHILD; i++) {
         pid_t pid = fork();
@@ -79,6 +79,6 @@ int main(void)
 
     if (semctl(semid, 0, IPC_RMID) < 0)
         die("semctl IPC_RMID");
-    printf("Parent: removed semaphore set %d\n", semid);
+    printf("parent: removed semaphore set %d\n", semid);
     return 0;
 }

@@ -29,7 +29,7 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        printf("Child %d: working, then killed by a signal\n", (int) getpid());
+        printf("child %d: working, then killed by a signal\n", (int) getpid());
         fflush(stdout);
         raise(SIGKILL);         /* as if it had crashed; no exit code */
     }
@@ -37,13 +37,13 @@ int main(void)
     int status;
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
-    printf("Parent: raw status = 0x%04x\n", (unsigned) status);
+    printf("parent: raw status = 0x%04x\n", (unsigned) status);
 
     /* BUG: WEXITSTATUS is only valid if WIFEXITED(status) is true. */
     if (WEXITSTATUS(status) == 0)
-        printf("Parent: exit code 0, the child succeeded\n");
+        printf("parent: exit code 0, the child succeeded\n");
     else
-        printf("Parent: exit code %d, the child failed\n",
+        printf("parent: exit code %d, the child failed\n",
                WEXITSTATUS(status));
     return 0;
 }

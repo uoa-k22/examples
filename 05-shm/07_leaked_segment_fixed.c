@@ -38,7 +38,7 @@ int main(void)
     int shmid = shmget(IPC_PRIVATE, SIZE, IPC_CREAT | 0600);
     if (shmid < 0)
         die("shmget");
-    printf("Parent: created segment %d\n", shmid);
+    printf("parent: created segment %d\n", shmid);
     fflush(stdout);
 
     pid_t pid = fork();
@@ -58,7 +58,7 @@ int main(void)
     char *mem = shmat(shmid, NULL, SHM_RDONLY);
     if (mem == (void *) -1)
         die("shmat");
-    printf("Parent: read \"%s\"\n", mem);
+    printf("parent: read \"%s\"\n", mem);
     shmdt(mem);
 
     printf("\nAll processes have detached. The segment:\n");
@@ -66,7 +66,7 @@ int main(void)
 
     if (shmctl(shmid, IPC_RMID, NULL) < 0)  /* FIX: remove the segment */
         die("shmctl IPC_RMID");
-    printf("\nParent: called IPC_RMID. The segment now:\n");
+    printf("\nparent: called IPC_RMID. The segment now:\n");
     show(shmid);
     return 0;
 }

@@ -11,7 +11,6 @@
  */
 #include <fcntl.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -34,7 +33,7 @@ int main(void)
     if (fd < 0)
         die("open shared_fd.txt");
 
-    write_line(fd, "Before");
+    write_line(fd, "before");
     fflush(stdout);
 
     pid_t pid = fork();
@@ -42,15 +41,15 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        write_line(fd, "Child");
+        write_line(fd, "child");
         return 0;
     }
 
     if (wait(NULL) < 0)
         die("wait");
-    printf("Parent: offset after the child exited = %ld\n",
+    printf("parent: offset after the child exited = %ld\n",
            (long) lseek(fd, 0, SEEK_CUR));
-    write_line(fd, "Parent");
+    write_line(fd, "parent");
     close(fd);
     return 0;
 }

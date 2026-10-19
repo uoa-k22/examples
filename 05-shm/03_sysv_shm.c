@@ -30,7 +30,7 @@ int main(void)
     int shmid = shmget(IPC_PRIVATE, SIZE, IPC_CREAT | 0600);
     if (shmid < 0)
         die("shmget");
-    printf("Parent: created segment with shmid %d\n", shmid);
+    printf("parent: created segment with shmid %d\n", shmid);
     fflush(stdout);
 
     pid_t pid = fork();
@@ -42,7 +42,7 @@ int main(void)
         if (mem == (void *) -1)
             die("shmat");
         snprintf(mem, SIZE, "greetings from child %d", (int) getpid());
-        printf("Child:  wrote into the segment at %p\n", (void *) mem);
+        printf("child:  wrote into the segment at %p\n", (void *) mem);
         shmdt(mem);
         return 0;
     }
@@ -53,11 +53,11 @@ int main(void)
     char *mem = shmat(shmid, NULL, SHM_RDONLY);
     if (mem == (void *) -1)
         die("shmat");
-    printf("Parent: read \"%s\" from the segment at %p\n", mem, (void *) mem);
+    printf("parent: read \"%s\" from the segment at %p\n", mem, (void *) mem);
 
     shmdt(mem);
     if (shmctl(shmid, IPC_RMID, NULL) < 0)
         die("shmctl IPC_RMID");
-    printf("Parent: removed segment %d\n", shmid);
+    printf("parent: removed segment %d\n", shmid);
     return 0;
 }

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
             printf("  child %d (pid %d) exiting\n", i, (int) getpid());
             exit(i);    /* the exit code tells the parent which child */
         }
-        printf("Created child %d: pid %d\n", i, (int) pids[i]);
+        printf("created child %d: pid %d\n", i, (int) pids[i]);
     }
 
     int status;

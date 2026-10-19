@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
         die("fork");
 
     if (pid == 0) {
-        printf("Child %d: calling exit(%d)\n", (int) getpid(), code);
+        printf("child %d: calling exit(%d)\n", (int) getpid(), code);
         exit(code);
     }
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     if (done < 0)
         die("wait");
 
-    printf("Parent: wait() returned %d\n", (int) done);
+    printf("parent: wait() returned %d\n", (int) done);
     printf("  raw status           = 0x%04x\n", (unsigned) status);
     printf("  WIFEXITED(status)    = %d\n", WIFEXITED(status));
     if (WIFEXITED(status))

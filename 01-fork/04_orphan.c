@@ -21,15 +21,15 @@ int main(void)
         die("fork");
 
     if (pid == 0) {
-        printf("Child  %d: my parent is %d\n", (int) getpid(), (int) getppid());
+        printf("child  %d: my parent is %d\n", (int) getpid(), (int) getppid());
         sleep(2);
-        printf("Child  %d: my parent is now %d\n",
+        printf("child  %d: my parent is now %d\n",
                (int) getpid(), (int) getppid());
         return 0;
     }
 
     sleep(1);
-    printf("Parent %d: exiting without waiting for the child\n",
+    printf("parent %d: exiting without waiting for the child\n",
            (int) getpid());
     return 0;
 }
