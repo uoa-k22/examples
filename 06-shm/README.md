@@ -13,6 +13,7 @@ is in `08-sysv-ipc`.
 | `03_shm_pointers_bug` / `_fixed` | pointers stored in shared memory are wrong in another process; the fix links the nodes with indexes |
 | `04_no_ftruncate_bug` / `_fixed` | mapping an object whose size is 0: the first store gives `SIGBUS`; the fix calls `ftruncate()` |
 | `05_read_before_write_bug` / `_fixed` | the reader sees an empty buffer because nothing says the data is ready; the fix waits on a semaphore |
+| `06_mutex_not_shared_bug` / `_fixed` | threads in two processes share a mutex in shared memory, but it is not marked shared: a process gets stuck; the fix sets `PTHREAD_PROCESS_SHARED` |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.
@@ -31,3 +32,4 @@ interrupted, remove what it left behind:
 | `03_shm_pointers_bug` / `_fixed` | `rm /dev/shm/k22_shm_list` |
 | `04_no_ftruncate_bug` / `_fixed` | `rm /dev/shm/k22_shm_noftruncate` |
 | `05_read_before_write_bug` / `_fixed` | `rm /dev/shm/k22_shm_readwrite` |
+| `06_mutex_not_shared_bug` / `_fixed` | `rm /dev/shm/k22_shm_mutex` |

@@ -10,7 +10,8 @@ Each thread has only its own stack and registers.
 - `pthread_join()` waits for a thread to end and collects the `void *` its
   function returned, as `wait()` does for a child process.
 - A `pthread_mutex_t` is a lock for the threads of one process:
-  `pthread_mutex_lock()` / `pthread_mutex_unlock()`.
+  `pthread_mutex_lock()` / `pthread_mutex_unlock()`. To share one between
+  processes, see `06-shm/06_mutex_not_shared_bug`.
 
 | Program | Shows |
 | --- | --- |
