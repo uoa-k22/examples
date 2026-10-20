@@ -18,7 +18,7 @@
  *        and  ipcs -m  shows five segments.
  *
  *        POSIX shared memory leaks the same way if shm_unlink() is
- *        forgotten (see 05-shm/README.md), but a POSIX object at least
+ *        forgotten (see 06-shm/README.md), but a POSIX object at least
  *        shows up as a file in /dev/shm.
  *
  *        Clean up afterwards with the  ipcrm -m <shmid>  line the

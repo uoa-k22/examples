@@ -4,14 +4,18 @@
 # argv const, as cppcheck suggests, would change that.
 constParameter
 
+# A thread's function must take void *, as pthread_create() requires; it
+# cannot take const void *.
+constParameterCallback
+
 # The child writes through NULL on purpose, to be killed by SIGSEGV.
 nullPointer:02-wait/03_killed_by_signal.c
 
 # man semctl asks the caller to define the whole union semun, although
 # these programs use only .val.
-unusedStructMember:07-sysv-ipc/03_sysv_sem.c
-unusedStructMember:07-sysv-ipc/04_owner_died_bug.c
-unusedStructMember:07-sysv-ipc/04_owner_died_fixed.c
+unusedStructMember:08-sysv-ipc/03_sysv_sem.c
+unusedStructMember:08-sysv-ipc/04_owner_died_bug.c
+unusedStructMember:08-sysv-ipc/04_owner_died_fixed.c
 
 # Acutest is not ours; it keeps its own style.
 *:tests/acutest.h

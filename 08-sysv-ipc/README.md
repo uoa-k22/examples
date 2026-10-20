@@ -1,7 +1,7 @@
-# 07 — System V IPC
+# 08 — System V IPC
 
 System V IPC is the older API for shared memory and semaphores. It does the
-same jobs as the POSIX calls in `05-shm` and `06-semaphores`, and many
+same jobs as the POSIX calls in `06-shm` and `07-semaphores`, and many
 existing programs still use it. The main differences:
 
 - An object is identified by a number (`shmid`, `semid`), not a name.
@@ -33,4 +33,4 @@ sets. Remove one with `ipcrm -m <shmid>` or `ipcrm -s <semid>`.
 On Linux, a waiting `semop()` fails with `errno == EINTR` when the process
 is stopped (Ctrl-Z) and continued (`fg`), even without a signal handler.
 So `03_sysv_sem` and `04_owner_died_*` retry it. See "About EINTR" in
-`06-semaphores` for the loop.
+`07-semaphores` for the loop.

@@ -4,7 +4,7 @@
  *
  * Run:   ./01_sysv_shm
  *
- * Look:  this is the older API for the shared memory of 05-shm. A segment
+ * Look:  this is the older API for the shared memory of 06-shm. A segment
  *        is identified by a number (the shmid), not a name. IPC_PRIVATE
  *        always creates a new segment, so it suits a parent sharing with its
  *        own children. Unrelated processes would use a key from ftok()

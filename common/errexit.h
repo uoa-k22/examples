@@ -9,10 +9,17 @@
  *
  * die() prints the message followed by the reason (from errno), e.g.
  * "fork: Resource temporarily unavailable", and exits with status 1.
+ *
+ * The pthread_* functions do not set errno: they return 0 or the error
+ * number. Store that in errno, and die() reports it the same way:
+ *
+ *     if ((errno = pthread_create(&t, NULL, f, NULL)) != 0)
+ *         die("pthread_create");
  */
 #ifndef ERREXIT_H
 #define ERREXIT_H
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 

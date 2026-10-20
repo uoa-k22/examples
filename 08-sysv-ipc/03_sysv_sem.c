@@ -3,7 +3,7 @@
  *
  * Run:   ./03_sysv_sem
  *
- * Look:  the same mutual exclusion as 06-semaphores/03_named_sem_parent.c,
+ * Look:  the same mutual exclusion as 07-semaphores/03_named_sem_parent.c,
  *        with the older API that many existing programs still use. The
  *        differences:
  *        - semget() creates a whole *set* of semaphores; here it has one.

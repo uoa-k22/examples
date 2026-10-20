@@ -1,4 +1,4 @@
-# 04 — mmap()
+# 05 — mmap()
 
 `mmap()` adds a region to the process's virtual address space. The region
 can be backed by a file or by nothing (anonymous memory), and it can be

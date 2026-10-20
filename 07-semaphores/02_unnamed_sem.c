@@ -4,11 +4,12 @@
  * Run:   ./02_unnamed_sem
  *        ./02_unnamed_sem 100
  *
- * Look:  the semaphore starts at 1, so it works as a lock (a mutex).
- *        sem_wait() decrements it, blocking while it is 0, and sem_post()
- *        increments it. Only one process at a time can be between the two
- *        calls, so no update is lost and the total is always exact. The
- *        price is speed: compare  time ./01_race  with  time ./02_unnamed_sem
+ * Look:  the semaphore starts at 1, so it works as a lock, like the mutex
+ *        in 04-threads/07_mutex.c. sem_wait() decrements it, blocking while
+ *        it is 0, and sem_post() increments it. Only one process at a time
+ *        can be between the two calls, so no update is lost and the total
+ *        is always exact. The price is speed: compare  time ./01_race  with
+ *        time ./02_unnamed_sem
  *
  *        An unnamed semaphore is just a sem_t in memory. To be shared by
  *        processes it must live in shared memory, and sem_init() must be
