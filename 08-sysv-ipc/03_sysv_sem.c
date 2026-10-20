@@ -47,7 +47,7 @@ static void change(int semid, int delta)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     int semid = semget(IPC_PRIVATE, 1, IPC_CREAT | 0600);
     if (semid < 0)

@@ -42,7 +42,7 @@ int main(void)
     if (sem_init(&s->ready, 1, 0) < 0)
         die("sem_init");
 
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IOLBF, 0);
     pid_t pid = fork();
     if (pid < 0)
         die("fork");

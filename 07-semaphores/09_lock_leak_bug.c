@@ -56,7 +56,7 @@ static int update(int value)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
              MAP_SHARED | MAP_ANONYMOUS, -1, 0);
