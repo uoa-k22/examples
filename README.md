@@ -1,8 +1,8 @@
 # K22 Operating Systems — example programs
 
 Small C programs that accompany the K22 Operating Systems course. Each
-program shows one idea about processes or interprocess communication on
-Linux/POSIX.
+program shows one idea about processes, interprocess communication or
+threads on Linux/POSIX.
 
 ## Topics
 
@@ -15,6 +15,7 @@ Linux/POSIX.
 | [`05-shm`](05-shm) | POSIX shared memory (`shm_open()`) |
 | [`06-semaphores`](06-semaphores) | race conditions, mutual exclusion and signalling with POSIX semaphores |
 | [`07-sysv-ipc`](07-sysv-ipc) | the older System V API for shared memory and semaphores |
+| [`08-threads`](08-threads) | POSIX threads: creating and joining, shared memory, mutexes |
 
 Work through them in order; later topics use earlier ones.
 

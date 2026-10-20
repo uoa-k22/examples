@@ -4,6 +4,10 @@
 # argv const, as cppcheck suggests, would change that.
 constParameter
 
+# A thread's function must take void *, as pthread_create() requires; it
+# cannot take const void *.
+constParameterCallback
+
 # The child writes through NULL on purpose, to be killed by SIGSEGV.
 nullPointer:02-wait/03_killed_by_signal.c
 
