@@ -20,6 +20,8 @@ waking a waiter. Semaphores are used in two ways:
 | `09_lock_leak_bug` / `_fixed` | an early return that skips `sem_post()`: a later process hangs |
 | `10_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
 | `11_eintr_bug` / `_fixed` | a signal handler makes `sem_wait()` fail with `EINTR`; the fix is the retry loop |
+| `12_thread_pingpong` | `04_pingpong` with threads: the semaphores are globals, with pshared = 0 |
+| `13_limit_threads` | a semaphore that starts at 3 lets at most 3 of 8 threads in at once |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix. A `_bug` program that hangs ends by

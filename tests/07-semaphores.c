@@ -119,6 +119,22 @@ static void eintr_fixed(void)
     expect("the child is done after [0-9]+ interruptions$");
 }
 
+static void thread_pingpong(void)
+{
+    run("./12_thread_pingpong");
+    expect_values("^[0-9]: +(ping|pong) ",
+                  "ping pong ping pong ping pong ping pong ping pong");
+    expect_count(10, "\\(pid [0-9]+, tid [0-9]+\\)$");
+}
+
+static void limit_threads(void)
+{
+    run("./13_limit_threads");
+    expect_count(8, ": in +\\[[1-3] inside\\]$");
+    expect_count(8, ": out +\\[[0-2] inside\\]$");
+    expect("\\[3 inside\\]$");
+}
+
 TEST_LIST = {
     { "01_race", race },
     { "02_unnamed_sem", unnamed_sem },
@@ -137,5 +153,7 @@ TEST_LIST = {
     { "10_producer_order_fixed", producer_order_fixed },
     { "11_eintr_bug", eintr_bug },
     { "11_eintr_fixed", eintr_fixed },
+    { "12_thread_pingpong", thread_pingpong },
+    { "13_limit_threads", limit_threads },
     { NULL, NULL }
 };
