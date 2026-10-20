@@ -62,6 +62,22 @@ static void read_before_write_fixed(void)
     expect_no_leftovers();
 }
 
+static void mutex_not_shared_bug(void)
+{
+    run("./06_mutex_not_shared_bug");
+    expect("was killed by SIGALRM: stuck$");
+    reject("\\(0 updates lost\\)");
+    expect_no_leftovers();
+}
+
+static void mutex_not_shared_fixed(void)
+{
+    run("./06_mutex_not_shared_fixed");
+    expect_count(2, "finished$");
+    expect("\\(0 updates lost\\)$");
+    expect_no_leftovers();
+}
+
 TEST_LIST = {
     { "01_posix_shm_writer+02_reader", posix_shm },
     { "03_shm_pointers_bug", shm_pointers_bug },
@@ -70,5 +86,7 @@ TEST_LIST = {
     { "04_no_ftruncate_fixed", no_ftruncate_fixed },
     { "05_read_before_write_bug", read_before_write_bug },
     { "05_read_before_write_fixed", read_before_write_fixed },
+    { "06_mutex_not_shared_bug", mutex_not_shared_bug },
+    { "06_mutex_not_shared_fixed", mutex_not_shared_fixed },
     { NULL, NULL }
 };
