@@ -14,7 +14,7 @@ communication on Linux/POSIX.
 | [`04-threads`](04-threads) | POSIX threads: creating and joining, shared memory, race conditions, mutexes |
 | [`05-mmap`](05-mmap) | memory mappings: anonymous and file-backed, private and shared |
 | [`06-shm`](06-shm) | POSIX shared memory (`shm_open()`) |
-| [`07-semaphores`](07-semaphores) | mutual exclusion and signalling between processes with POSIX semaphores |
+| [`07-semaphores`](07-semaphores) | mutual exclusion and signalling with POSIX semaphores, between processes or threads |
 | [`08-sysv-ipc`](08-sysv-ipc) | the older System V API for shared memory and semaphores |
 
 Work through them in order; later topics use earlier ones.

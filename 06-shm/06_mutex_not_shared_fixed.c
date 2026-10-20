@@ -5,9 +5,10 @@
  *        diff 06_mutex_not_shared_bug.c 06_mutex_not_shared_fixed.c
  *
  * Look:  pthread_mutexattr_setpshared() with PTHREAD_PROCESS_SHARED marks
- *        the mutex as shared by processes. The kernel then files a waiting
- *        thread under the shared memory itself, so an unlock in any process
- *        wakes it. Both processes finish and no update is lost.
+ *        the mutex as shared by processes. The kernel then keeps a waiting
+ *        thread in a list that belongs to the shared memory, so an unlock
+ *        in any process wakes it. Both processes finish and no update is
+ *        lost.
  *
  *        A semaphore has the same choice: the pshared argument of
  *        sem_init() (see 07-semaphores/02_unnamed_sem.c).
@@ -95,7 +96,7 @@ int main(void)
                WIFSIGNALED(status) ? "was killed by SIGALRM: stuck"
                                    : "finished");
 
-    long expected = (long) NPROC * NTHREADS * COUNT;
+    long expected = NPROC * NTHREADS * COUNT;
     printf("expected %ld, got %ld (%ld updates lost)\n",
            expected, s->counter, expected - s->counter);
 

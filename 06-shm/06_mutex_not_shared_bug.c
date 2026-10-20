@@ -13,9 +13,10 @@
  *        total comes out short.
  *
  *        By default a mutex is only for the threads of one process. When a
- *        thread waits for it, the kernel files the waiter under its own
- *        process. When a thread in the other process unlocks, the kernel
- *        looks only in that process, so the waiter is never woken.
+ *        thread waits for it, the kernel keeps the waiting thread in a list
+ *        that belongs to its process. When a thread in the other process
+ *        unlocks, the kernel looks only in that process's list, so the
+ *        waiter is never woken.
  *
  *        Nothing reports an error: every lock and unlock succeeds.
  *
@@ -102,7 +103,7 @@ int main(void)
                WIFSIGNALED(status) ? "was killed by SIGALRM: stuck"
                                    : "finished");
 
-    long expected = (long) NPROC * NTHREADS * COUNT;
+    long expected = NPROC * NTHREADS * COUNT;
     printf("expected %ld, got %ld (%ld updates lost)\n",
            expected, s->counter, expected - s->counter);
 
