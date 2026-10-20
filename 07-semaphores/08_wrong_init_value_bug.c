@@ -44,7 +44,7 @@ int main(void)
     /* BUG: a lock must start at 1, not 0. */
     if (sem_init(&s->lock, 1, 0) < 0)
         die("sem_init");
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     for (int p = 0; p < NPROC; p++) {
         pid_t pid = fork();

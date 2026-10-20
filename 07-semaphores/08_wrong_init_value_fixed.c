@@ -33,7 +33,7 @@ int main(void)
     /* FIX: a lock starts at 1: one process may enter. */
     if (sem_init(&s->lock, 1, 1) < 0)
         die("sem_init");
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     for (int p = 0; p < NPROC; p++) {
         pid_t pid = fork();

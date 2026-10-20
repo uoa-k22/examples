@@ -41,7 +41,7 @@ static void report(pid_t pid)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     pid_t pid = fork();
     if (pid < 0)

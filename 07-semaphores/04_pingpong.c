@@ -39,7 +39,7 @@ static void take_turns(sem_t *mine, sem_t *other, const char *word)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);       /* print each line immediately */
+    setvbuf(stdout, NULL, _IOLBF, 0);       /* print each line immediately */
 
     struct shared *s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
                             MAP_SHARED | MAP_ANONYMOUS, -1, 0);
