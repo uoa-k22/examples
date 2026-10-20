@@ -9,7 +9,7 @@ waking a waiter. Semaphores are used in two ways:
 
 | Program | Shows |
 | --- | --- |
-| `01_race` | lost updates when two processes increment a shared counter; run it several times, and the number lost changes every time |
+| `01_race` | the race from `04-threads/06_race`, between two processes |
 | `02_unnamed_sem` | the same counter protected by an unnamed semaphore in shared memory |
 | `03_named_sem_parent` | a named semaphore (`sem_open()`) shared across `exec`; starts `03_named_sem_child` |
 | `04_pingpong` | two semaphores enforce strict alternation |

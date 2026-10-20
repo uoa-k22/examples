@@ -10,9 +10,7 @@
  *        it is unlocked. So no update is lost and the total is always exact.
  *        The price is speed: compare  time ./06_race  with  time ./07_mutex
  *
- *        It does the job of the semaphore that starts at 1 in
- *        07-semaphores/02_unnamed_sem.c. Unlike a semaphore, a mutex has an
- *        owner: only the thread that locked it may unlock it.
+ *        Only the thread that locked a mutex may unlock it.
  */
 #include <pthread.h>
 #include <stdio.h>

@@ -11,10 +11,10 @@ communication on Linux/POSIX.
 | [`01-fork`](01-fork) | creating processes with `fork()`; orphans |
 | [`02-wait`](02-wait) | `wait()` / `waitpid()`, exit status, zombies |
 | [`03-exec`](03-exec) | running a new program with the `exec` family; fork + exec + wait |
-| [`04-threads`](04-threads) | POSIX threads: creating and joining, shared memory, mutexes |
+| [`04-threads`](04-threads) | POSIX threads: creating and joining, shared memory, race conditions, mutexes |
 | [`05-mmap`](05-mmap) | memory mappings: anonymous and file-backed, private and shared |
 | [`06-shm`](06-shm) | POSIX shared memory (`shm_open()`) |
-| [`07-semaphores`](07-semaphores) | race conditions, mutual exclusion and signalling with POSIX semaphores |
+| [`07-semaphores`](07-semaphores) | mutual exclusion and signalling between processes with POSIX semaphores |
 | [`08-sysv-ipc`](08-sysv-ipc) | the older System V API for shared memory and semaphores |
 
 Work through them in order; later topics use earlier ones.
