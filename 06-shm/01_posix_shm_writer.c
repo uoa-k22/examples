@@ -13,7 +13,7 @@
  *
  *        Unrelated processes can share memory this way, because they only
  *        need the name. Nothing here makes the reader wait for the writer;
- *        that needs a semaphore (see 06-semaphores).
+ *        that needs a semaphore (see 07-semaphores).
  */
 #include <fcntl.h>
 #include <stdio.h>

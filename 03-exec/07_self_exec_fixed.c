@@ -8,7 +8,7 @@
  *        is a link to the executable of the running process, so it names
  *        the right file whatever the current directory, and however the
  *        program was started. The new copy runs and the child exits
- *        normally. 05-shm/03_shm_pointers_bug.c and _fixed.c re-run
+ *        normally. 06-shm/03_shm_pointers_bug.c and _fixed.c re-run
  *        themselves the same way.
  */
 #include <stdio.h>

@@ -11,7 +11,7 @@
  *        first store raises SIGBUS ("Bus error"), which kills the child.
  *        Compare SIGSEGV: the address is not mapped at all (*NULL), or the
  *        access is not allowed (a write to a read-only page, as in
- *        04-mmap/07_mprotect.c). SIGBUS means the address is mapped and the
+ *        05-mmap/07_mprotect.c). SIGBUS means the address is mapped and the
  *        access is allowed, but the object behind the page is too short.
  *        The parent removes the object afterwards.
  */

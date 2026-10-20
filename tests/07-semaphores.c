@@ -1,4 +1,4 @@
-/* 06-semaphores.c - checks that the programs in 06-semaphores do what
+/* 07-semaphores.c - checks that the programs in 07-semaphores do what
    they say. */
 #include "run.h"
 

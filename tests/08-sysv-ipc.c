@@ -1,4 +1,4 @@
-/* 07-sysv-ipc.c - checks that the programs in 07-sysv-ipc do what they
+/* 08-sysv-ipc.c - checks that the programs in 08-sysv-ipc do what they
    say, and that only 02_leaked_segment_bug leaves anything behind. */
 #include <stdlib.h>
 #include <sys/sem.h>

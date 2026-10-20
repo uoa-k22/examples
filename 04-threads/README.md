@@ -1,4 +1,4 @@
-# 08 — Threads
+# 04 — Threads
 
 A thread is a flow of control inside a process. A process starts with one
 thread, which runs `main()`; `pthread_create()` starts more. All threads of
@@ -19,7 +19,7 @@ Each thread has only its own stack and registers.
 | `03_shared_globals` | a thread's changes to variables are seen by `main()`; compare `01-fork/02_address_space` |
 | `04_return_value` | threads add up parts of a range and return their sums through `pthread_join()` |
 | `05_shared_arg_bug` / `_fixed` | every thread gets a pointer to the same variable and reads the wrong number; the fix gives each its own |
-| `06_race` | lost updates when two threads increment a shared counter, as in `06-semaphores/01_race` |
+| `06_race` | lost updates when two threads increment a shared counter, as in `07-semaphores/01_race` |
 | `07_mutex` | the same counter protected by a mutex |
 | `08_no_join_bug` / `_fixed` | `main()` returns without joining, and the threads die with the process; the fix joins them |
 | `09_join_in_loop_bug` / `_fixed` | joining each thread right after starting it makes them run one at a time; the fix joins after starting all |

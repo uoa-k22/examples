@@ -11,7 +11,7 @@
  *        The price is speed: compare  time ./06_race  with  time ./07_mutex
  *
  *        It does the job of the semaphore that starts at 1 in
- *        06-semaphores/02_unnamed_sem.c. Unlike a semaphore, a mutex has an
+ *        07-semaphores/02_unnamed_sem.c. Unlike a semaphore, a mutex has an
  *        owner: only the thread that locked it may unlock it.
  */
 #include <pthread.h>

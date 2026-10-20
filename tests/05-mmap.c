@@ -1,4 +1,4 @@
-/* 04-mmap.c - checks that the programs in 04-mmap do what they say. */
+/* 05-mmap.c - checks that the programs in 05-mmap do what they say. */
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "run.h"

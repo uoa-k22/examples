@@ -1,4 +1,4 @@
-# 06 — Semaphores
+# 07 — Semaphores
 
 A semaphore is a counter that never goes below zero. `sem_wait()` (P)
 decrements it, blocking while it is 0. `sem_post()` (V) increments it,
@@ -41,7 +41,7 @@ while (sem_wait(sem) < 0)
 Once a program installs a signal handler, use this loop for every blocking
 call; `11_eintr_bug` shows what happens without it. The other programs here
 install no handlers, so they keep the simpler one-line check. System V
-`semop()` fails with `EINTR` even without a handler; see `07-sysv-ipc`.
+`semop()` fails with `EINTR` even without a handler; see `08-sysv-ipc`.
 
 ## Leftovers
 

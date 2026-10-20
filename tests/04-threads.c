@@ -1,4 +1,4 @@
-/* 08-threads.c - checks that the programs in 08-threads do what they say. */
+/* 04-threads.c - checks that the programs in 04-threads do what they say. */
 #include "run.h"
 
 static void create_join(void)

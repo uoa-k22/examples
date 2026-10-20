@@ -1,4 +1,4 @@
-/* 05-shm.c - checks that the programs in 05-shm do what they say. */
+/* 06-shm.c - checks that the programs in 06-shm do what they say. */
 #include <unistd.h>
 #include "run.h"
 

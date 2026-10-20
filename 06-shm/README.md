@@ -1,10 +1,10 @@
-# 05 — Shared memory
+# 06 — Shared memory
 
 Shared memory lets processes read and write the same physical memory. It is
 the fastest form of IPC, because no data is copied through the kernel. But
 nothing coordinates the processes; that is the job of semaphores
-(`06-semaphores`). This topic uses the POSIX API; the older System V API
-is in `07-sysv-ipc`.
+(`07-semaphores`). This topic uses the POSIX API; the older System V API
+is in `08-sysv-ipc`.
 
 | Program | Shows |
 | --- | --- |
