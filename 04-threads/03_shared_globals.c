@@ -20,12 +20,12 @@ int global = 100;
 
 static void *change(void *arg)
 {
-    int *local = arg;
+    int *p = arg;
 
     global++;
-    (*local)++;
+    (*p)++;
     printf("thread: global = %d (at %p), local = %d (at %p)\n",
-           global, (void *) &global, *local, (void *) local);
+           global, (void *) &global, *p, (void *) p);
     return NULL;
 }
 
