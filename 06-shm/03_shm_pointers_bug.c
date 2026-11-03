@@ -38,13 +38,13 @@
 
 /* BUG: the links are addresses, valid only in the process that set them. */
 struct node {
-    int          value;
+    int value;
     struct node *next;          /* NULL ends the list */
 };
 
 struct list {
     struct node *head;
-    struct node  nodes[NODES];
+    struct node nodes[NODES];
 };
 
 static void print_list(const char *who, const struct list *l)

@@ -25,7 +25,7 @@
 
 struct shared {
     sem_t lock;         /* FIX: the semaphore is in shared memory too */
-    long  counter;
+    long counter;
 };
 
 int main(int argc, char *argv[])

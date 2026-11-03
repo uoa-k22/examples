@@ -30,7 +30,7 @@ struct node {
 };
 
 struct list {
-    int         head;
+    int head;
     struct node nodes[NODES];
 };
 
