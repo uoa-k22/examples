@@ -31,5 +31,7 @@ interrupted, remove what it left behind:
 | `01_posix_shm_writer`, `02_posix_shm_reader` | `rm /dev/shm/k22_shm_demo` |
 | `03_shm_pointers_bug` / `_fixed` | `rm /dev/shm/k22_shm_list` |
 | `04_no_ftruncate_bug` / `_fixed` | `rm /dev/shm/k22_shm_noftruncate` |
-| `05_read_before_write_bug` / `_fixed` | `rm /dev/shm/k22_shm_readwrite` |
-| `06_mutex_not_shared_bug` / `_fixed` | `rm /dev/shm/k22_shm_mutex` |
+
+`05_read_before_write` and `06_mutex_not_shared` leave nothing behind: each
+calls `shm_unlink()` right after `shm_open()`, so the object goes away when
+the program exits.
