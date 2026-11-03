@@ -8,9 +8,10 @@
  *        threads. The expected total is 2 * count, but the result is
  *        usually less, and different on every run: counter++ is load, add,
  *        store, and the two processes interleave. Processes do not share
- *        global variables, so the counter is put in shared memory with
- *        mmap(). 02_unnamed_sem.c fixes the race.
+ *        global variables, so the counter is put in a shared memory object
+ *        (see 06-shm). 02_unnamed_sem.c fixes the race.
  */
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
@@ -18,17 +19,26 @@
 #include <unistd.h>
 #include "errexit.h"
 
+#define NAME  "/k22_sem_race"
 #define NPROC 2
 
 int main(int argc, char *argv[])
 {
     long count = argc > 1 ? atol(argv[1]) : 1000000;
 
+    int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    if (fd < 0)
+        die("shm_open");
+    if (shm_unlink(NAME) < 0)
+        die("shm_unlink");
+    if (ftruncate(fd, sizeof(long)) < 0)
+        die("ftruncate");
     /* volatile: make the compiler really load and store memory every time. */
     volatile long *counter = mmap(NULL, sizeof(long), PROT_READ | PROT_WRITE,
-                                  MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+                                  MAP_SHARED, fd, 0);
     if (counter == MAP_FAILED)
         die("mmap");
+    close(fd);
     *counter = 0;
 
     for (int p = 0; p < NPROC; p++) {

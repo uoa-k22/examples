@@ -7,6 +7,9 @@ waking a waiter. Semaphores are used in two ways:
 - **mutual exclusion**: start at 1, and wrap a critical section in P … V
 - **signalling**: start at 0; one process waits until another posts
 
+Processes that share an unnamed semaphore, and the data it protects, keep
+them in a POSIX shared memory object (`shm_open()`, see `06-shm`).
+
 | Program | Shows |
 | --- | --- |
 | `01_race` | the race from `04-threads/06_race`, between two processes |
@@ -50,3 +53,7 @@ install no handlers, so they keep the simpler one-line check. System V
 A named semaphore outlives the processes that use it. If
 `03_named_sem_parent` is interrupted, remove what it left behind with
 `rm /dev/shm/sem.k22_named_sem`.
+
+The shared memory objects leave nothing behind: each program calls
+`shm_unlink()` right after `shm_open()`, so the object goes away when the
+program exits.

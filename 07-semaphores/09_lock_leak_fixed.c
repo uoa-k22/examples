@@ -13,6 +13,7 @@
  *        locks, calls, and unlocks), the rule is the same: every path out of
  *        a critical section must release the lock.
  */
+#include <fcntl.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,6 +21,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"
+
+#define NAME "/k22_sem_lock_leak"
 
 struct shared {
     sem_t lock;
@@ -53,10 +56,17 @@ int main(void)
 {
     setvbuf(stdout, NULL, _IOLBF, 0);
 
-    s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
-             MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    if (fd < 0)
+        die("shm_open");
+    if (shm_unlink(NAME) < 0)
+        die("shm_unlink");
+    if (ftruncate(fd, sizeof(struct shared)) < 0)
+        die("ftruncate");
+    s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (s == MAP_FAILED)
         die("mmap");
+    close(fd);
     if (sem_init(&s->lock, 1, 1) < 0)
         die("sem_init");
 

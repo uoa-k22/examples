@@ -15,6 +15,7 @@
  *        where the semaphore lives, and every sem_wait() and sem_post()
  *        succeeds. The only symptom is a wrong result, now and then.
  */
+#include <fcntl.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +24,7 @@
 #include <unistd.h>
 #include "errexit.h"
 
+#define NAME  "/k22_sem_not_shared"
 #define NPROC 2
 
 struct shared {
@@ -36,10 +38,18 @@ int main(int argc, char *argv[])
 {
     long count = argc > 1 ? atol(argv[1]) : 1000000;
 
+    int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    if (fd < 0)
+        die("shm_open");
+    if (shm_unlink(NAME) < 0)
+        die("shm_unlink");
+    if (ftruncate(fd, sizeof(struct shared)) < 0)
+        die("ftruncate");
     struct shared *s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
-                            MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+                            MAP_SHARED, fd, 0);
     if (s == MAP_FAILED)
         die("mmap");
+    close(fd);
     s->counter = 0;
 
     sem_t *lock = &private_lock;
