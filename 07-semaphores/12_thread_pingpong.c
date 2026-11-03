@@ -8,8 +8,9 @@
  *        pong are now two threads of one process: same pid, different tid.
  *
  *        Threads share global variables, so the semaphores are plain
- *        globals; no mmap() is needed. sem_init() gets pshared = 0, which
- *        means "shared only by the threads of this process".
+ *        globals; no shared memory object is needed. sem_init() gets
+ *        pshared = 0, which means "shared only by the threads of this
+ *        process".
  *
  *        Without semaphores, a thread that waits for its turn would have to
  *        check a shared "whose turn" variable again and again, using the CPU

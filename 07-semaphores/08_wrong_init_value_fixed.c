@@ -9,6 +9,7 @@
  *        into the critical section one after the other, and the counter
  *        ends at 2. Nobody is killed by the alarm.
  */
+#include <fcntl.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <string.h>
@@ -17,6 +18,7 @@
 #include <unistd.h>
 #include "errexit.h"
 
+#define NAME  "/k22_sem_init_value"
 #define NPROC 2
 
 struct shared {
@@ -26,10 +28,18 @@ struct shared {
 
 int main(void)
 {
+    int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    if (fd < 0)
+        die("shm_open");
+    if (shm_unlink(NAME) < 0)
+        die("shm_unlink");
+    if (ftruncate(fd, sizeof(struct shared)) < 0)
+        die("ftruncate");
     struct shared *s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
-                            MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+                            MAP_SHARED, fd, 0);
     if (s == MAP_FAILED)
         die("mmap");
+    close(fd);
     /* FIX: a lock starts at 1: one process may enter. */
     if (sem_init(&s->lock, 1, 1) < 0)
         die("sem_init");

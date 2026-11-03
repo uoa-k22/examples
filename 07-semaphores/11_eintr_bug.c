@@ -18,6 +18,7 @@
  *        is never restarted), and it does not help in code that cannot know
  *        how the handler was installed. See "About EINTR" in the README.
  */
+#include <fcntl.h>
 #include <semaphore.h>
 #include <signal.h>
 #include <stdio.h>
@@ -26,6 +27,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "errexit.h"
+
+#define NAME "/k22_sem_eintr"
 
 static volatile sig_atomic_t seconds;
 
@@ -40,10 +43,18 @@ int main(void)
 {
     setvbuf(stdout, NULL, _IOLBF, 0);
 
+    int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    if (fd < 0)
+        die("shm_open");
+    if (shm_unlink(NAME) < 0)
+        die("shm_unlink");
+    if (ftruncate(fd, sizeof(sem_t)) < 0)
+        die("ftruncate");
     sem_t *done = mmap(NULL, sizeof(*done), PROT_READ | PROT_WRITE,
-                       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+                       MAP_SHARED, fd, 0);
     if (done == MAP_FAILED)
         die("mmap");
+    close(fd);
     if (sem_init(done, 1, 0) < 0)
         die("sem_init");
 

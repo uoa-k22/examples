@@ -16,6 +16,7 @@
  *        and on mutex second. If it held the mutex while waiting on a full
  *        buffer, no consumer could get in to empty it: deadlock.
  */
+#include <fcntl.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +25,7 @@
 #include <unistd.h>
 #include "errexit.h"
 
+#define NAME      "/k22_sem_buffer"
 #define SLOTS     4
 #define PRODUCERS 2
 #define CONSUMERS 2
@@ -86,10 +88,17 @@ int main(void)
 {
     setvbuf(stdout, NULL, _IOLBF, 0);
 
-    s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE,
-             MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
+    if (fd < 0)
+        die("shm_open");
+    if (shm_unlink(NAME) < 0)
+        die("shm_unlink");
+    if (ftruncate(fd, sizeof(struct shared)) < 0)
+        die("ftruncate");
+    s = mmap(NULL, sizeof(*s), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (s == MAP_FAILED)
         die("mmap");
+    close(fd);
     if (sem_init(&s->empty, 1, SLOTS) < 0 ||
         sem_init(&s->full, 1, 0) < 0 ||
         sem_init(&s->mutex, 1, 1) < 0)
