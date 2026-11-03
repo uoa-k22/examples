@@ -27,7 +27,7 @@
 
 struct shared {
     sem_t lock;
-    long  counter;
+    long counter;
 };
 
 int main(int argc, char *argv[])
