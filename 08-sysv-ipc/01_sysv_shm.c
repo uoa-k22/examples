@@ -8,7 +8,7 @@
  *        is identified by a number (the shmid), not a name. IPC_PRIVATE
  *        always creates a new segment, so it suits a parent sharing with its
  *        own children. Unrelated processes would use a key from ftok()
- *        instead.
+ *        instead (06_ftok_writer.c).
  *        - shmget()             creates the segment
  *        - shmat() / shmdt()    attach it to / detach it from memory
  *        - shmctl(IPC_RMID)     removes it
