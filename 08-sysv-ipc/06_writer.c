@@ -1,10 +1,10 @@
 /*
- * 06_ftok_writer.c - create a System V segment with a key from ftok() and
+ * 06_writer.c - create a System V segment with a key from ftok() and
  * write to it.
  *
- * Run:   ./06_ftok_writer "hello from the writer"
+ * Run:   ./06_writer "hello from the writer"
  *        ipcs -m
- *        ./07_ftok_reader
+ *        ./07_reader
  *        (or just: make run)
  *
  * Look:  IPC_PRIVATE (01_sysv_shm) only works for a parent and its

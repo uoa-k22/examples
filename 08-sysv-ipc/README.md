@@ -17,8 +17,8 @@ existing programs still use it. The main differences:
 | `03_sysv_sem` | semaphores: `semget()` / `semctl()` / `semop()` with `SEM_UNDO` |
 | `04_owner_died_bug` / `_fixed` | a process killed while holding a semaphore leaves it locked forever; the fix is the flag `SEM_UNDO` |
 | `05_shm_messages` | messages and the semaphores that guard them (unnamed POSIX ones) stored together in one segment |
-| `06_ftok_writer` | `ftok()` + `shmget(IPC_CREAT)`: create a segment with a key that another program can compute, and write to it |
-| `07_ftok_reader` | find the segment by the same key, read it, remove it with `IPC_RMID` |
+| `06_writer` | `ftok()` + `shmget(IPC_CREAT)`: create a segment with a key that another program can compute, and write to it |
+| `07_reader` | find the segment by the same key, read it, remove it with `IPC_RMID` |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.
@@ -34,7 +34,7 @@ sets. Remove one with `ipcrm -m <shmid>` or `ipcrm -s <semid>`.
 `02_leaked_segment_bug` leaves a segment behind on purpose; it prints the
 `ipcrm` command to remove it.
 
-`06_ftok_writer` leaves its segment for `07_ftok_reader`, which removes it.
+`06_writer` leaves its segment for `07_reader`, which removes it.
 If you run only the writer, run the reader too, or find the segment's
 shmid with `ipcs -m` and remove it with `ipcrm`.
 
