@@ -103,6 +103,17 @@ static void owner_died_fixed(void)
     TEST_CHECK_(sem_sets() == before, "the semaphore set is removed");
 }
 
+static void shm_messages(void)
+{
+    run("./05_shm_messages");
+    expect_values("received \"(.*)\"$", "hello how are you? goodbye");
+    expect("child: +got the empty message, stopping$");
+    TEST_ASSERT_(match_lines("segment [0-9]+, removed", NULL, 0) == 1,
+                 "the program prints its segment");
+    int id = atoi(values("segment ([0-9]+), removed"));
+    TEST_CHECK_(!shm_exists(id), "segment %d is removed", id);
+}
+
 TEST_LIST = {
     { "01_sysv_shm", sysv_shm },
     { "02_leaked_segment_bug", leaked_segment_bug },
@@ -110,5 +121,6 @@ TEST_LIST = {
     { "03_sysv_sem", sysv_sem },
     { "04_owner_died_bug", owner_died_bug },
     { "04_owner_died_fixed", owner_died_fixed },
+    { "05_shm_messages", shm_messages },
     { NULL, NULL }
 };
