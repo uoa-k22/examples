@@ -114,6 +114,27 @@ static void shm_messages(void)
     TEST_CHECK_(!shm_exists(id), "segment %d is removed", id);
 }
 
+static void ftok_key(void)
+{
+    char key[16];
+
+    run("./06_writer 'a test message'");
+    expect("stored \"a test message\"$");
+    TEST_ASSERT_(match_lines("segment [0-9]+:", NULL, 0) == 1,
+                 "the writer prints its key and segment");
+    snprintf(key, sizeof(key), "%s", values("key (0x[0-9a-f]+),"));
+    int id = atoi(values("segment ([0-9]+):"));
+    TEST_CHECK_(shm_exists(id), "segment %d stays after the writer exits", id);
+    run("./07_reader");
+    expect("left the message \"a test message\"$");
+    TEST_CHECK_(strcmp(values("key (0x[0-9a-f]+),"), key) == 0,
+                "the reader computes the writer's key %s", key);
+    TEST_CHECK_(!shm_exists(id), "segment %d is removed", id);
+    run("./07_reader");                 /* the segment is gone now */
+    expect_status(1);
+    expect("No such file or directory$");
+}
+
 TEST_LIST = {
     { "01_sysv_shm", sysv_shm },
     { "02_leaked_segment_bug", leaked_segment_bug },
@@ -122,5 +143,6 @@ TEST_LIST = {
     { "04_owner_died_bug", owner_died_bug },
     { "04_owner_died_fixed", owner_died_fixed },
     { "05_shm_messages", shm_messages },
+    { "06_writer+07_reader", ftok_key },
     { NULL, NULL }
 };
