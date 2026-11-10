@@ -14,7 +14,7 @@
 #include <sys/shm.h>
 #include <unistd.h>
 #include "errexit.h"
-#include "ftok_common.h"
+#include "sysv_common.h"
 
 int main(void)
 {
