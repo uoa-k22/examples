@@ -1,12 +1,12 @@
 /*
- * 05_shared_arg_fixed.c - every thread gets a pointer to its own variable.
+ * 05_shared_arg_fixed.c - the fix for 05_shared_arg_bug.c.
  *
  * Run:   ./05_shared_arg_fixed
+ *        diff 05_shared_arg_bug.c 05_shared_arg_fixed.c
  *
- * Look:  the bug was in 05_shared_arg_bug.c: all threads got a pointer to
- *        one variable id, which main() kept changing. Now id is an array,
- *        and each thread gets a pointer to its own element, which nobody
- *        changes. The threads print 0 1 2 3, in some order.
+ * Look:  id is now an array, and each thread gets a pointer to its own
+ *        element, which nobody changes. The threads print 0 1 2 3, in some
+ *        order.
  *
  *        The array lives until main() has joined every thread. A pointer
  *        given to a thread must stay valid for as long as the thread uses

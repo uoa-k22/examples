@@ -1,11 +1,11 @@
 /*
- * 08_no_join_fixed.c - main() waits for its threads before returning.
+ * 08_no_join_fixed.c - the fix for 08_no_join_bug.c.
  *
  * Run:   ./08_no_join_fixed
+ *        diff 08_no_join_bug.c 08_no_join_fixed.c
  *
- * Look:  the bug was in 08_no_join_bug.c: main() returned at once, and the
- *        process ended with all its threads. Now main() joins every thread
- *        first, so all 4 print "done" before main() returns.
+ * Look:  main() joins every thread before it returns, so all 4 print
+ *        "done" before the process ends.
  */
 #include <pthread.h>
 #include <stdio.h>
