@@ -19,9 +19,9 @@ them in a POSIX shared memory object (`shm_open()`, see `06-shm`).
 | `05_bounded_buffer` | producer/consumer with `empty`, `full` and `mutex` |
 | `06_sem_not_shared_bug` / `_fixed` | a semaphore in a global variable is copied by `fork()`, so it does not protect anything; the fix puts it in shared memory |
 | `07_deadlock_bug` / `_fixed` | two semaphores taken in opposite orders deadlock; the fix takes them in the same order |
-| `08_wrong_init_value_bug` / `_fixed` | a lock initialised to 0 instead of 1: everyone waits forever |
-| `09_lock_leak_bug` / `_fixed` | an early return that skips `sem_post()`: a later process hangs |
-| `10_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks |
+| `08_wrong_init_value_bug` / `_fixed` | a lock initialised to 0 instead of 1: everyone waits forever; the fix starts it at 1 |
+| `09_lock_leak_bug` / `_fixed` | an early return that skips `sem_post()`: a later process hangs; the fix posts before it returns |
+| `10_producer_order_bug` / `_fixed` | the producer takes `mutex` before `empty`: the full buffer deadlocks; the fix takes `empty` first |
 | `11_eintr_bug` / `_fixed` | a signal handler makes `sem_wait()` fail with `EINTR`; the fix is the retry loop |
 | `12_thread_pingpong` | `04_pingpong` with threads: the semaphores are globals, with pshared = 0 |
 | `13_limit_threads` | a semaphore that starts at 3 lets at most 3 of 8 threads in at once |
