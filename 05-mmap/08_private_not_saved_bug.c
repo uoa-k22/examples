@@ -29,11 +29,10 @@
 
 #define FILENAME "private_demo.txt"
 
-static void show_file(int fd, size_t len)
+static void show_file(int fd)
 {
     char buf[64];
-    size_t want = len < sizeof(buf) - 1 ? len : sizeof(buf) - 1;
-    ssize_t n = pread(fd, buf, want, 0);
+    ssize_t n = pread(fd, buf, sizeof(buf) - 1, 0);
     if (n < 0)
         die("pread");
     buf[n] = '\0';
@@ -56,14 +55,14 @@ int main(void)
     if (p == MAP_FAILED)
         die("mmap");
 
-    printf("Mapped %s with %s\n", FILENAME, "MAP_PRIVATE");
+    printf("Mapped " FILENAME " with MAP_PRIVATE\n");
     memcpy(p, "new", 3);
     if (msync(p, len, MS_SYNC) < 0)
         die("msync");
 
     printf("After storing \"new\" into the mapping:\n");
     printf("  mapping contains: \"%.*s\"\n", (int) len, p);
-    show_file(fd, len);
+    show_file(fd);
 
     munmap(p, len);
     close(fd);
