@@ -23,6 +23,10 @@
  *        execve() do not do it.
  *
  *        As in 03_fork_exec_wait.c, the child exits with 127 when exec fails.
+ *
+ * Try:   03_fork_exec_wait.c uses execvp(), so it runs a script without #!:
+ *            printf 'echo run by sh\n' > script; chmod +x script
+ *            ./03_fork_exec_wait ./script; rm script
  */
 #include <errno.h>
 #include <fcntl.h>
@@ -33,8 +37,9 @@
 #include <unistd.h>
 #include "errexit.h"
 
-#define FILE2   "exec_demo_2"
-#define FILE3   "exec_demo_3"
+/* Step 2 checks this script's mode, step 3 its first line. */
+#define MODE_SCRIPT     "exec_demo_mode"
+#define HASHBANG_SCRIPT "exec_demo_hashbang"
 
 static const char *errno_name(int e)
 {
@@ -87,15 +92,15 @@ static void try_exec(const char *what, const char *path)
 
 int main(void)
 {
-    /* BUG: file 2 is not executable, and file 3 has no #! line. */
-    make_file(FILE2, "#!/bin/sh\nexit 0\n", 0644);
-    make_file(FILE3, "exit 0\n", 0755);
+    /* BUG: MODE_SCRIPT is not executable; HASHBANG_SCRIPT has no #! line. */
+    make_file(MODE_SCRIPT, "#!/bin/sh\nexit 0\n", 0644);
+    make_file(HASHBANG_SCRIPT, "exit 0\n", 0755);
 
     try_exec("1. wrong path", "/bin/tru");              /* BUG: typo */
-    try_exec("2. not executable", "./" FILE2);
-    try_exec("3. script without #!", "./" FILE3);
+    try_exec("2. not executable", "./" MODE_SCRIPT);
+    try_exec("3. script without #!", "./" HASHBANG_SCRIPT);
 
-    unlink(FILE2);
-    unlink(FILE3);
+    unlink(MODE_SCRIPT);
+    unlink(HASHBANG_SCRIPT);
     return 0;
 }

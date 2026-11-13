@@ -10,6 +10,8 @@
  *        2. the file is executable (mode 0755, what chmod +x gives)
  *        3. the script starts with  #!/bin/sh , so the kernel knows which
  *           program to run it with
+ *        Every exec function now runs the script; it no longer depends on
+ *        execvp() falling back to /bin/sh, as the bug program explains.
  */
 #include <errno.h>
 #include <fcntl.h>
@@ -20,8 +22,9 @@
 #include <unistd.h>
 #include "errexit.h"
 
-#define FILE2   "exec_demo_2"
-#define FILE3   "exec_demo_3"
+/* Step 2 checks this script's mode, step 3 its first line. */
+#define MODE_SCRIPT     "exec_demo_mode"
+#define HASHBANG_SCRIPT "exec_demo_hashbang"
 
 static const char *errno_name(int e)
 {
@@ -74,15 +77,15 @@ static void try_exec(const char *what, const char *path)
 
 int main(void)
 {
-    /* FIX: file 2 is executable, and file 3 has a #! line. */
-    make_file(FILE2, "#!/bin/sh\nexit 0\n", 0755);
-    make_file(FILE3, "#!/bin/sh\nexit 0\n", 0755);
+    /* FIX: MODE_SCRIPT is executable; HASHBANG_SCRIPT has a #! line. */
+    make_file(MODE_SCRIPT, "#!/bin/sh\nexit 0\n", 0755);
+    make_file(HASHBANG_SCRIPT, "#!/bin/sh\nexit 0\n", 0755);
 
     try_exec("1. right path", "/bin/true");             /* FIX: spelling */
-    try_exec("2. executable", "./" FILE2);
-    try_exec("3. script with #!", "./" FILE3);
+    try_exec("2. executable", "./" MODE_SCRIPT);
+    try_exec("3. script with #!", "./" HASHBANG_SCRIPT);
 
-    unlink(FILE2);
-    unlink(FILE3);
+    unlink(MODE_SCRIPT);
+    unlink(HASHBANG_SCRIPT);
     return 0;
 }
