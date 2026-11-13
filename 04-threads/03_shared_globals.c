@@ -11,6 +11,9 @@
  *
  *        All threads of a process share its global variables, its heap and
  *        its open files. Each thread has only its own stack and registers.
+ *        But the stacks are in the same address space, and nothing protects
+ *        them: a thread that holds a pointer into another thread's stack
+ *        can change it, as change() does to main()'s local variable here.
  */
 #include <pthread.h>
 #include <stdio.h>
