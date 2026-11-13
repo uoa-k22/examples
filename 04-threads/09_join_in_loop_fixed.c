@@ -1,13 +1,12 @@
 /*
- * 09_join_in_loop_fixed.c - start every thread first, then join them.
+ * 09_join_in_loop_fixed.c - the fix for 09_join_in_loop_bug.c.
  *
  * Run:   ./09_join_in_loop_fixed
+ *        diff 09_join_in_loop_bug.c 09_join_in_loop_fixed.c
  *
- * Look:  the bug was in 09_join_in_loop_bug.c: main() joined each thread
- *        right after starting it, so the threads ran one at a time and the
- *        program took 4 seconds. Now main() starts all 4 threads in one
- *        loop and joins them in a second loop. The threads work at the same
- *        time, and the program takes 1 second.
+ * Look:  main() starts all 4 threads in one loop and joins them in a
+ *        second loop. The threads work at the same time, and the program
+ *        takes 1 second instead of 4.
  */
 #include <pthread.h>
 #include <stdio.h>
