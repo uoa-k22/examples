@@ -136,6 +136,15 @@ static void limit_threads(void)
     expect("\\[3 inside\\]$");
 }
 
+static void readers_writers(void)
+{
+    run("./14_readers_writers");
+    expect_count(12, "^reader [0-2]: read [0-6] +\\[[1-3] reading\\]$");
+    expect("\\[[23] reading\\]$");          /* readers overlap */
+    expect_values("writer [01]: wrote ([0-9])$", "1 2 3 4 5 6");
+    expect("^value = 6, expected 6; .* half-done write: 0$");
+}
+
 TEST_LIST = {
     { "01_race", race },
     { "02_unnamed_sem", unnamed_sem },
@@ -156,5 +165,6 @@ TEST_LIST = {
     { "11_eintr_fixed", eintr_fixed },
     { "12_thread_pingpong", thread_pingpong },
     { "13_limit_threads", limit_threads },
+    { "14_readers_writers", readers_writers },
     { NULL, NULL }
 };

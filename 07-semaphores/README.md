@@ -25,6 +25,7 @@ them in a POSIX shared memory object (`shm_open()`, see `06-shm`).
 | `11_eintr_bug` / `_fixed` | a signal handler makes `sem_wait()` fail with `EINTR`; the fix is the retry loop |
 | `12_thread_pingpong` | `04_pingpong` with threads: the semaphores are globals, with pshared = 0 |
 | `13_limit_threads` | a semaphore that starts at 3 lets at most 3 of 8 threads in at once |
+| `14_readers_writers` | readers-writers: many readers at once, or one writer alone |
 
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix. A `_bug` program that hangs ends by
