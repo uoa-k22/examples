@@ -9,10 +9,10 @@
  *        exit(), which ends the whole process, with all its threads. The
  *        threads are still in usleep(), so none of them prints "done".
  *
- *        A process ends when any of its threads calls exit() or main()
- *        returns, not when its last thread ends. Waiting with sleep()
- *        instead of joining only hides the bug: a thread that needs longer
- *        is still killed.
+ *        Returning from main(), or calling exit() in any thread, ends the
+ *        process at once. It does not wait for the other threads. Waiting
+ *        with sleep() instead of joining only hides the bug: a thread that
+ *        needs longer is still killed.
  */
 #include <pthread.h>
 #include <stdio.h>
