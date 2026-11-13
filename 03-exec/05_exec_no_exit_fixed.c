@@ -13,8 +13,8 @@
  *        exit() would also write out any output the child inherited in its
  *        stdio buffer, so it would be printed twice (see
  *        01-fork/06_stdio_buffer_bug.c). Children that run their own code
- *        return from main instead; that is safe because the parent calls
- *        fflush() before fork().
+ *        return from main instead; that is safe because the parent leaves
+ *        nothing in its stdio buffer at fork() (see the README).
  */
 #include <stdio.h>
 #include <sys/wait.h>
