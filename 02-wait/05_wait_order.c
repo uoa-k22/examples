@@ -38,8 +38,9 @@ int main(void)
     int status;
     pid_t pid;
     while ((pid = wait(&status)) > 0)
-        printf("wait() returned child %d (pid %d)\n",
-               WEXITSTATUS(status), (int) pid);
+        if (WIFEXITED(status))
+            printf("wait() returned child %d (pid %d)\n",
+                   WEXITSTATUS(status), (int) pid);
     if (errno != ECHILD)
         die("wait");
     printf("wait() returned -1 with ECHILD: no children left\n");

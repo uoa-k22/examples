@@ -39,8 +39,9 @@ int main(void)
     for (int i = 0; i < N; i++) {
         if (waitpid(pids[i], &status, 0) < 0)
             die("waitpid");
-        printf("waitpid() collected child %d (pid %d)\n",
-               WEXITSTATUS(status), (int) pids[i]);
+        if (WIFEXITED(status))
+            printf("waitpid() collected child %d (pid %d)\n",
+                   WEXITSTATUS(status), (int) pids[i]);
     }
     return 0;
 }

@@ -42,7 +42,8 @@ int main(void)
     int status;
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
-    printf("child %d finished with status %d\n",
-           (int) pid, WEXITSTATUS(status));
+    if (WIFEXITED(status))
+        printf("child %d finished with status %d\n",
+               (int) pid, WEXITSTATUS(status));
     return 0;
 }
