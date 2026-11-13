@@ -23,6 +23,9 @@
 #include "errexit.h"
 #include "named_sem.h"
 
+#define CHILD_PROG "./03_named_sem_child"
+#define NCHILD     3
+
 int main(void)
 {
     sem_t *sem = sem_open(SEM_NAME, O_CREAT | O_EXCL, 0600, 1);
