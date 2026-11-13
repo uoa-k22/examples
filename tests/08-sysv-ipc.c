@@ -130,7 +130,7 @@ static void ftok_key(void)
     TEST_CHECK_(strcmp(values("key (0x[0-9a-f]+),"), key) == 0,
                 "the reader computes the writer's key %s", key);
     TEST_CHECK_(!shm_exists(id), "segment %d is removed", id);
-    run("./07_ftok_reader");                 /* the segment is gone now */
+    run("./07_ftok_reader");    /* the segment is gone now */
     expect_status(1);
     expect("No such file or directory$");
 }
@@ -143,6 +143,6 @@ TEST_LIST = {
     { "04_owner_died_bug", owner_died_bug },
     { "04_owner_died_fixed", owner_died_fixed },
     { "05_shm_messages", shm_messages },
-    { "06_ftok_writer+07_reader", ftok_key },
+    { "06_ftok_writer+07_ftok_reader", ftok_key },
     { NULL, NULL }
 };
