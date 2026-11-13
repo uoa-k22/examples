@@ -54,7 +54,8 @@ int main(void)
     printf("  mapping contains: \"%.*s\"\n", (int) len, p);
     show_file(fd);
 
-    munmap(p, len);
+    if (munmap(p, len) < 0)
+        die("munmap");
     close(fd);
     return 0;
 }
