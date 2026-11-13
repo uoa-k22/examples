@@ -34,8 +34,10 @@ their own directory.
 
 ## How to read the examples
 
-- The comment at the top of each file explains what to run, what to look
-  for in the output, and things to try.
+- The comment at the top of each file says what to run (`Run:`) and what
+  to look for in the output (`Look:`). Some also say why it happens
+  (`Why:`), give a rule to remember (`Rule:`) or suggest something to try
+  (`Try:`).
 - Every system call that matters to the idea being shown is checked.
   `die("name")` from [`common/errexit.h`](common/errexit.h) prints the error
   and exits, so the check takes one line. Calls that only clean up or print
