@@ -17,10 +17,10 @@
  *                    kernel does not recognise it as a program: it is not a
  *                    binary and a script needs a first line like  #!/bin/sh
  *
- *        After the three failures the program also calls execvp() on the
- *        same script. It works: when execvp() gets ENOEXEC it runs the file
- *        with /bin/sh itself. That is a convenience of the C library, not of
- *        the kernel, so do not count on it. execv() and execve() do not do it.
+ *        execvp() would hide the third failure: when it gets ENOEXEC it runs
+ *        the file with /bin/sh itself. That is a convenience of the C
+ *        library, not of the kernel, so do not count on it. execv() and
+ *        execve() do not do it.
  *
  *        As in 03_fork_exec_wait.c, the child exits with 127 when exec fails.
  */
@@ -33,8 +33,8 @@
 #include <unistd.h>
 #include "errexit.h"
 
-#define SCRIPT  "exec_demo_script"
-#define NOPERM  "exec_demo_noperm"
+#define FILE2   "exec_demo_2"
+#define FILE3   "exec_demo_3"
 
 static const char *errno_name(int e)
 {
@@ -46,7 +46,7 @@ static const char *errno_name(int e)
     }
 }
 
-/* Make a file that holds a one-line shell command. */
+/* Make a file with these contents and this mode. */
 static void make_file(const char *name, const char *contents, mode_t mode)
 {
     int fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, mode);
@@ -59,10 +59,10 @@ static void make_file(const char *name, const char *contents, mode_t mode)
         die("chmod");
 }
 
-/* fork + exec + wait; use_execvp selects execvp() instead of execv(). */
-static void try_exec(const char *what, const char *path, int use_execvp)
+/* fork + execv + wait, and report the result. */
+static void try_exec(const char *what, const char *path)
 {
-    printf("%s: %s(\"%s\")\n", what, use_execvp ? "execvp" : "execv", path);
+    printf("%s: execv(\"%s\")\n", what, path);
     fflush(stdout);
 
     pid_t pid = fork();
@@ -70,10 +70,7 @@ static void try_exec(const char *what, const char *path, int use_execvp)
         die("fork");
     if (pid == 0) {
         char *argv[] = { (char *) path, NULL };
-        if (use_execvp)
-            execvp(path, argv);
-        else
-            execv(path, argv);
+        execv(path, argv);
         printf("  failed: %s (%s)\n", strerror(errno), errno_name(errno));
         fflush(stdout);
         _exit(127);
@@ -90,16 +87,15 @@ static void try_exec(const char *what, const char *path, int use_execvp)
 
 int main(void)
 {
-    /* BUG: the script has no #! line, and NOPERM is not executable. */
-    make_file(SCRIPT, "exit 0\n", 0755);
-    make_file(NOPERM, "#!/bin/sh\nexit 0\n", 0644);
+    /* BUG: file 2 is not executable, and file 3 has no #! line. */
+    make_file(FILE2, "#!/bin/sh\nexit 0\n", 0644);
+    make_file(FILE3, "exit 0\n", 0755);
 
-    try_exec("1. wrong path", "/bin/tru", 0);           /* BUG: typo */
-    try_exec("2. not executable", "./" NOPERM, 0);
-    try_exec("3. script without #!", "./" SCRIPT, 0);
-    try_exec("4. same script, but execvp()", "./" SCRIPT, 1);
+    try_exec("1. wrong path", "/bin/tru");              /* BUG: typo */
+    try_exec("2. not executable", "./" FILE2);
+    try_exec("3. script without #!", "./" FILE3);
 
-    unlink(SCRIPT);
-    unlink(NOPERM);
+    unlink(FILE2);
+    unlink(FILE3);
     return 0;
 }

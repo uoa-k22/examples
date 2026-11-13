@@ -79,7 +79,7 @@ static void exec_errors_bug(void)
     expect("\\(ENOENT\\)$");
     expect("\\(EACCES\\)$");
     expect("\\(ENOEXEC\\)$");
-    expect_count(1, "^  worked$");     /* only execvp() runs the script */
+    reject("^  worked$");
 }
 
 static void exec_errors_fixed(void)
