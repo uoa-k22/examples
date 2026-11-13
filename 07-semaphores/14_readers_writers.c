@@ -56,9 +56,10 @@ static void reader(int id)
         if (sem_wait(&s->mutex) < 0)
             die("sem_wait");
         s->readers++;
-        if (s->readers == 1)                    /* first in: keep writers out */
+        if (s->readers == 1) {                  /* first in: keep writers out */
             if (sem_wait(&s->wrt) < 0)
                 die("sem_wait");
+        }
         if (sem_post(&s->mutex) < 0)
             die("sem_post");
 
@@ -72,9 +73,10 @@ static void reader(int id)
             s->mismatches++;
         printf("reader %d: read %ld   [%d reading]\n", id, a, s->readers);
         s->readers--;
-        if (s->readers == 0)                    /* last out: let writers in */
+        if (s->readers == 0) {                  /* last out: let writers in */
             if (sem_post(&s->wrt) < 0)
                 die("sem_post");
+        }
         if (sem_post(&s->mutex) < 0)
             die("sem_post");
     }
