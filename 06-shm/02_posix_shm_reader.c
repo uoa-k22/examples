@@ -29,8 +29,7 @@ int main(void)
     printf("reader %d: process %d left the message \"%s\"\n",
            (int) getpid(), (int) m->writer, m->text);
 
-    if (munmap(m, sizeof(*m)) < 0)
-        die("munmap");
+    munmap(m, sizeof(*m));
     if (shm_unlink(SHM_NAME) < 0)
         die("shm_unlink");
     printf("reader %d: removed %s\n", (int) getpid(), SHM_NAME);

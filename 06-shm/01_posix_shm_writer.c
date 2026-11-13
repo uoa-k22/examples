@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
     printf("writer %d: stored \"%s\" in %s\n",
            (int) m->writer, m->text, SHM_NAME);
 
-    if (munmap(m, sizeof(*m)) < 0)
-        die("munmap");
+    munmap(m, sizeof(*m));
     return 0;
 }

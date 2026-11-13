@@ -83,6 +83,8 @@ int main(void)
             printf("parent: child %d finished\n", (int) pid);
     }
     printf("parent: counter = %ld, expected %d\n", s->counter, NPROC);
+
     sem_destroy(&s->lock);
+    munmap(s, sizeof(*s));
     return 0;
 }

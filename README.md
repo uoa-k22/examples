@@ -41,6 +41,7 @@ their own directory.
   and exits, so the check takes one line. Calls that only clean up or print
   a value (`close()`, `munmap()`, `shmdt()`, `sem_close()`, `sem_destroy()`,
   `lseek()`, `sem_getvalue()`) are left unchecked to keep the code short.
+  The exception is `munmap()` in `05-mmap`, where it is part of the idea.
 - A program whose name ends in `_bug` is meant to fail, to show a common
   mistake. Next to it is a `_fixed` program with the same number: the same
   code with the mistake corrected. Run both, and see exactly what changed

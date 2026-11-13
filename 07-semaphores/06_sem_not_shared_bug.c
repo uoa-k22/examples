@@ -79,6 +79,8 @@ int main(int argc, char *argv[])
     long expected = NPROC * count;
     printf("expected %ld, got %ld (%ld updates lost)\n",
            expected, s->counter, expected - s->counter);
+
     sem_destroy(lock);
+    munmap(s, sizeof(*s));
     return 0;
 }

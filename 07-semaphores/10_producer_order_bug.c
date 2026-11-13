@@ -119,5 +119,10 @@ int main(void)
                WIFSIGNALED(status) ? "was killed by SIGALRM: deadlock"
                                    : "finished");
     }
+
+    sem_destroy(&s->empty);
+    sem_destroy(&s->full);
+    sem_destroy(&s->mutex);
+    munmap(s, sizeof(*s));
     return 0;
 }

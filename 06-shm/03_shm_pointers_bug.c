@@ -113,6 +113,7 @@ static void reader(void)
     close(fd);
 
     print_list("reader", l);
+    munmap((void *) l, sizeof(*l));
 }
 
 int main(int argc, char *argv[])

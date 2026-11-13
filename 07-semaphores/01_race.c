@@ -57,5 +57,7 @@ int main(int argc, char *argv[])
     long expected = NPROC * count;
     printf("expected %ld, got %ld (%ld updates lost)\n",
            expected, *counter, expected - *counter);
+
+    munmap((void *) counter, sizeof(long));
     return 0;
 }

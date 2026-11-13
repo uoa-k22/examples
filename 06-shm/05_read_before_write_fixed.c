@@ -64,5 +64,6 @@ int main(void)
     if (waitpid(pid, NULL, 0) < 0)
         die("waitpid");
     sem_destroy(&s->ready);
+    munmap(s, sizeof(*s));
     return 0;
 }

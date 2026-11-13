@@ -52,6 +52,7 @@ static void child(void)
 
     strcpy(p, "hello");
     printf("child: stored \"%s\"\n", p);
+    munmap(p, page);
 }
 
 int main(void)

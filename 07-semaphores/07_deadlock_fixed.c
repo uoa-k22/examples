@@ -84,5 +84,9 @@ int main(void)
     if (waitpid(pid, NULL, 0) < 0)
         die("waitpid");
     printf("parent: both finished\n");
+
+    sem_destroy(&s->a);
+    sem_destroy(&s->b);
+    munmap(s, sizeof(*s));
     return 0;
 }

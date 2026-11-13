@@ -92,5 +92,6 @@ int main(void)
     }
 
     sem_destroy(&s->lock);
+    munmap(s, sizeof(*s));
     return 0;
 }
