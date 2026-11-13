@@ -18,9 +18,6 @@ POSIX API; the older System V API is in `08-sysv-ipc`.
 Each `_bug` program has a `_fixed` partner with the mistake corrected;
 `diff` the two files to see the fix.
 
-`make run` runs the writer, shows the object in `/dev/shm`, then runs the
-reader.
-
 ## Leftovers
 
 Shared memory objects outlive the processes that create them. If a demo is

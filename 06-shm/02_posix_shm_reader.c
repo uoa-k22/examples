@@ -1,7 +1,7 @@
 /*
  * 02_posix_shm_reader.c - open an existing POSIX shared memory object.
  *
- * Run:   after 01_posix_shm_writer (see there), or: make run
+ * Run:   after 01_posix_shm_writer (see there)
  *
  * Look:  the reader opens the object by name, without O_CREAT, and maps it
  *        read-only. It sees the message left by a process that has already

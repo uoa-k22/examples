@@ -4,7 +4,6 @@
  * Run:   ./01_posix_shm_writer "hello from the writer"
  *        ls -l /dev/shm/k22_shm_demo
  *        ./02_posix_shm_reader
- *        (or just: make run)
  *
  * Look:  shm_open() creates a named object, much like open() creates a file.
  *        It starts with size 0, so ftruncate() gives it its size, and mmap()
