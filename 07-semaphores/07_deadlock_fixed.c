@@ -26,25 +26,26 @@ struct shared {
     sem_t a, b;
 };
 
-static void P(sem_t *sem) { if (sem_wait(sem) < 0) die("sem_wait"); }
-static void V(sem_t *sem) { if (sem_post(sem) < 0) die("sem_post"); }
-
 static void use_both(const char *who, sem_t *first, const char *n1,
                      sem_t *second, const char *n2)
 {
     printf("%s: waiting for %s\n", who, n1);
-    P(first);
+    if (sem_wait(first) < 0)
+        die("sem_wait");
     printf("%s: got %s\n", who, n1);
 
     usleep(500000);
 
     printf("%s: waiting for %s\n", who, n2);
-    P(second);
+    if (sem_wait(second) < 0)
+        die("sem_wait");
     printf("%s: got %s and %s, working\n", who, n1, n2);
 
     usleep(200000);
-    V(second);
-    V(first);
+    if (sem_post(second) < 0)
+        die("sem_post");
+    if (sem_post(first) < 0)
+        die("sem_post");
     printf("%s: released both\n", who);
 }
 

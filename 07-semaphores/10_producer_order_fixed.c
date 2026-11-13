@@ -34,20 +34,22 @@ struct shared {
 
 static struct shared *s;
 
-static void P(sem_t *sem) { if (sem_wait(sem) < 0) die("sem_wait"); }
-static void V(sem_t *sem) { if (sem_post(sem) < 0) die("sem_post"); }
-
 static void producer(void)
 {
     for (int i = 1; i <= ITEMS; i++) {
         printf("producer: wants to put %d\n", i);
-        P(&s->empty);           /* FIX: first a free place... */
-        P(&s->mutex);           /* ...then exclusive access */
+        /* FIX: first a free place, then exclusive access */
+        if (sem_wait(&s->empty) < 0)
+            die("sem_wait");
+        if (sem_wait(&s->mutex) < 0)
+            die("sem_wait");
         s->buf[s->in] = i;
         s->in = (s->in + 1) % SLOTS;
         printf("producer: put %d\n", i);
-        V(&s->mutex);
-        V(&s->full);
+        if (sem_post(&s->mutex) < 0)
+            die("sem_post");
+        if (sem_post(&s->full) < 0)
+            die("sem_post");
     }
 }
 
@@ -55,13 +57,17 @@ static void consumer(void)
 {
     for (int i = 1; i <= ITEMS; i++) {
         usleep(300000);         /* a slow consumer: the buffer fills up */
-        P(&s->full);
-        P(&s->mutex);
+        if (sem_wait(&s->full) < 0)
+            die("sem_wait");
+        if (sem_wait(&s->mutex) < 0)
+            die("sem_wait");
         int item = s->buf[s->out];
         s->out = (s->out + 1) % SLOTS;
         printf("    consumer: took %d\n", item);
-        V(&s->mutex);
-        V(&s->empty);
+        if (sem_post(&s->mutex) < 0)
+            die("sem_post");
+        if (sem_post(&s->empty) < 0)
+            die("sem_post");
     }
 }
 

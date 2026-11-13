@@ -26,26 +26,29 @@ static sem_t slots;         /* free slots */
 static sem_t mutex;         /* protects inside */
 static int   inside;        /* threads using a slot, only for printing */
 
-static void P(sem_t *sem) { if (sem_wait(sem) < 0) die("sem_wait"); }
-static void V(sem_t *sem) { if (sem_post(sem) < 0) die("sem_post"); }
-
 static void *worker(void *arg)
 {
     long id = (long) arg;
 
-    P(&slots);
-    P(&mutex);
+    if (sem_wait(&slots) < 0)
+        die("sem_wait");
+    if (sem_wait(&mutex) < 0)
+        die("sem_wait");
     inside++;
     printf("thread %ld: in    [%d inside]\n", id, inside);
-    V(&mutex);
+    if (sem_post(&mutex) < 0)
+        die("sem_post");
 
     usleep(200000);                         /* use the resource */
 
-    P(&mutex);
+    if (sem_wait(&mutex) < 0)
+        die("sem_wait");
     inside--;
     printf("thread %ld: out   [%d inside]\n", id, inside);
-    V(&mutex);
-    V(&slots);
+    if (sem_post(&mutex) < 0)
+        die("sem_post");
+    if (sem_post(&slots) < 0)
+        die("sem_post");
     return NULL;
 }
 
