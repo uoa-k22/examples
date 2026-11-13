@@ -21,7 +21,7 @@
  *        It reports "data race", with the variable and the line number,
  *        even when the total comes out right. Build 07_mutex.c the same
  *        way and it reports nothing. Use it on your own threaded programs.
- *        (Fedora needs the libtsan package for it.)
+ *        (On some systems it needs the libtsan package.)
  */
 #include <pthread.h>
 #include <stdio.h>
