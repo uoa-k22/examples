@@ -24,10 +24,8 @@
  *        why on Linux even a mapping bigger than RAM usually succeeds
  *        (overcommit). The trouble comes only if all of it is touched.
  */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/mman.h>
 #include <sys/resource.h>
 #include <unistd.h>
@@ -42,14 +40,13 @@ static void report(const char *when)
     if (getrusage(RUSAGE_SELF, &ru) < 0)
         die("getrusage");
 
-    /* /proc/self/statm: total and resident size, in pages (Linux). */
-    long total, resident = -1;
+    /* The second number in /proc/self/statm is the resident size, in pages
+       (Linux). */
+    long resident;
     FILE *f = fopen("/proc/self/statm", "r");
-    if (f) {
-        if (fscanf(f, "%ld %ld", &total, &resident) != 2)
-            resident = -1;
-        fclose(f);
-    }
+    if (f == NULL || fscanf(f, "%*d %ld", &resident) != 1)
+        die("/proc/self/statm");
+    fclose(f);
 
     printf("%-34s minor faults %8ld   resident %8ld KiB\n",
            when, ru.ru_minflt, resident * (page_size / 1024));
@@ -77,12 +74,9 @@ int main(int argc, char *argv[])
         die("mmap");
     /* Ask for ordinary pages. Some systems would otherwise use 2 MiB "huge
        pages" here, and each fault would bring in 512 small pages at once.
-       This can only fail on a kernel built without huge page support, which
-       uses ordinary pages anyway, so a failure does not change the counts. */
-    if (madvise(p, len, MADV_NOHUGEPAGE) < 0)
-        printf("note: madvise(MADV_NOHUGEPAGE): %s; this kernel has no huge\n"
-               "      pages, so it uses ordinary pages anyway\n\n",
-               strerror(errno));
+       Not checked: it fails only on a kernel without huge page support,
+       which uses ordinary pages anyway. */
+    madvise(p, len, MADV_NOHUGEPAGE);
     report("after mmap()");
 
     touch(p, 0, len / 4);
