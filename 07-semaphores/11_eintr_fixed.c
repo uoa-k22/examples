@@ -71,16 +71,14 @@ int main(void)
     alarm(1);
 
     printf("parent: waiting for the child (a tick every second)\n");
-    int ticks = 0;
     while (sem_wait(done) < 0) {
         if (errno != EINTR)     /* a real error */
             die("sem_wait");
         /* FIX: EINTR only means a signal arrived: wait again. */
         printf("parent: interrupted by the timer (%d s), waiting again\n",
                (int) seconds);
-        ticks++;
     }
-    printf("parent: the child is done after %d interruptions\n", ticks);
+    printf("parent: the child is done\n");
     alarm(0);
 
     if (waitpid(pid, NULL, 0) < 0)

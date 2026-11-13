@@ -116,7 +116,8 @@ static void eintr_bug(void)
 static void eintr_fixed(void)
 {
     run("./11_eintr_fixed");
-    expect("the child is done after [0-9]+ interruptions$");
+    expect("interrupted by the timer \\(1 s\\), waiting again$");
+    expect("^parent: the child is done$");
 }
 
 static void thread_pingpong(void)
