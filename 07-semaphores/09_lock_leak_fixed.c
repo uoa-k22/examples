@@ -4,14 +4,11 @@
  * Run:   ./09_lock_leak_fixed
  *        diff 09_lock_leak_bug.c 09_lock_leak_fixed.c
  *
- * Look:  update() has a single way out: the error path jumps to the label
- *        "out", where the lock is released, instead of returning directly.
+ * Look:  the error path in update() now calls sem_post() before it returns.
  *        The first child still reports its bad value, but it releases the
  *        lock, and the second child gets it and finishes.
  *
- *        Whatever the style (a goto to the end, or a wrapper function that
- *        locks, calls, and unlocks), the rule is the same: every path out of
- *        a critical section must release the lock.
+ *        Every path out of a critical section must release the lock.
  */
 #include <fcntl.h>
 #include <semaphore.h>
@@ -32,24 +29,22 @@ struct shared {
 static struct shared *s;
 
 /* Add value to the total. Negative values are not allowed. */
-static int update(int value)
+static void update(int value)
 {
-    int result = 0;
-
     if (sem_wait(&s->lock) < 0)
         die("sem_wait");
 
     if (value < 0) {
         printf("  update(%d): bad value\n", value);
-        result = -1;
-        goto out;               /* FIX: leave through the unlock below */
+        if (sem_post(&s->lock) < 0)     /* FIX: unlock before returning */
+            die("sem_post");
+        return;
     }
     s->total += value;
     printf("  update(%d): total is now %ld\n", value, s->total);
-out:
+
     if (sem_post(&s->lock) < 0)
         die("sem_post");
-    return result;
 }
 
 int main(void)
