@@ -6,8 +6,9 @@
  * Look:  with MAP_SHARED, stores into the mapping change the file itself.
  *        A mapping cannot make a file longer, so the file is first given
  *        its final size with ftruncate(). Touching a page past the end of
- *        the file raises SIGBUS. msync() forces the changes to disk now;
- *        without it the kernel writes them back later.
+ *        the file raises SIGBUS (06-shm/04_no_ftruncate_bug.c shows it).
+ *        msync() forces the changes to disk now; without it the kernel
+ *        writes them back later.
  */
 #include <fcntl.h>
 #include <stdio.h>
