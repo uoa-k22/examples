@@ -29,7 +29,8 @@ int main(void)
     if (pid == 0) {
         char *env[] = { "COURSE=K22", "TOPIC=exec", NULL };
         execle("/usr/bin/env", "env", (char *) NULL, env);
-        die("execle /usr/bin/env");
+        perror("execle /usr/bin/env");  /* exec returns only if it failed */
+        _exit(127);
     }
 
     if (waitpid(pid, NULL, 0) < 0)

@@ -42,7 +42,8 @@ int main(void)
             char id[8];
             snprintf(id, sizeof(id), "%d", i);
             execl(CHILD_PROG, CHILD_PROG, id, (char *) NULL);
-            die("execl " CHILD_PROG);
+            perror("execl " CHILD_PROG);    /* exec returns only if it failed */
+            _exit(127);
         }
     }
     while (wait(NULL) > 0)

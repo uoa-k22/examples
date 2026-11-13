@@ -9,9 +9,12 @@
  *        reports that the child exited with status 127, the status shells
  *        use for "command not found".
  *
- *        Use _exit(), not exit(). exit() would also flush the stdio buffers
- *        the child inherited from the parent, so their contents would be
- *        printed twice (see 01-fork/06_stdio_buffer_bug.c).
+ *        After a failed exec, end the child with _exit(), not exit().
+ *        exit() would also write out any output the child inherited in its
+ *        stdio buffer, so it would be printed twice (see
+ *        01-fork/06_stdio_buffer_bug.c). Children that run their own code
+ *        return from main instead; that is safe because the parent leaves
+ *        nothing in its stdio buffer at fork() (see the README).
  */
 #include <stdio.h>
 #include <sys/wait.h>

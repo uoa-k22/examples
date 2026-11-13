@@ -73,7 +73,8 @@ static void writer(const char *prog)
         /* Run this same program as the reader
            (see 03-exec/07_self_exec_fixed.c). */
         execl("/proc/self/exe", prog, "reader", (char *) NULL);
-        die("execl /proc/self/exe");
+        perror("execl /proc/self/exe");     /* exec returns only if it failed */
+        _exit(127);
     }
 
     int status;
