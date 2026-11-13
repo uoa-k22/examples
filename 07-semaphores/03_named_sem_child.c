@@ -11,6 +11,8 @@
 #include "errexit.h"
 #include "named_sem.h"
 
+#define ROUNDS 3
+
 int main(int argc, char *argv[])
 {
     const char *id = argc > 1 ? argv[1] : "?";
