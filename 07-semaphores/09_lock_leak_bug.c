@@ -15,8 +15,7 @@
  *        The failure is far from its cause: the process that leaked the lock
  *        is long gone, and the one that hangs did nothing wrong. Every path
  *        out of a critical section, including every error return, must
- *        release the lock. 09_lock_leak_fixed.c leaves through a single
- *        exit point, which makes that easy to check.
+ *        release the lock, as the error path in 09_lock_leak_fixed.c does.
  *
  *        (With a System V semaphore and SEM_UNDO the kernel would release the
  *        lock when the child exited: see 08-sysv-ipc/04_owner_died_fixed.c.)
@@ -40,21 +39,20 @@ struct shared {
 static struct shared *s;
 
 /* Add value to the total. Negative values are not allowed. */
-static int update(int value)
+static void update(int value)
 {
     if (sem_wait(&s->lock) < 0)
         die("sem_wait");
 
     if (value < 0) {
         printf("  update(%d): bad value\n", value);
-        return -1;              /* BUG: returns while still holding the lock */
+        return;                 /* BUG: returns while still holding the lock */
     }
     s->total += value;
     printf("  update(%d): total is now %ld\n", value, s->total);
 
     if (sem_post(&s->lock) < 0)
         die("sem_post");
-    return 0;
 }
 
 int main(void)
