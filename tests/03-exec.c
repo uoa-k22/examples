@@ -76,10 +76,9 @@ static void self_exec_fixed(void)
 static void exec_errors_bug(void)
 {
     run("./08_exec_errors_bug");
-    expect("\\(ENOENT\\)$");
-    expect("\\(EACCES\\)$");
-    expect("\\(ENOEXEC\\)$");
-    expect_count(1, "^  worked$");     /* only execvp() runs the script */
+    /* Each step fails, with its own error, in order. */
+    expect_values("^  failed: .* \\((E[A-Z]+)\\)$", "ENOENT EACCES ENOEXEC");
+    expect_count(3, "^  child exited with status 127$");
 }
 
 static void exec_errors_fixed(void)
