@@ -33,9 +33,7 @@ static void report(pid_t pid)
     if (WIFSIGNALED(status)) {
         int sig = WTERMSIG(status);
         printf("  WTERMSIG    = %d (%s)\n", sig, strsignal(sig));
-#ifdef WCOREDUMP
         printf("  WCOREDUMP   = %d\n", WCOREDUMP(status) ? 1 : 0);
-#endif
     }
 }
 
