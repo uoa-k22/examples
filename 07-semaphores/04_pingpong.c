@@ -41,7 +41,7 @@ static void take_turns(sem_t *mine, sem_t *other, const char *word)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IOLBF, 0);       /* print each line immediately */
+    setvbuf(stdout, NULL, _IOLBF, 0);
 
     int fd = shm_open(NAME, O_CREAT | O_EXCL | O_RDWR, 0600);
     if (fd < 0)
