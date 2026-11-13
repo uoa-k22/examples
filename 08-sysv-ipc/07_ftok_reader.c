@@ -1,7 +1,7 @@
 /*
- * 07_reader.c - find an existing System V segment by its ftok() key.
+ * 07_ftok_reader.c - find an existing System V segment by its ftok() key.
  *
- * Run:   after 06_writer (see there), or: make run
+ * Run:   after 06_ftok_writer (see there)
  *
  * Look:  the reader calls ftok() with the same path and project id as the
  *        writer, so it gets the same key. shmget() without IPC_CREAT finds
