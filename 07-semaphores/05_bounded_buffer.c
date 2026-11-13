@@ -42,9 +42,6 @@ struct shared {
 
 static struct shared *s;
 
-static void P(sem_t *sem) { if (sem_wait(sem) < 0) die("sem_wait"); }
-static void V(sem_t *sem) { if (sem_post(sem) < 0) die("sem_post"); }
-
 static void producer(int id)
 {
     unsigned seed = getpid();
@@ -53,14 +50,18 @@ static void producer(int id)
         int item = id * 100 + i;
         usleep(rand_r(&seed) % 100000);         /* time to "make" the item */
 
-        P(&s->empty);
-        P(&s->mutex);
+        if (sem_wait(&s->empty) < 0)
+            die("sem_wait");
+        if (sem_wait(&s->mutex) < 0)
+            die("sem_wait");
         s->buf[s->in] = item;
         s->in = (s->in + 1) % SLOTS;
         s->count++;
         printf("producer %d: put  %3d   [%d in buffer]\n", id, item, s->count);
-        V(&s->mutex);
-        V(&s->full);
+        if (sem_post(&s->mutex) < 0)
+            die("sem_post");
+        if (sem_post(&s->full) < 0)
+            die("sem_post");
     }
 }
 
@@ -69,16 +70,20 @@ static void consumer(int id)
     unsigned seed = getpid();
 
     for (int i = 0; i < PRODUCERS * ITEMS / CONSUMERS; i++) {
-        P(&s->full);
-        P(&s->mutex);
+        if (sem_wait(&s->full) < 0)
+            die("sem_wait");
+        if (sem_wait(&s->mutex) < 0)
+            die("sem_wait");
         int item = s->buf[s->out];
         s->out = (s->out + 1) % SLOTS;
         s->count--;
         s->sum += item;
         printf("    consumer %d: took %3d   [%d in buffer]\n",
                id, item, s->count);
-        V(&s->mutex);
-        V(&s->empty);
+        if (sem_post(&s->mutex) < 0)
+            die("sem_post");
+        if (sem_post(&s->empty) < 0)
+            die("sem_post");
 
         usleep(rand_r(&seed) % 150000);         /* time to "use" the item */
     }
