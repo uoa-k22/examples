@@ -51,8 +51,6 @@ static void *worker(void *arg)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IOLBF, 0);
-
     if (sem_init(&slots, 0, SLOTS) < 0 || sem_init(&mutex, 0, 1) < 0)
         die("sem_init");
 

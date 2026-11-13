@@ -13,6 +13,8 @@
 
 int main(int argc, char *argv[])
 {
+    setvbuf(stdout, NULL, _IOLBF, 0);
+
     const char *id = argc > 1 ? argv[1] : "?";
 
     sem_t *sem = sem_open(SEM_NAME, 0);
@@ -23,10 +25,8 @@ int main(int argc, char *argv[])
         if (sem_wait(sem) < 0)
             die("sem_wait");
         printf("child %s (pid %d): enter\n", id, (int) getpid());
-        fflush(stdout);
         usleep(200000);                     /* "work" in the critical section */
         printf("child %s (pid %d): leave\n", id, (int) getpid());
-        fflush(stdout);
         if (sem_post(sem) < 0)
             die("sem_post");
         usleep(100000);                     /* work outside it */

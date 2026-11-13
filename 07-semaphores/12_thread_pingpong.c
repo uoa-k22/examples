@@ -52,8 +52,6 @@ static void *take_turns(void *arg)
 
 int main(void)
 {
-    setvbuf(stdout, NULL, _IOLBF, 0);       /* print each line immediately */
-
     if (sem_init(&ping, 0, 1) < 0 || sem_init(&pong, 0, 0) < 0)
         die("sem_init");
 

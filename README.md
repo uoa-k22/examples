@@ -47,6 +47,12 @@ their own directory.
   with `diff NN_name_bug.c NN_name_fixed.c`.
 - Output from processes that run at the same time can come in a different
   order on every run. That is expected, and often it is the point.
+- Where processes print at the same time, a program may start with
+  `setvbuf(stdout, NULL, _IOLBF, 0)`. Then `printf()` writes out each line
+  at once, even into a pipe, so lines appear in the order they were
+  printed. Other programs call `fflush(stdout)` before `fork()`, so that
+  the child does not inherit unprinted output (see
+  `01-fork/06_stdio_buffer_bug.c`).
 
 ## For maintainers
 
