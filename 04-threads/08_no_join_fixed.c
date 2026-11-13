@@ -30,7 +30,7 @@ int main(void)
             die("pthread_create");
 
     /* FIX: wait for every thread before the process ends */
-    for (int i = 0; i < NTHREADS; i++)
+    for (long i = 0; i < NTHREADS; i++)
         if ((errno = pthread_join(t[i], NULL)) != 0)
             die("pthread_join");
     printf("main: returning\n");

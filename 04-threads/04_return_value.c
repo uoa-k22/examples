@@ -42,7 +42,7 @@ int main(void)
             die("pthread_create");
 
     long total = 0;
-    for (int i = 0; i < NTHREADS; i++) {
+    for (long i = 0; i < NTHREADS; i++) {
         void *result;
         if ((errno = pthread_join(t[i], &result)) != 0)
             die("pthread_join");
