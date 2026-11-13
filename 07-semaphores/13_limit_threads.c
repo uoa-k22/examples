@@ -60,7 +60,7 @@ int main(void)
     for (long i = 0; i < THREADS; i++)
         if ((errno = pthread_create(&t[i], NULL, worker, (void *) i)) != 0)
             die("pthread_create");
-    for (int i = 0; i < THREADS; i++)
+    for (long i = 0; i < THREADS; i++)
         if ((errno = pthread_join(t[i], NULL)) != 0)
             die("pthread_join");
 
