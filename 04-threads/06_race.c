@@ -14,6 +14,14 @@
  *        This is a race condition, and the code that updates the counter is
  *        a critical section. With a small count the threads rarely
  *        overlap, so the bug hides. 07_mutex.c fixes it.
+ *
+ * Try:   let the compiler's thread sanitizer find the race:
+ *            gcc -fsanitize=thread -g -I../common 06_race.c -o 06_race_tsan
+ *            ./06_race_tsan 100
+ *        It reports "data race", with the variable and the line number,
+ *        even when the total comes out right. Build 07_mutex.c the same
+ *        way and it reports nothing. Use it on your own threaded programs.
+ *        (On some systems it needs the libtsan package.)
  */
 #include <pthread.h>
 #include <stdio.h>
