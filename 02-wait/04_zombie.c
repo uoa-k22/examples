@@ -44,9 +44,10 @@ int main(void)
     int status;
     if (waitpid(pid, &status, 0) < 0)
         die("waitpid");
-    printf("\nparent: waitpid() collected exit status %d; "
-           "the zombie is gone:\n",
-           WEXITSTATUS(status));
+    if (WIFEXITED(status))
+        printf("\nparent: waitpid() collected exit status %d; "
+               "the zombie is gone:\n",
+               WEXITSTATUS(status));
     show(pid);
     return 0;
 }

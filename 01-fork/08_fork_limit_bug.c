@@ -52,7 +52,8 @@ int main(void)
     printf("fork() returned %d\n", (int) pid);
     int status = 0;
     waitpid(pid, &status, 0);   /* -1 means "any child": ECHILD, unnoticed */
-    printf("child %d finished with status %d: success!\n",
-           (int) pid, WEXITSTATUS(status));
+    if (WIFEXITED(status))
+        printf("child %d finished with status %d: success!\n",
+               (int) pid, WEXITSTATUS(status));
     return 0;
 }
